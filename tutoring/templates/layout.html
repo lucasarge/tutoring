@@ -1,16 +1,26 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <title>
-        {% block title %}
-        {% endblock %}
-         - Luca's Tutoring
+        {% block title %}{% endblock %} - Luca's Tutoring
     </title>
 </head>
 <body>
-    {% block content %}
-    {% endblock %}
+    <div class="nav">
+        <div class="logo">
+            <a href="/">Tutoring</a>
+        </div>
+        <div></div>
+        <div class="links">
+            <a href="/users/register">Register</a>
+            <a href="/users/login">Login</a>
+            <a href="/admin">Admin</a>
+        </div>
+    </div>
+    {% block content %}{% endblock %}
 </body>
 </html>

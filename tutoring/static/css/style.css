@@ -1,0 +1,24 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.nav {
+    display: grid;
+    grid-template-columns: 2fr 6fr 2fr;
+    grid-template-rows: auto;
+    grid-template-areas: "logo . links";
+}
+
+.logo {
+    text-align: left;
+}
+
+.links {
+    text-align: right;
+}
+
+.logo, .links {
+    text-decoration: none;
+}
