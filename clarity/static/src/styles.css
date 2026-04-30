@@ -1,1 +1,7 @@
-@import "tailwindcss"
+@import "tailwindcss";
+
+@theme {
+    --color-primary: oklab(37.251% -0.02105 -0.04872);
+    --color-secondary: oklab(35.392% -0.01987 -0.04534);
+    --color-text: oklab(100% 0 -0.00011);
+}

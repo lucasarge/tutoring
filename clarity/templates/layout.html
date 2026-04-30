@@ -7,12 +7,20 @@
     <link rel="stylesheet" href="{% static 'dist/styles.css' %}">
     <title>{% block title %}{% endblock %} - Clarity Tutoring</title>
 </head>
-<body>
-    <nav class="grid-cols-3 grid">
-        <h2 class="">Logo</h2>
-        <h2>Search</h2>
-        <h2>Authentification</h2>
+<body class="bg-secondary text-text">
+    <nav class="sticky bg-primary">
+        <div class="flex justify-between items-center max-w-6xl mx-auto px-6 py-4">
+            <div class="flex gap-6 items-center">
+                <img class="h-16" src="{% static 'images/logo.png' %}" alt="">
+                <h2>Search</h2>
+                <h2>Authentification</h2>
+            </div>
+            <div class="flex gap-6 items-center">
+                <h2>Authentification</h2>
+                <h2>Authentification</h2>
+            </div>
+        </div>
     </nav>
-    <div class="content">{% block content %}{% endblock %}</div>
+    <div class="max-w-6xl mx-auto px-6 py-4">{% block content %}{% endblock %}</div>
 </body>
 </html>
