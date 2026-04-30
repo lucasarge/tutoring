@@ -42,19 +42,33 @@ class CustomUserManager(BaseUserManager):
     
 class CustomUser(AbstractUser):
     username=None
+
+    first_name = models.CharField(max_length=15, blank=False, null=False)
+    last_name = models.CharField(max_length=15, blank=False, null=False)
+
+    USER_TYPE_CHOICES = [
+        ('student', 'Student'),
+        ('caregiver', 'Caregiver'),
+    ]
+    user_type = models.CharField(choices=USER_TYPE_CHOICES)
+
     email=models.EmailField(max_length=254,
                             unique=True,
                             validators=[EmailValidator(message="Please enter a valid email address.")])
     phone=models.CharField(max_length=15, 
                            unique=True,
                            validators=[RegexValidator(r'^\d+$', "Please enter a valid phone number.")])
-    first_name = models.CharField(max_length=15, blank=False, null=False)
-    last_name = models.CharField(max_length=15, blank=False, null=False)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["phone", "first_name", "last_name"]
+    REQUIRED_FIELDS = ["phone", "first_name", "last_name", "user_type"]
 
     objects = CustomUserManager()
     
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+
+class Profile(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    profile_image = models.ImageField(upload_to='profile_images', default='profile_images/default.png')
+    def __str__(self):
+        return f"{self.user.first_name} {self.user.last_name}"

@@ -11,13 +11,27 @@
     <nav class="sticky bg-primary">
         <div class="flex justify-between items-center max-w-6xl mx-auto px-6 py-4">
             <div class="flex gap-6 items-center">
-                <img class="h-16" src="{% static 'images/logo.png' %}" alt="">
-                <h2>Search</h2>
-                <h2>Authentification</h2>
+                <a href="/">
+                    <div>
+                        <img class="h-10 hidden sm:block" src="{% static 'images/logo.png' %}" alt="">
+                        <img class="h-10 block sm:hidden" src="{% static 'images/icon.png' %}" alt="">
+                    </div>
+                </a>
+                {% if request.user.user_type == "caregiver" %}
+                <h2>Caregiver</h2>
+                {% endif %}
+                {% if request.user.user_type == "student" %}
+                <h2><a href="">Tutoring</a></h2>
+                {% endif %}
+                <h2><a href="">About</a></h2>
+                <h2><a href="">Help</a></h2>
             </div>
             <div class="flex gap-6 items-center">
-                <h2>Authentification</h2>
-                <h2>Authentification</h2>
+                {% if request.user.is_authenticated %}
+                <a href=""><img class="h-10" src="{{ request.user.profile.profile_image.url }}" alt=""></a>
+                {% else %}
+                <h2>Login</h2>
+                {% endif %}
             </div>
         </div>
     </nav>
