@@ -2,5 +2,8 @@
   "dependencies": {
     "@tailwindcss/cli": "^4.2.4",
     "tailwindcss": "^4.2.4"
+  },
+  "scripts": {
+    "watch:css":"npx @tailwindcss/cli -i ./clarity/static/src/styles.css -o ./clarity/static/dist/styles.css --watch"
   }
 }

@@ -4,10 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'dist/styles.css' %}">
     <title>{% block title %}{% endblock %} - Clarity Tutoring</title>
 </head>
 <body>
-    <nav></nav>
+    <nav class="grid-cols-3 grid">
+        <h2 class="">Logo</h2>
+        <h2>Search</h2>
+        <h2>Authentification</h2>
+    </nav>
     <div class="content">{% block content %}{% endblock %}</div>
 </body>
 </html>
