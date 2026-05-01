@@ -9,9 +9,20 @@
 
 @layer components {
     input {
-        background-color: white;
+        background-color: rgba(147, 206, 126, 0.137);
         border-color: rgb(147, 206, 126); 
         border-style: solid;
         border-width: 2px;
+        padding: 4px 8px;
+        border-radius: 8px;
+    }
+
+    select {
+        background-color: rgba(147, 206, 126, 0.137);
+        border-color: rgb(147, 206, 126); 
+        border-style: solid;
+        border-width: 2px;
+        padding: 4px 8px;
+        border-radius: 8px;
     }
 }
