@@ -3,5 +3,15 @@
 @theme {
     --color-primary: oklab(37.251% -0.02105 -0.04872);
     --color-secondary: oklab(35.392% -0.01987 -0.04534);
+    --color-third: rgb(147, 206, 126);
     --color-text: oklab(100% 0 -0.00011);
+}
+
+@layer components {
+    input {
+        background-color: white;
+        border-color: rgb(147, 206, 126); 
+        border-style: solid;
+        border-width: 2px;
+    }
 }
