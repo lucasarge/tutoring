@@ -8,18 +8,9 @@
 }
 
 @layer components {
-    input {
-        background-color: rgba(147, 206, 126, 0.137);
-        border-color: rgb(147, 206, 126); 
-        border-style: solid;
-        border-width: 2px;
-        padding: 4px 8px;
-        border-radius: 8px;
-    }
-
-    select {
-        background-color: rgba(147, 206, 126, 0.137);
-        border-color: rgb(147, 206, 126); 
+    input, select, label {
+        background-color: oklab(79.161% -0.09231 0.0836 / 0.137);
+        border-color: oklab(79.161% -0.09231 0.0836); 
         border-style: solid;
         border-width: 2px;
         padding: 4px 8px;

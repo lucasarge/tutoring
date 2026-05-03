@@ -28,7 +28,9 @@
             </div>
             <div class="flex gap-6 items-center">
                 {% if request.user.is_authenticated %}
-                <a href=""><img class="h-10" src="{{ request.user.profile.profile_image.url }}" alt=""></a>
+                <a href="/users/profile/">
+                    <img src="{{ request.user.profile.profile_image.url }}" alt="" class="h-10 aspect-square rounded-full object-cover mx-auto">
+                </a>
                 {% else %}
                 <h2><a href="/users/login/">Login</a></h2>
                 {% endif %}

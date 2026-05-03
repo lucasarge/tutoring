@@ -6,7 +6,7 @@
 <div class="flex items-center min-h-[calc(100vh-104px)] drop-shadow-md drop-shadow-mauve-900">
     <div class="w-lg mx-auto bg-white text-black p-4 rounded-3xl">
         <h1 class="text-center text-4xl">Register</h1>
-        <form  class="" action="/users/register/" method="post">
+        <form action="/users/register/" method="post">
             {% csrf_token %}
             <div class="grid grid-cols-2 py-4 gap-y-2">
 
@@ -40,6 +40,7 @@
                 <button class="bg-third px-8 py-2 border-2 rounded-2xl text-white" type="submit">Continue</button>
             </div>
         </form>
+        <h6 class="text-xs text-center underline pt-2"><a href="/users/login/">I already have an account.</a></h6>
     </div>
 </div>
     
