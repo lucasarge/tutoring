@@ -9,7 +9,7 @@
     <title>{% block title %}{% endblock %} - Clarity Tutoring</title>
 </head>
 <body class="bg-secondary text-white">
-    <nav class="sticky bg-primary drop-shadow-md drop-shadow-mauve-750">
+    <nav class="sticky top-0 z-50 bg-primary drop-shadow-md drop-shadow-mauve-750">
         <div class="flex justify-between items-center max-w-6xl mx-auto px-6 py-4">
             <div class="flex gap-6 items-center">
                 <a href="/">
@@ -30,11 +30,12 @@
             <div class="flex gap-6 items-center">
                 {% if request.user.is_authenticated %}
 
-                <div class="relative">
+                <div class="relative z-50">
                     <img id="profileBtn" src="{{ request.user.profile.profile_image.url }}" alt="" class="cursor-pointer h-10 aspect-square rounded-full object-cover mx-auto">
-                    <div id="profileMenu" class="hidden absolute top-full mt-2 left-1/2 translate-x-[-90%]">
+                    <div id="profileMenu" class="hidden absolute top-full mt-2 left-1/2 translate-x-[-90%] z-50">
                         <div class="bg-gray-200 text-black text-md rounded-lg px-3 py-2 shadow-lg w-fit whitespace-nowrap text-right">
                             <h4 class="text-l"><a href="/users/profile/">Profile</a></h4>
+                            <h4 class="text-l"><a href="/users/connect/">Connect</a></h4>
                             <form action="{% url 'users:logout' %}" method="post">
                                 {% csrf_token %}
                                 <button class="text-l cursor-pointer" type="submit">Logout</button>

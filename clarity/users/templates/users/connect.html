@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}Connect{% endblock %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+    
+    {% if request.user.user_type == "student" %}
+    <h1>Please insert the join code below:</h1>
+    {% elif request.user.user_type == "caregiver" %}
+    <h1>Please share the join code below:</h1>
+
+    {% endif %}
+    {% else %}
+    <h1 class="text-center text-2xl">
+        Please <a class="underline" href="/users/login/">Login</a> or <a class="underline" href="/users/register/">Register</a> to access this.
+    </h1>
+    {% endif %}
+    
+{% endblock %}

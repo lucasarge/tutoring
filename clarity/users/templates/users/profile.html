@@ -3,9 +3,9 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-    <div class="grid gap-8 text-black text-xl md:grid-cols-[5fr_3fr] mb-8">
+    <div class="grid gap-8 text-black text-xl lg:grid-cols-[5fr_3fr] mb-8">
         
-        <form class="bg-white flex flex-col rounded-2xl px-8 py-6" action="/users/profile/" method="post">
+        <form class="bg-white flex flex-col rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900" action="/users/profile/" method="post">
             {% csrf_token %}
             <h2 class="text-2xl pb-4">Personal Information:</h2>
             <div class="grid sm:grid-cols-2 py-2 sm:py-4 items-center">
@@ -30,7 +30,7 @@
 
         </form>
 
-        <form class="bg-white flex flex-col rounded-2xl px-8 py-6" action="/users/profile/" method="post" enctype="multipart/form-data">
+        <form class="bg-white flex flex-col rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900" action="/users/profile/" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <h2 class="text-2xl pb-4">Profile Picture:</h2>
             <img src="{{ request.user.profile.profile_image.url }}" alt="" class="h-48 aspect-square rounded-full object-cover border-black border-2 mx-auto">
@@ -52,11 +52,11 @@
 
     
     </div>
-    <div class="grid gap-8 text-black md:grid-cols-[6fr_7fr]">
-        <div class="bg-white rounded-2xl px-8 py-6">
+    <div class="grid gap-8 text-black lg:grid-cols-[6fr_7fr]">
+        <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
             <h2 class="text-2xl pb-4">Security Information:</h2>
         </div>
-        <div class="bg-white rounded-2xl px-8 py-6">
+        <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
             <h2 class="text-2xl pb-4">Caregiver Connect:</h2>
         </div>
     </div>

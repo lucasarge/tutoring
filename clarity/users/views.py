@@ -13,12 +13,15 @@ class Login(LoginView):
 class Register(FormView):
     template_name = "users/register.html"
     form_class = RegisterForm
-    success_url = "/"
+    success_url = "/users/connect/"
 
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
         return super().form_valid(form)
+
+def connect(request):
+    return render(request, "users/connect.html")
 
 @login_required    
 def profile(request):
