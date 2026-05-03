@@ -3,29 +3,29 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
-    <div class="grid gap-8 text-black text-xl grid-cols-[5fr_3fr] mb-8">
+    <div class="grid gap-8 text-black text-xl md:grid-cols-[5fr_3fr] mb-8">
         
         <form class="bg-white flex flex-col rounded-2xl px-8 py-6" action="/users/profile/" method="post">
             {% csrf_token %}
             <h2 class="text-2xl pb-4">Personal Information:</h2>
-            <div class="grid grid-cols-2 py-4">
+            <div class="grid sm:grid-cols-2 py-2 sm:py-4 items-center">
                 <h3 class="pb-4">First Name:</h3>
                 {{ user_form.first_name }}
             </div>
-            <div class="grid grid-cols-2 py-4 items-center">
+            <div class="grid sm:grid-cols-2 py-2 sm:py-4 items-center">
                 <h3>Last Name:</h3>
                 {{ user_form.last_name }}
             </div>
-            <div class="grid grid-cols-2 py-4 items-center">
+            <div class="grid sm:grid-cols-2 py-2 sm:py-4 items-center">
                 <h3>Email:</h3>
                 {{ user_form.email }}
             </div>
-            <div class="grid grid-cols-2 py-4 items-center">
+            <div class="grid sm:grid-cols-2 py-2 sm:py-4 items-center">
                 <h3>Phone:</h3>
                 {{ user_form.phone }}
             </div>
             <div class="grid items-center mt-auto">
-                <button class="bg-third px-8 py-2 border-2 rounded-2xl text-white" type="submit" name="info_submit">Save</button>
+                <button class="cursor-pointer bg-third px-8 py-2 border-2 rounded-2xl text-white" type="submit" name="info_submit">Save</button>
             </div>
 
         </form>
@@ -35,9 +35,9 @@
             <h2 class="text-2xl pb-4">Profile Picture:</h2>
             <img src="{{ request.user.profile.profile_image.url }}" alt="" class="h-48 aspect-square rounded-full object-cover border-black border-2 mx-auto">
             
-            <div class="grid grid-cols-2 py-4 items-center">
+            <div class="flex py-4 items-center">
                 <h2 class="text-xl">Upload Image:</h2>
-                <div class="py-4">
+                <div class="py-4 ml-auto">
                     <label class="cursor-pointer inline-block">
                         Choose Image
                         {{ image_form.profile_image }}
@@ -46,13 +46,13 @@
             </div>
 
             <div class="grid items-center mt-auto">
-                <button class="bg-third px-8 py-2 border-2 rounded-2xl text-white" type="submit" name="image_submit">Save</button>
+                <button class="cursor-pointer bg-third px-8 py-2 border-2 rounded-2xl text-white" type="submit" name="image_submit">Save</button>
             </div>
         </form>
 
     
     </div>
-    <div class="grid gap-8 text-black grid-cols-[6fr_7fr]">
+    <div class="grid gap-8 text-black md:grid-cols-[6fr_7fr]">
         <div class="bg-white rounded-2xl px-8 py-6">
             <h2 class="text-2xl pb-4">Security Information:</h2>
         </div>

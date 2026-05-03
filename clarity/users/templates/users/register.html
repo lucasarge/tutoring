@@ -8,7 +8,7 @@
         <h1 class="text-center text-4xl">Register</h1>
         <form action="/users/register/" method="post">
             {% csrf_token %}
-            <div class="grid grid-cols-2 py-4 gap-y-2">
+            <div class="grid sm:grid-cols-2 py-2 sm:py-4 gap-y-2">
 
                 {% for field in form %}
                 <div class="flex gap-1">
@@ -20,7 +20,7 @@
                     {% if field.help_text %}
                 
                     <div class="relative group flex">
-                        <span>&#128712;</span>
+                        <span class="cursor-pointer">&#128712;</span>
                         <div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2">
                             <div class="bg-gray-200 text-white text-xs rounded-lg px-3 py-2 shadow-lg w-64 text-center">
                                 {{ field.help_text }}
@@ -37,7 +37,7 @@
             {% endfor %}
             </div>
             <div class="grid place-items-center">
-                <button class="bg-third px-8 py-2 border-2 rounded-2xl text-white" type="submit">Continue</button>
+                <button class="bg-third px-8 py-2 border-2 rounded-2xl text-white cursor-pointer" type="submit">Continue</button>
             </div>
         </form>
         <h6 class="text-xs text-center underline pt-2"><a href="/users/login/">I already have an account.</a></h6>

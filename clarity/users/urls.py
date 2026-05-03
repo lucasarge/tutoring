@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import Login, Register
+from django.contrib.auth.views import LogoutView
 from . import views
 
 app_name = 'users'
@@ -7,5 +8,6 @@ app_name = 'users'
 urlpatterns = [
     path("login/", Login.as_view(), name="login"),
     path("register/", Register.as_view(), name="register"),
-    path("profile/", views.profile, name="profile")
+    path("profile/", views.profile, name="profile"),
+    path("logout/", LogoutView.as_view(next_page="users:login"), name="logout")
 ]
