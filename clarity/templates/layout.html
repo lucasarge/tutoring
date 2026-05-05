@@ -35,7 +35,7 @@
                     <div id="profileMenu" class="hidden absolute top-full mt-2 left-1/2 translate-x-[-90%] z-50">
                         <div class="bg-gray-200 text-black text-md rounded-lg px-3 py-2 shadow-lg w-fit whitespace-nowrap text-right">
                             <h4 class="text-l"><a href="/users/profile/">Profile</a></h4>
-                            <h4 class="text-l"><a href="/users/connect/">Connect</a></h4>
+                            <h4 class="text-l"><a href="/services/connect/">Connect</a></h4>
                             <form action="{% url 'users:logout' %}" method="post">
                                 {% csrf_token %}
                                 <button class="text-l cursor-pointer" type="submit">Logout</button>

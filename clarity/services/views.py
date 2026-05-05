@@ -9,5 +9,10 @@ def connect(request):
     if request.method == "POST":
         form = RegisterServiceForm(request.POST, instance=request.user)
         if form.is_valid():
-            form.save()
+            service = form.save(commit=False)
+            service.caregiver = request.user
+            service.save()
             return redirect("/services/connect/")
+    else:
+        form = RegisterServiceForm(instance=request.user)
+    return render(request, "services/connect.html", {"form": form})

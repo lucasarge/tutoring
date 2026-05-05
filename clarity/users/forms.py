@@ -9,7 +9,8 @@ class RegisterForm(UserCreationForm):
         widgets = {
             'first_name': forms.TextInput(attrs={'placeholder': 'John'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'Doe'}),
-            'password1': forms.PasswordInput(attrs={'placeholder': 'Password'}),
+            'email': forms.TextInput(attrs={'placeholder': 'johndoe@example.com','autocomplete': 'email'}),
+            'phone': forms.TextInput(attrs={'placeholder': '02012345678','autocomplete': 'tel'}),
         }
 
 class UpdateUserForm(forms.ModelForm):

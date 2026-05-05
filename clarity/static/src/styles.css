@@ -8,12 +8,16 @@
 }
 
 @layer components {
-    input, select, label {
+    input, select, label, textarea {
         background-color: oklab(79.161% -0.09231 0.0836 / 0.137);
         border-color: oklab(79.161% -0.09231 0.0836); 
         border-style: solid;
         border-width: 2px;
         padding: 4px 8px;
         border-radius: 8px;
+    }
+
+    ::placeholder {
+        color: rgb(175, 175, 175);
     }
 }
