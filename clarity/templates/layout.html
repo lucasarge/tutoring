@@ -19,7 +19,14 @@
                     </div>
                 </a>
                 {% if request.user.user_type == "caregiver" %}
-                <h2>Caregiver</h2>
+                    {% if request.user.registerservice_set.count == 0 %}
+                    {% else %}
+                        <div class=”bl-white br-white bl-1”>
+                        {% for service in request.user.registerservice_set.all %}
+                            <h4><a href="/">{{ service.student_name }}’s Tutoring</a></h4>
+                        {% endfor %}
+                        </div>
+                    {% endif %}
                 {% endif %}
                 {% if request.user.user_type == "student" %}
                 <h2><a href="">Tutoring</a></h2>
