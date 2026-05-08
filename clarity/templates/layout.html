@@ -18,18 +18,24 @@
                         <img class="h-10 block sm:hidden" src="{% static 'images/icon.png' %}" alt="">
                     </div>
                 </a>
-                {% if request.user.user_type == "caregiver" %}
-                    {% if request.user.registerservice_set.count == 0 %}
-                    {% else %}
-                        <div class=”bl-white br-white bl-1”>
-                        {% for service in request.user.registerservice_set.all %}
-                            <h4><a href="/">{{ service.student_name }}’s Tutoring</a></h4>
-                        {% endfor %}
-                        </div>
+                {% if request.user.registerservice_set.count != 0 %}
+                
+                    {% if request.user.user_type == "caregiver" %}
+                    <div class=”bl-white br-white bl-1”>
+                    {% for service in request.user.service_caregiver.all %}
+                        <h4><a href="/services/service/{{ service.pk }}">{{ service.student.first_name|capfirst }}’s Tutoring</a></h4>
+                    {% endfor %}
+                    </div>
                     {% endif %}
-                {% endif %}
-                {% if request.user.user_type == "student" %}
-                <h2><a href="">Tutoring</a></h2>
+                
+                    {% if request.user.user_type == "student" %}
+                    <div class=”bl-white br-white bl-1”>
+                    {% for service in request.user.service_student.all %}
+                        <h4><a href="/services/service/{{ service.pk }}">{{ request.user.first_name|capfirst }}'s Tutoring</a></h4>
+                    {% endfor %}
+                    </div>
+                    {% endif %}
+                
                 {% endif %}
                 <h2><a href="">About</a></h2>
                 <h2><a href="">Help</a></h2>
@@ -42,7 +48,6 @@
                     <div id="profileMenu" class="hidden absolute top-full mt-2 left-1/2 translate-x-[-90%] z-50">
                         <div class="bg-gray-200 text-black text-md rounded-lg px-3 py-2 shadow-lg w-fit whitespace-nowrap text-right">
                             <h4 class="text-l"><a href="/users/profile/">Profile</a></h4>
-                            <h4 class="text-l"><a href="/services/connect/">Connect</a></h4>
                             <form action="{% url 'users:logout' %}" method="post">
                                 {% csrf_token %}
                                 <button class="text-l cursor-pointer" type="submit">Logout</button>

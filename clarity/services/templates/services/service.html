@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+
+{% block title %}Service{% endblock %}
+
+{% block content %}
+    <h1>Service</h1>
+    <h2>Student: {{ service.student.email }}</h2>
+    <h2>Caregiver: {{ service.caregiver.email }}</h2>
+{% endblock %}

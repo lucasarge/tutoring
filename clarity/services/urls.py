@@ -4,6 +4,7 @@ from . import views
 app_name = 'users'
 
 urlpatterns = [
-    path("connect/", views.connect, name="connect"),
-    path("<slug:slug>", views.service, name="service")
+    path("invite/", views.invite, name="invite"),
+    path("join/", views.join, name="join"),
+    path("service/<int:pk>/", views.service, name="service")
 ]

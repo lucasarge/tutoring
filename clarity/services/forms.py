@@ -1,7 +1,8 @@
 from django import forms
-from .models import RegisterService
 
-class RegisterServiceForm(forms.ModelForm):
-    class Meta:
-        model = RegisterService
-        fields = ('caregiver_note','student_name')
+class InviteForm(forms.Form):
+
+    code = forms.CharField(
+        max_length=8,
+        label="Invite Code"
+    )
