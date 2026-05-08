@@ -4,7 +4,7 @@ from .models import Service, Invite, generate_code
 from .forms import InviteForm
 from django.utils import timezone
 from datetime import timedelta
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
 
 # Create your views here.
 
@@ -23,7 +23,7 @@ def invite(request):
         invite = Invite.objects.create(
             caregiver = request.user,
             code = generate_code(),
-            expires_at = timezone.now() + timedelta(minutes=30)
+            expires_at = timezone.now() + timedelta(minutes=10)
         )
 
         return render(request, "services/invite.html", {"invite":invite})
@@ -59,14 +59,28 @@ def join(request):
             )
 
             invite.used = True
+            invite.service = service
             invite.save()
 
-            return redirect("/users/profile", pk=service.pk)
+            return redirect(f"/services/service/{service.pk}", pk=service.pk)
     else:
         form = InviteForm()
         
     return render(request, "services/join.html", {"form":form})
             
+def invite_status(request, pk):
+    invite = Invite.objects.get(pk=pk)
+
+    if invite.caregiver != request.user:
+        return JsonResponse({}, status=403)
+    
+    expired = timezone.now() > invite.expires_at
+    return JsonResponse({
+        "used": invite.used,
+        "expired": expired,
+        "service_id": invite.service.id if invite.service else None
+    })
+
 @login_required
 def service(request, pk):
 

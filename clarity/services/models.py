@@ -13,6 +13,7 @@ class Invite(models.Model):
     used = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     expires_at = models.DateTimeField()
+    service = models.OneToOneField("Service", null=True, blank=True, on_delete=models.SET_NULL)
 
     def __str__(self):
         return f"{self.caregiver.first_name}"
