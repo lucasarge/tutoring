@@ -18,18 +18,21 @@
                         <img class="h-10 block sm:hidden" src="{% static 'images/icon.png' %}" alt="">
                     </div>
                 </a>
-                {% if request.user.registerservice_set.count != 0 %}
+                {% if request.user.service_caregiver.count != 0 %}
                 
                     {% if request.user.user_type == "caregiver" %}
-                    <div class=”bl-white br-white bl-1”>
+                    <div>
                     {% for service in request.user.service_caregiver.all %}
                         <h4><a href="/services/service/{{ service.pk }}">{{ service.student.first_name|capfirst }}’s Tutoring</a></h4>
                     {% endfor %}
                     </div>
                     {% endif %}
                 
+                {% endif %}
+                {% if request.user.service_student.count != 0 %}
+                
                     {% if request.user.user_type == "student" %}
-                    <div class=”bl-white br-white bl-1”>
+                    <div>
                     {% for service in request.user.service_student.all %}
                         <h4><a href="/services/service/{{ service.pk }}">{{ request.user.first_name|capfirst }}'s Tutoring</a></h4>
                     {% endfor %}

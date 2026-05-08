@@ -3,7 +3,14 @@
 {% block title %}Service{% endblock %}
 
 {% block content %}
-    <h1>Service</h1>
-    <h2>Student: {{ service.student.email }}</h2>
-    <h2>Caregiver: {{ service.caregiver.email }}</h2>
+    <div class="flex items-center justify-center min-h-[calc(100vh-104px)]">
+        <div class="grid gap-8 text-black lg:grid-cols-[6fr_7fr]">
+            <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                <h2 class="text-2xl pb-4">Student: {{ service.student.email }}</h2>
+            </div>
+            <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                <h2 class="text-2xl pb-4">Caregiver: {{ service.caregiver.email }}</h2>
+            </div>
+        </div>
+    </div>
 {% endblock %}
