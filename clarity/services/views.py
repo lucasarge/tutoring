@@ -93,5 +93,3 @@ def service(request, pk):
         raise HttpResponseForbidden()
 
     return render(request, "services/service.html", {"service":service})
-
-

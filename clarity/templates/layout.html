@@ -11,7 +11,7 @@
     <title>{% block title %}{% endblock %} - Clarity Tutoring</title>
 </head>
 <body class="bg-secondary text-white">
-    <nav class="sticky top-0 z-50 bg-primary drop-shadow-md drop-shadow-mauve-750">
+    <nav class="sticky top-0 z-30 bg-primary drop-shadow-md drop-shadow-mauve-750">
         <div class="flex justify-between items-center max-w-6xl mx-auto px-6 py-4">
             <div class="flex gap-6 items-center">
                 <a href="/">
@@ -69,6 +69,18 @@
             </div>
         </div>
     </nav>
+
+    {% if request.path|startswith:"/services/service/"%}
+    <div class="flex items-center justify-center bg-primary drop-shadow-md drop-shadow-mauve-750">
+        <div class="grid grid-cols-4 gap-18 text-sm w-max text-center py-2">
+            <a href="">Calendar</a>
+            <a href="">Booking</a>
+            <a href="">Pricing</a>
+            <a href="">Settings</a>
+        </div>
+    </div>
+    {% endif %}
+
     <div class="max-w-6xl mx-auto px-6 py-4">{% block content %}{% endblock %}</div>
 </body>
 </html>
