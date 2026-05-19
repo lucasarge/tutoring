@@ -62,7 +62,7 @@ def join(request):
             invite.service = service
             invite.save()
 
-            return redirect(f"/services/service/{service.pk}", pk=service.pk)
+            return redirect(f"/services/{service.pk}/dashboard", pk=service.pk)
     else:
         form = InviteForm()
         
@@ -82,7 +82,7 @@ def invite_status(request, pk):
     })
 
 @login_required
-def service(request, pk):
+def service(request, pk, page):
 
     service = Service.objects.get(pk=pk)
 
@@ -92,4 +92,4 @@ def service(request, pk):
     ]:
         raise HttpResponseForbidden()
 
-    return render(request, "services/service.html", {"service":service})
+    return render(request, f"services/{page}.html", {"service":service})
