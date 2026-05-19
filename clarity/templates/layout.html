@@ -70,20 +70,20 @@
             </div>
         </div>
     </nav>
-
+    
     {% if "/services/" in request.path and "/services/join" not in request.path and "/services/invites" not in request.path %}
-    <div class="flex items-center justify-center bg-secondary drop-shadow-md drop-shadow-mauve-750">
+    <div class="flex items-center justify-center bg-fourth drop-shadow-md drop-shadow-mauve-750">
         <div class="grid grid-cols-5 gap-18 text-sm w-max text-center py-2">
-            <a class="underline decoration-third underline-offset-2" href="/services/{{ service.pk }}/dashboard/">Dashboard</a>
-            <a class="underline decoration-third underline-offset-2" href="/services/{{ service.pk }}/calendar/">Calendar</a>
+            <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/dashboard/">Dashboard</a>
+            <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/calendar/">Calendar</a>
             {% if request.user.user_type == "caregiver" %}
-            <a class="underline decoration-third underline-offset-2" href="/services/{{ service.pk }}/booking/">Booking</a>
-            <a class="underline decoration-third underline-offset-2" href="/services/{{ service.pk }}/pricing/">Pricing</a>
+            <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/booking/">Booking</a>
+            <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/pricing/">Pricing</a>
             {% elif request.user.user_type == "student" %}
-            <a class="underline decoration-third underline-offset-2" href="/services/{{ service.pk }}/resources/">Resources</a>
-            <a class="underline decoration-third underline-offset-2" href="/services/{{ service.pk }}/meetings/">Meetings</a>
+            <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/resources/">Resources</a>
+            <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/meetings/">Meetings</a>
             {% endif %}            
-            <a class="underline decoration-third underline-offset-2" href="/services/{{ service.pk }}/settings/">Settings</a>
+            <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/settings/">Settings</a>
         </div>
     </div>
     {% endif %}
