@@ -46,3 +46,12 @@ class SubjectService(models.Model):
 
     def __str__(self):
         return self.service.student.first_name
+
+class Session(models.Model):
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    start = models.DateTimeField()
+    end = models.DateTimeField()
+    completed = models.BooleanField()
+
+    def __str__(self):
+        return f"{self.service.student.first_name}'s Tutoring Session"

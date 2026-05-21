@@ -4,12 +4,36 @@
 
 {% block content %}
     <div class="flex items-center justify-center min-h-[calc(100vh-140px)]">
-        <div class="grid gap-8 text-black lg:grid-cols-[6fr_7fr]">
-            <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
-                <h2 class="text-2xl pb-4">Student: {{ service.student.email }}</h2>
+        <div>
+
+            <div class="grid gap-8 text-black lg:grid-cols-[1fr] mb-8">
+                <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                    <h2 class="text-md text-center">Welcome to {{ service.student.first_name|capfirst }}'s Tutoring</h2>
+                </div>
             </div>
-            <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
-                <h2 class="text-2xl pb-4">Caregiver: {{ service.caregiver.email }}</h2>
+
+            <div class="grid gap-8 text-black lg:grid-cols-[2fr_6fr_7fr] mb-8">
+
+                <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                    <h2 class="text-2xl">Student: {{ service.student.email }}</h2>
+                </div>
+                <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                    <h2 class="text-2xl">Caregiver: {{ service.caregiver.email }}</h2>
+                </div>
+                <div class="bg-white rounded-2xl px-8 py-6 row-span-2 drop-shadow-md drop-shadow-mauve-900">
+                    <h2 class="text-2xl">Calendar:</h2>
+                    
+                </div>
+                <div class="bg-white rounded-2xl px-8 py-6 col-span-2 drop-shadow-md drop-shadow-mauve-900">
+                    <h2 class="text-2xl">Student: {{ service.student.email }}</h2>
+                </div>
+                
+            </div>
+
+            <div class="grid gap-8 text-black lg:grid-cols-[1fr]">
+                <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                    <h2 class="text-md text-center">Contact for Help at: sargentl@stu.otc.school.nz</h2>
+                </div>
             </div>
         </div>
     </div>

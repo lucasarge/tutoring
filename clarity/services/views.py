@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import login_required
-from .models import Service, Invite, generate_code
+from .models import Service, Invite, generate_code, Session
 from .forms import InviteForm
 from django.utils import timezone
 from datetime import timedelta
@@ -93,3 +93,15 @@ def service(request, pk, page):
         raise HttpResponseForbidden()
 
     return render(request, f"services/{page}.html", {"service":service})
+
+def all_sessions(request):
+    sessions = Session.objects.all()
+
+    session_list = []
+    for session in sessions:
+        session_list.append({
+            'title': f"{session.service.student.first_name}'s Tutoring Session",
+            'start': session.start.strftime("%Y-%m-%dT%H:%M:%S"),
+            'end': session.end.strftime("%Y-%m-%dT%H:%M:%S") if session.end else None,
+        })
+    return JsonResponse(session_list, safe=False)
