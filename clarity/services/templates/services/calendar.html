@@ -9,7 +9,11 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Calendar</h1>
-
-    <div id='calendar'></div>
+    <div class="flex items-center min-h-[calc(100vh-140px)] drop-shadow-md drop-shadow-mauve-900">
+        <div class="w-4xl mx-auto bg-white text-black p-4 rounded-3xl text-center">
+            <div class="calendar-wrapper">
+                <div id='calendar'></div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

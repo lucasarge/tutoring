@@ -21,4 +21,12 @@
     ::placeholder {
         color: rgb(175, 175, 175);
     }
+    
+    .fc .fc-daygrid-day.fc-day-today {
+        background-color: rgba(147, 206, 126, 0.3) !important;
+    }
+
+    .calendar-wrapper {
+        all: revert;
+    }
 }

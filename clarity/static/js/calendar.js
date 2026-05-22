@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     var calendar = new FullCalendar.Calendar(calendarEl, {
     initialView: 'dayGridMonth',
-    events: '/all_events/',
+    events: '/services/sessions/',
     headerToolbar: {
         left: 'prev,next today',
         center: 'title',

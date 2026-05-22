@@ -100,7 +100,7 @@ def all_sessions(request):
     session_list = []
     for session in sessions:
         session_list.append({
-            'title': f"{session.service.student.first_name}'s Tutoring Session",
+            'title': session.service.student.first_name.title(),
             'start': session.start.strftime("%Y-%m-%dT%H:%M:%S"),
             'end': session.end.strftime("%Y-%m-%dT%H:%M:%S") if session.end else None,
         })
