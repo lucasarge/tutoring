@@ -1,4 +1,5 @@
 from django import forms
+from . import models
 
 class InviteForm(forms.Form):
     code = forms.CharField(
@@ -18,3 +19,14 @@ class StudentForm(forms.Form):
     year = forms.ChoiceField(
         choices=year_choices
     )
+
+class SessionForm(forms.ModelForm):
+    class Meta:
+        model = models.Session
+        fields = ('note','start','duration')
+        widgets = {
+            'start': forms.DateTimeInput(
+                attrs={'type': 'datetime-local'},
+                format='%Y-%m-%dT%H:%M'
+            )
+        }

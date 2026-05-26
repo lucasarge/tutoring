@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import login_required
 from .models import Service, Invite, generate_code, Session
-from .forms import InviteForm
+from .forms import InviteForm, SessionForm
 from django.utils import timezone
 from datetime import timedelta
 from django.http import HttpResponseForbidden, JsonResponse
@@ -91,8 +91,19 @@ def service(request, pk, page):
         service.caregiver
     ]:
         raise HttpResponseForbidden()
+    
+    form = None
 
-    return render(request, f"services/{page}.html", {"service":service})
+    if page == "calendar":
+        if request.method == "POST":
+            form = SessionForm(request.POST)
+            if form.is_valid:
+                form.save()
+        else:
+            form = SessionForm()
+
+
+    return render(request, f"services/{page}.html", {"service":service, "form":form})
 
 def all_sessions(request):
     sessions = Session.objects.all()

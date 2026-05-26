@@ -26,7 +26,7 @@ class Service(models.Model):
     caregiver_note = models.TextField()
     student_note = models.TextField()
 
-    year = models.IntegerField()
+    year = models.IntegerField(null=True, blank=True)
     subject = models.ManyToManyField('Subject', through='SubjectService')
 
     created_at = models.DateTimeField(auto_now_add=True)
@@ -49,7 +49,18 @@ class SubjectService(models.Model):
 
 class Session(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    note = models.CharField(null=True, blank=True)
     start = models.DateTimeField()
+
+    DURATION_CHOICES = [
+        (30, '30 Minutes'),
+        (45, '45 Minutes'),
+        (60, '60 Minutes'),
+        (75, '75 Minutes'),
+        (90, '90 Minutes'),
+    ]
+
+    duration = models.IntegerField(blank=True, null=True, choices=DURATION_CHOICES)
     end = models.DateTimeField()
     completed = models.BooleanField()
 

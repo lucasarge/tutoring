@@ -8,7 +8,7 @@ const pollInterval = setInterval(async () => {
     const data = await response.json()
     if (data.used) {
         clearInterval(pollInterval)
-        window.location.href = `/services/service/${data.service_id}`
+        window.location.href = `/services/${data.service_id}/dashboard/`
     }
     if (data.expired) {
         clearInterval(pollInterval)
