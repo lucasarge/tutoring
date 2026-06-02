@@ -97,8 +97,14 @@ def service(request, pk, page):
     if page == "calendar":
         if request.method == "POST":
             form = SessionForm(request.POST)
-            if form.is_valid:
-                form.save()
+            if form.is_valid():
+                session = form.save(commit=False)
+                session.service_id = pk
+                session.end = session.start + timedelta(minutes=session.duration)
+                session.save()
+                return redirect(f"/services/{pk}/calendar/")
+            else:
+                print(form.errors)
         else:
             form = SessionForm()
 

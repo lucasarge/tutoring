@@ -26,7 +26,11 @@ class SessionForm(forms.ModelForm):
         fields = ('note','start','duration')
         widgets = {
             'start': forms.DateTimeInput(
-                attrs={'type': 'datetime-local'},
+                attrs={
+                    'type': 'datetime-local',
+                    'step': '900',
+                    'class': 'form-control',
+                },
                 format='%Y-%m-%dT%H:%M'
             )
         }

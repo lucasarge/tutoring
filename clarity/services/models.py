@@ -62,7 +62,7 @@ class Session(models.Model):
 
     duration = models.IntegerField(blank=True, null=True, choices=DURATION_CHOICES)
     end = models.DateTimeField()
-    completed = models.BooleanField()
+    completed = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.service.student.first_name}'s Tutoring Session"
