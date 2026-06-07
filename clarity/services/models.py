@@ -22,6 +22,7 @@ class Service(models.Model):
 
     caregiver = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="service_caregiver")
     student = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="service_student")
+    tutor = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="service_tutor")
     
     caregiver_note = models.TextField()
     student_note = models.TextField()

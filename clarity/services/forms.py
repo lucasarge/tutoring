@@ -20,17 +20,26 @@ class StudentForm(forms.Form):
         choices=year_choices
     )
 
+class DateTimeLocalInput(forms.DateTimeInput):
+    input_type = 'datetime-local'
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.attrs['step'] = '900'
+        self.attrs['placeholder'] = 'Click to select a time.'
+        self.format='%Y-%m-%dT%H:%M'
+
 class SessionForm(forms.ModelForm):
     class Meta:
         model = models.Session
         fields = ('note','start','duration')
         widgets = {
-            'start': forms.DateTimeInput(
-                attrs={
-                    'type': 'datetime-local',
-                    'step': '900',
-                    'class': 'form-control',
-                },
-                format='%Y-%m-%dT%H:%M'
-            )
+            'start': DateTimeLocalInput(attrs={'class': 'flatpickr-15min'}),
+            # 'start': forms.DateTimeInput(
+            #     attrs={
+            #         'type': 'datetime-local',
+            #         'class': '',
+            #     },
+            #     format='%Y-%m-%dT%H:%M'
+            # )
         }

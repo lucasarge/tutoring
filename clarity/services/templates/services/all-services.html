@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}Services{% endblock %}
+
+{% block content %}
+    <div class="grid gap-8 lg:grid-cols-4">
+        {% for service in services %}
+        <a href="{{ service.pk }}/dashboard/" class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900 text-black">
+            <div class="grid gap-2">
+                <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
+                    <img src="{{ service.student.profile.profile_image.url }}" alt="" class="h-10 aspect-square rounded-full object-cover mx-auto border-black border">
+                    <h3>{{ service.student.first_name }}</h3>
+                </div>
+                <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
+                    <img src="{{ service.caregiver.profile.profile_image.url }}" alt="" class="h-10 aspect-square rounded-full object-cover mx-auto border-black border">
+                    <h3 class="">{{ service.caregiver.first_name }}</h3>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -111,6 +111,13 @@ def service(request, pk, page):
 
     return render(request, f"services/{page}.html", {"service":service, "form":form})
 
+@login_required
+def all_services(request):
+    if request.user.user_type != "tutor":
+        raise HttpResponseForbidden()
+    services = Service.objects.all()
+    return render(request, "services/all-services.html", {"services": services})
+
 def all_sessions(request):
     sessions = Session.objects.all()
 

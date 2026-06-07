@@ -8,5 +8,6 @@ urlpatterns = [
     path("join/", views.join, name="join"),
     path("invite-status/<int:pk>/", views.invite_status, name="invite_status"),
     path("<int:pk>/<str:page>/", views.service, name="service"),
-    path("sessions/", views.all_sessions, name="all_sessions")
+    path("sessions/", views.all_sessions, name="all_sessions"),
+    path("", views.all_services, name="all_services")
 ]

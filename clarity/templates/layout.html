@@ -26,13 +26,11 @@
                     {% if request.user.user_type == "caregiver" %}
                     <div>
                     {% for service in request.user.service_caregiver.all %}
-                        <h4><a href="/services/{{ service.pk }}/dashboard/">{{ service.student.first_name|capfirst }}’s Tutoring</a></h4>
+                        <h4><a href="/services/{{ service.pk }}/dashboard/">{{ service.student.first_name|capfirst }}'s Tutoring</a></h4>
                     {% endfor %}
                     </div>
                     {% endif %}
-                
-                {% endif %}
-                {% if request.user.service_student.count != 0 %}
+                {% elif request.user.service_student.count != 0 %}
                 
                     {% if request.user.user_type == "student" %}
                     <div>
@@ -42,7 +40,9 @@
                     </div>
                     {% endif %}
                 
-                {% endif %}
+                {% elif request.user.user_type == "tutor" %}
+                    <h4><a href="/services/">Tutoring Services</a></h4>
+                {% endif%}
                 <h2><a href="/about/">About</a></h2>
                 <h2><a href="/help/">Help</a></h2>
             </div>
@@ -71,7 +71,7 @@
         </div>
     </nav>
     
-    {% if "/services/" in request.path and "/services/join" not in request.path and "/services/invites" not in request.path %}
+    {% if "/services/" in request.path and "/services/join" not in request.path and "/services/invites" not in request.path and request.user.user_type != "tutor"%}
     <div class="flex items-center justify-center bg-fourth drop-shadow-md drop-shadow-mauve-750">
         <div class="grid grid-cols-5 gap-18 text-sm w-max text-center py-2">
             <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/dashboard/">Dashboard</a>

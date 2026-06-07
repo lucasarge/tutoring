@@ -49,6 +49,7 @@ class CustomUser(AbstractUser):
     USER_TYPE_CHOICES = [
         ('student', 'Student'),
         ('caregiver', 'Caregiver'),
+        ('tutor', 'Tutor')
     ]
     user_type = models.CharField(choices=USER_TYPE_CHOICES)
 
