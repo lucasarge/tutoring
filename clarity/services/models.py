@@ -20,14 +20,22 @@ class Invite(models.Model):
 
 class Service(models.Model):
 
+    YEAR_CHOICES = [
+        (7, "7"),
+        (8, "8"),
+        (9, "9"),
+        (10, "10"),
+        (11, "11")
+    ]
+
     caregiver = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="service_caregiver")
     student = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="service_student")
-    tutor = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="service_tutor")
+    tutor = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="service_tutor", limit_choices_to={'user_type': 'tutor'}, blank=True, null=True)
     
-    caregiver_note = models.TextField()
-    student_note = models.TextField()
+    caregiver_note = models.TextField(blank=True)
+    student_note = models.TextField(blank=True)
 
-    year = models.IntegerField(null=True, blank=True)
+    year = models.IntegerField(choices=YEAR_CHOICES)
     subject = models.ManyToManyField('Subject', through='SubjectService')
 
     created_at = models.DateTimeField(auto_now_add=True)

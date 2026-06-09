@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.views import login_required
-from .models import Service, Invite, generate_code, Session
-from .forms import InviteForm, SessionForm
+from .models import Service, Invite, generate_code, Session, SubjectService
+from .forms import InviteForm, SessionForm, CaregiverForm, StudentForm
 from django.utils import timezone
 from datetime import timedelta
 from django.http import HttpResponseForbidden, JsonResponse
@@ -62,7 +62,7 @@ def join(request):
             invite.service = service
             invite.save()
 
-            return redirect(f"/services/{service.pk}/dashboard", pk=service.pk)
+            return redirect(f"/services/{service.pk}/survey", pk=service.pk)
     else:
         form = InviteForm()
         
@@ -107,7 +107,30 @@ def service(request, pk, page):
                 print(form.errors)
         else:
             form = SessionForm()
+    
+    if page == "survey":
+        if request.method == "POST":
+            if request.user.user_type == "caregiver":
+                form = CaregiverForm(request.POST, instance=service)
+            elif request.user.user_type == "student":
+                form = StudentForm(request.POST, instance=service)
+            if form and form.is_valid():
+                saved_service = form.save()
 
+                if 'subject' in form.cleaned_data:
+                    selected_subjects = form.cleaned_data['subject']
+
+                    SubjectService.objects.filter(service=saved_service).exclude(subject__in=selected_subjects).delete()
+                    
+                    for subject in selected_subjects:
+                        SubjectService.objects.get_or_create(service=saved_service, subject=subject)
+                                
+                return redirect(f"/services/{pk}/dashboard/")
+        else:
+            if request.user.user_type == "caregiver":
+                form = CaregiverForm(instance=service)
+            elif request.user.user_type == "student":
+                form = StudentForm(instance=service)
 
     return render(request, f"services/{page}.html", {"service":service, "form":form})
 

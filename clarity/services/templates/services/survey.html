@@ -7,10 +7,43 @@
     <div class="w-lg mx-auto bg-white text-black p-4 rounded-3xl text-center">
         <h1 class="text-4xl">Survey</h1>
         <p class="py-4">Type in the join code from your caregiver.</p>
-        <form action="/services/survey/" method="post">
+        <form action="/services/{{ service.pk }}/survey/" method="post">
             {% csrf_token %}
-            {{ form.code }}
-            <button class="bg-third px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer" type="submit">Continue</button>
+            {% if request.user.user_type == "student" %}
+
+            {% for field in form %}
+            <div>
+                <div>
+                    {{ field.label }}
+                </div>
+                {{ field }}
+            </div>
+            {% endfor %}
+
+            {% elif request.user.user_type == "caregiver" %}
+
+            <div class="py-2">
+                <div class="grid grid-cols-2">
+                    <h4 class="text-left">Year:</h4>
+                    {{ form.year }}
+                </div>
+                    
+                <h4>Subjects:</h4>
+                
+                <div class="grid grid-cols-3">
+                    {{ form.subject }}
+                </div>
+
+                <h4>Note to Tutor:</h4>
+                
+                <div>
+                    {{ form.caregiver_note }}
+                </div>
+            </div>
+
+            {% endif %}
+
+            <button class="bg-third px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer" type="submit">Save</button>
         </form>
     </div>
 </div>

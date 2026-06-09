@@ -7,19 +7,27 @@ class InviteForm(forms.Form):
         label="Invite Code"
     )
 
-class StudentForm(forms.Form):
-    year_choices = [
-        ("7", "7"),
-        ("8", "8"),
-        ("9", "9"),
-        ("10", "10"),
-        ("11", "11")
-    ]
+class StudentForm(forms.ModelForm):
+    class Meta:
+        model = models.Service
+        fields = ('student_note',)
 
-    year = forms.ChoiceField(
-        choices=year_choices
+class CaregiverForm(forms.ModelForm):
+    subject = forms.ModelMultipleChoiceField(
+        queryset=models.Subject.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
     )
+    class Meta:
+        model = models.Service
+        fields = ('year', 'subject', 'caregiver_note')
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            self.initial['subject'] = self.instance.subject.all()
+
+# could remove class below and merge
 class DateTimeLocalInput(forms.DateTimeInput):
     input_type = 'datetime-local'
 
