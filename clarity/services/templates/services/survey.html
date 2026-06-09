@@ -6,36 +6,32 @@
 <div class="flex items-center min-h-[calc(100vh-140px)] drop-shadow-md drop-shadow-mauve-900">
     <div class="w-lg mx-auto bg-white text-black p-4 rounded-3xl text-center">
         <h1 class="text-4xl">Survey</h1>
-        <p class="py-4">Type in the join code from your caregiver.</p>
+        <p class="py-4">This is just a small survey to learn a bit about
+            {% if request.user.user_type == "student" %}
+            you.
+            {% else%}
+            {{ service.student.first_name|capfirst }}.
+            {% endif%}
+        </p>
         <form action="/services/{{ service.pk }}/survey/" method="post">
             {% csrf_token %}
             {% if request.user.user_type == "student" %}
 
-            {% for field in form %}
-            <div>
+            <h4>Private Note to Tutor:</h4>
                 <div>
-                    {{ field.label }}
+                    {{ form.student_note }}
                 </div>
-                {{ field }}
-            </div>
-            {% endfor %}
-
+                
             {% elif request.user.user_type == "caregiver" %}
 
-            <div class="py-2">
-                <div class="grid grid-cols-2">
-                    <h4 class="text-left">Year:</h4>
+            <div class="grid py-2 gap-4">
+                <h4>Year:</h4>
+                <div>
                     {{ form.year }}
                 </div>
-                    
                 <h4>Subjects:</h4>
-                
-                <div class="grid grid-cols-3">
-                    {{ form.subject }}
-                </div>
-
-                <h4>Note to Tutor:</h4>
-                
+                {{ form.subject }}
+                <h4>Private Note to Tutor:</h4>
                 <div>
                     {{ form.caregiver_note }}
                 </div>

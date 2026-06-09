@@ -5,6 +5,7 @@ from .forms import InviteForm, SessionForm, CaregiverForm, StudentForm
 from django.utils import timezone
 from datetime import timedelta
 from django.http import HttpResponseForbidden, JsonResponse
+from .decorators import survey_required
 
 # Create your views here.
 
@@ -82,6 +83,7 @@ def invite_status(request, pk):
     })
 
 @login_required
+@survey_required #ALLOW THE SURVEY PAGE AND NONE OTHER?
 def service(request, pk, page):
 
     service = Service.objects.get(pk=pk)
@@ -95,6 +97,7 @@ def service(request, pk, page):
     form = None
 
     if page == "calendar":
+        
         if request.method == "POST":
             form = SessionForm(request.POST)
             if form.is_valid():
