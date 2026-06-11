@@ -22,7 +22,7 @@
         color: rgb(175, 175, 175);
     }
     
-    .fc .fc-daygrid-day.fc-day-today {
+    .fc .fc-daygrid-day.fc-day-today, .fc .fc-timegrid-col.fc-day-today {
         background-color: rgba(147, 206, 126, 0.3) !important;
     }
 

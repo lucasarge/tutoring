@@ -83,7 +83,7 @@ def invite_status(request, pk):
     })
 
 @login_required
-@survey_required #ALLOW THE SURVEY PAGE AND NONE OTHER?
+@survey_required
 def service(request, pk, page):
 
     service = Service.objects.get(pk=pk)
