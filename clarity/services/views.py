@@ -88,9 +88,13 @@ def service(request, pk, page):
 
     service = Service.objects.get(pk=pk)
 
+    if page == "admin" and request.user != service.tutor:
+        raise HttpResponseForbidden()
+
     if request.user not in [
         service.student,
-        service.caregiver
+        service.caregiver,
+        service.tutor
     ]:
         raise HttpResponseForbidden()
     

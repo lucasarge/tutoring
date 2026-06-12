@@ -27,27 +27,16 @@ class CaregiverForm(forms.ModelForm):
         if self.instance and self.instance.pk:
             self.initial['subject'] = self.instance.subject.all()
 
-# could remove class below and merge
-class DateTimeLocalInput(forms.DateTimeInput):
-    input_type = 'datetime-local'
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.attrs['step'] = '900'
-        self.attrs['placeholder'] = 'Click to select a time.'
-        self.format='%Y-%m-%dT%H:%M'
-
 class SessionForm(forms.ModelForm):
     class Meta:
         model = models.Session
         fields = ('note','start','duration')
+        type = 'datetime-local'
         widgets = {
-            'start': DateTimeLocalInput(attrs={'class': 'flatpickr-15min'}),
-            # 'start': forms.DateTimeInput(
-            #     attrs={
-            #         'type': 'datetime-local',
-            #         'class': '',
-            #     },
-            #     format='%Y-%m-%dT%H:%M'
-            # )
+            'start': forms.DateTimeInput(attrs={
+                'class': 'flatpickr-15min',
+                'step': '900',
+                'placeholder': 'Select time and date.',
+                'format': '%Y-%m-%dT%H:%M'
+            })
         }

@@ -15,6 +15,13 @@
                     <img src="{{ service.caregiver.profile.profile_image.url }}" alt="" class="h-10 aspect-square rounded-full object-cover mx-auto border-black border">
                     <h3 class="">{{ service.caregiver.first_name }}</h3>
                 </div>
+                <h4>Survey: 
+                    {% if service.year %}
+                    ✓
+                    {% else%}
+                    ✗
+                    {% endif %}
+                </h4>
             </div>
         </a>
         {% endfor %}

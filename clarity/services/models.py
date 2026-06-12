@@ -69,7 +69,7 @@ class Session(models.Model):
         (90, '90 Minutes'),
     ]
 
-    duration = models.IntegerField(blank=True, null=True, choices=DURATION_CHOICES)
+    duration = models.IntegerField(choices=DURATION_CHOICES)
     end = models.DateTimeField()
     completed = models.BooleanField(default=False)
 

@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}Admin{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-[calc(100vh-140px)]">
+    <div>
+        <div class="grid gap-8 text-black lg:grid-cols-3 mb-8">
+
+            <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                <h1 class="text-2xl pb-2">Information:</h1>
+                <h2 class="text-lg">Student: {{ service.student.first_name }} {{ service.student.last_name }}</h2>
+                <h2 class="">Caregiver: {{ service.caregiver.first_name }} {{ service.caregiver.last_name }}</h2>
+            </div>
+            <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                
+            </div>
+            <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                
+            </div>
+            
+        </div>
+    </div>
+</div>
+{% endblock %}
