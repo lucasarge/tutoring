@@ -60,6 +60,7 @@ class Session(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     note = models.CharField(null=True, blank=True)
     start = models.DateTimeField()
+    link = models.CharField(null=True, blank=True)
 
     DURATION_CHOICES = [
         (30, '30 Minutes'),

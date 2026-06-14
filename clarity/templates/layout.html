@@ -74,7 +74,7 @@
     {% if "/services/" in request.path and "/services/join" not in request.path and "/services/invites" not in request.path and request.user.user_type != "tutor"%}
     <div class="flex items-center justify-center bg-fourth drop-shadow-md drop-shadow-mauve-750">
         {% if request.user.user_type == 'student' %}
-        <div class="grid grid-cols-5 gap-18 text-sm w-max text-center py-2">
+        <div class="grid grid-cols-4 gap-18 text-sm w-max text-center py-2">
         {% else %}
         <div class="grid grid-cols-3 gap-24 text-sm w-max text-center py-2">
         {% endif %}
@@ -82,7 +82,6 @@
             <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/calendar/">Calendar</a>
             {% if request.user.user_type == "student" %}
             <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/resources/">Resources</a>
-            <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/meetings/">Meetings</a>
             {% endif %}            
             <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/settings/">Settings</a>
         </div>

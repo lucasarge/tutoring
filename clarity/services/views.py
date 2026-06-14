@@ -138,8 +138,13 @@ def service(request, pk, page):
                 form = CaregiverForm(instance=service)
             elif request.user.user_type == "student":
                 form = StudentForm(instance=service)
+    
+    next_session = Session.objects.filter(
+        service_id=pk,
+        start__gt=timezone.now()
+    ).order_by('start').first()
 
-    return render(request, f"services/{page}.html", {"service":service, "form":form})
+    return render(request, f"services/{page}.html", {"service":service, "form":form, "session":next_session})
 
 @login_required
 def all_services(request):

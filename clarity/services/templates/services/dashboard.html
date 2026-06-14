@@ -30,8 +30,15 @@
                     <h2 class="text-2xl pb-4">Booked Tutoring Session:</h2>
                     <div id='calendar-min'></div>
                 </div>
-                <div class="bg-white rounded-2xl px-8 py-6 col-span-2 drop-shadow-md drop-shadow-mauve-900">
-                    <h2 class="text-2xl">Student: {{ service.student.email }}</h2>
+                <div class="w-full col-span-2 mx-auto bg-white text-black p-4 rounded-2xl drop-shadow-md drop-shadow-mauve-900">
+                    <h1 class="text-2xl">Next Meeting Information:</h1>
+                    <h3>Date: {{ session.start }}</h3>
+                    <h3>Time: {{ session.start }}</h3>
+                    <h3>Duration: {{ session.duration }}</h3>
+                    <h3>Tutor: {{ session.service.tutor.first_name }}</h3>
+                    {% if request.user.user_type == "tutor" %} 
+                        <input type="text">
+                    {% endif %}
                 </div>
                 
             </div>
