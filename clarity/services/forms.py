@@ -40,3 +40,8 @@ class SessionForm(forms.ModelForm):
                 'format': '%Y-%m-%dT%H:%M'
             })
         }
+
+class LinkForm(forms.ModelForm):
+    class Meta:
+        model = models.Session
+        fields = ['link']

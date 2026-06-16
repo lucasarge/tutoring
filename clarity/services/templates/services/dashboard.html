@@ -30,14 +30,37 @@
                     <h2 class="text-2xl pb-4">Booked Tutoring Session:</h2>
                     <div id='calendar-min'></div>
                 </div>
-                <div class="w-full col-span-2 mx-auto bg-white text-black p-4 rounded-2xl drop-shadow-md drop-shadow-mauve-900">
-                    <h1 class="text-2xl">Next Meeting Information:</h1>
-                    <h3>Date: {{ session.start }}</h3>
-                    <h3>Time: {{ session.start }}</h3>
+                <div class="col-span-2 bg-white text-black p-4 rounded-2xl drop-shadow-md drop-shadow-mauve-900">
+                    <h1 class="text-2xl pb-4">Next Meeting Information:</h1>
+                    {% if session %}
+                    <h3>Start Time: {{ session.start }}</h3>
                     <h3>Duration: {{ session.duration }}</h3>
                     <h3>Tutor: {{ session.service.tutor.first_name }}</h3>
-                    {% if request.user.user_type == "tutor" %} 
-                        <input type="text">
+                    <h3>Link: 
+                        {% if not session.link %}
+                        Will be uploaded 5 minutes prior start.
+                        {% else %}
+                        <a class="underline" href="{{ session.link }}">{{ session.link }}</a>
+                        {% endif %}
+                    </h3>
+                    <div class="pt-4">
+                        {% if request.user.user_type == "tutor" %}
+                        {% if session.link %}
+                        {% comment %} FINISH FORM LOGIC AND CSRF TOKEN {% endcomment %}
+                        <button class="bg-gray-300 px-8 py-1.5 rounded-2xl text-black cursor-pointer">Delete Link</button>  
+                        {% else %}
+                        <form action="/services/{{ service.pk }}/dashboard/" method="post">
+                            {% csrf_token %}
+                            <input type="text" name="link" placeholder="{{ session.link }}">
+                            <button class="bg-third px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer" type="submit">Submit</button>
+                        </form>
+                        {% endif %}
+                        {% else %}
+                        <button class="bg-gray-300 px-8 py-1.5 rounded-2xl text-black cursor-pointer">Cancel Session</button>    
+                        {% endif %}
+                    </div>
+                    {% else %}
+                    <h3>No sessions booked. Click <a class="underline" href="/services/{{ service.pk }}/calendar/">here</a> to book.</h3>
                     {% endif %}
                 </div>
                 

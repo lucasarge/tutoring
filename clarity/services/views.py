@@ -1,7 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import login_required
 from .models import Service, Invite, generate_code, Session, SubjectService
-from .forms import InviteForm, SessionForm, CaregiverForm, StudentForm
+from .forms import InviteForm, SessionForm, CaregiverForm, StudentForm, LinkForm
 from django.utils import timezone
 from datetime import timedelta
 from django.http import HttpResponseForbidden, JsonResponse
@@ -100,6 +100,29 @@ def service(request, pk, page):
     
     form = None
 
+    next_session = Session.objects.filter(
+        service_id=pk,
+        start__gt=timezone.now()
+    ).order_by('start').first()
+
+    if page == "dashboard":
+
+        if request.method == "POST":
+
+            if "delete_link" in request.POST and next_session:
+                next_session.link = ""
+                next_session.save()
+                return redirect(f"/services/{pk}/dashboard/")
+
+            form = LinkForm(request.POST, instance=next_session)
+            if form.is_valid():
+                form.save()
+                return redirect(f"/services/{pk}/dashboard")
+            else:
+                print(form.errors)
+        else:
+            form = LinkForm()
+
     if page == "calendar":
         
         if request.method == "POST":
@@ -138,11 +161,6 @@ def service(request, pk, page):
                 form = CaregiverForm(instance=service)
             elif request.user.user_type == "student":
                 form = StudentForm(instance=service)
-    
-    next_session = Session.objects.filter(
-        service_id=pk,
-        start__gt=timezone.now()
-    ).order_by('start').first()
 
     return render(request, f"services/{page}.html", {"service":service, "form":form, "session":next_session})
 
