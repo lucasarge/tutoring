@@ -22,7 +22,7 @@
         
         {% elif request.user.user_type == "caregiver" %}
 
-        <div class="grid grid-cols-[2fr_1fr] gap-8">
+        <div class="grid grid-cols-[2fr_1fr] gap-4">
             <div class="w-3xl mx-auto bg-white text-black p-4 rounded-3xl text-center">
                 <div class="calendar-wrapper">
                     <div>
@@ -31,7 +31,7 @@
                     
                 </div>
             </div>
-            <div class="grid grid-rows-[2fr_2fr] gap-8">
+            <div class="grid grid-rows-[2fr_2fr] gap-4">
                 <div class="bg-white text-black p-4 rounded-3xl">
                     <h1 class="text-4xl pb-4">Booking:</h1>
                     <form action="/services/{{ service.pk }}/calendar/" method="post">

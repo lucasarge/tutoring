@@ -6,6 +6,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.http import HttpResponseForbidden, JsonResponse
 from .decorators import survey_required
+from django.db.models import Q
 
 # Create your views here.
 
@@ -171,7 +172,11 @@ def all_services(request):
     return render(request, "services/all-services.html", {"services": services})
 
 def all_sessions(request):
-    sessions = Session.objects.all()
+    sessions = Session.objects.filter(
+        Q(service__student=request.user)| 
+        Q(service__caregiver=request.user)| 
+        Q(service__tutor=request.user)
+    ).distinct()
 
     session_list = []
     for session in sessions:
@@ -180,4 +185,19 @@ def all_sessions(request):
             'start': session.start.strftime("%Y-%m-%dT%H:%M:%S"),
             'end': session.end.strftime("%Y-%m-%dT%H:%M:%S") if session.end else None,
         })
+
+    priv_sessions = Session.objects.filter(
+        ~Q(service__student=request.user)| 
+        ~Q(service__caregiver=request.user)| 
+        ~Q(service__tutor=request.user)
+    ).distinct()
+
+    priv_session_list = []
+    for priv_session in priv_sessions:
+        priv_session_list.append({
+            'title': priv_session.service.student.first_name.title(),
+            'start': priv_session.start.strftime("%Y-%m-%dT%H:%M:%S"),
+            'end': priv_session.end.strftime("%Y-%m-%dT%H:%M:%S") if priv_session.end else None,
+        })
+
     return JsonResponse(session_list, safe=False)

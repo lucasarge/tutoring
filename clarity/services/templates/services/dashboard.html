@@ -10,26 +10,65 @@
 
 {% block content %}
     <div class="flex items-center justify-center min-h-[calc(100vh-140px)]">
-        <div>
+        <div class="w-full max-w-7xl">
 
-            <div class="grid gap-8 text-black lg:grid-cols-[1fr] mb-8">
+            <div class="grid gap-8 text-black lg:grid-cols-[1fr] mb-4">
                 <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
-                    <h2 class="text-md text-center">Welcome to {{ service.student.first_name|capfirst }}'s Tutoring</h2>
+                    <h2 class="text-3xl text-center">Welcome to {{ service.student.first_name|capfirst }}'s Tutoring</h2>
                 </div>
             </div>
 
-            <div class="grid gap-8 text-black lg:grid-cols-[2fr_6fr_7fr] mb-8">
+            <div class="grid gap-4 text-black lg:grid-cols-[2fr_6fr_7fr] mb-4">
 
                 <div class="bg-white col-span-2 rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                    <div class="grid grid-cols-[auto_1fr] pb-4">
+                        <h2 class="text-2xl">Tutoring Information:</h2>
+                        <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/settings/">→</a>
+                    </div>
+                    <div class="grid grid-cols-[auto_1fr] gap-8">
+                        <div>
+                            <h3 class="pb-2 text-lg underline underline-offset-3">Users in Service:</h3>
+                            <div class="grid grid-rows-3 gap-2">
+                                <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
+                                    <img src="{{ service.student.profile.profile_image.url }}" alt="" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
+                                    <h3>{{ service.student.first_name|capfirst }}</h3>
+                                </div>
+                                <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
+                                    <img src="{{ service.caregiver.profile.profile_image.url }}" alt="" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
+                                    <h3 class="">{{ service.caregiver.first_name|capfirst }}</h3>
+                                </div>
+                                <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
+                                    <img src="{{ service.tutor.profile.profile_image.url }}" alt="" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
+                                    <h3 class="">{{ service.tutor.first_name|capfirst }}</h3>
+                                </div>
+                            </div>
+                        </div>
+                        {% if request.user.user_type == "tutor" %}
+                        <div>
+                            <h3 class="pb-2 text-lg underline underline-offset-3">Private Notes:</h3>
+                            <p>Caregiver: {{ service.caregiver_note }}</p>
+                            <p>Student: {{ service.student_note }}</p>
+                        </div>
+                        {% else %}
+                        <div>
+                            <h3 class="pb-2 text-lg underline underline-offset-3">Service Information:</h3>
+                            <p>This was blah bal as ighaisodhgi aihdg a sidgh ahig hahdg i ghsdai ahgdsioa hgoh agdh gasudh gah sdhgi hsai ghidahg iahsidg haigh iadhi ghaid hgai hdi hgaihs dgihai gdh i hi ghaisd hida hgi hasi ihga.</p>
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
+
                 <div class="bg-white rounded-2xl px-8 py-6 row-span-2 drop-shadow-md drop-shadow-mauve-900">
-                    <h2 class="text-2xl pb-4">Booked Tutoring Session:</h2>
+                    <div class="grid grid-cols-[auto_1fr] pb-4">
+                        <h2 class="text-2xl">Booked Tutoring Session:</h2>
+                        <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/calendar/">→</a>
+                    </div>
                     <div id='calendar-min'></div>
                 </div>
                 <div id="meeting-info" data-pk="{{ service.pk }}" class="col-span-2 bg-white text-black p-4 rounded-2xl drop-shadow-md drop-shadow-mauve-900">
-                    <div class="grid grid-cols-2 items-center">
+                    <div class="grid grid-cols-[auto_1fr]">
                         <h1 class="text-2xl pb-4">Next Meeting Information:</h1>
-                        <div class="grid text-right px-2">
+                        <div class="text-right px-2 text-sm">
                             <h5>Last Refreshed:</h5>
                             <h5 id="refreshed-time"></h5>
                         </div>
@@ -68,12 +107,6 @@
                     {% endif %}
                 </div>
                 
-            </div>
-
-            <div class="grid gap-8 text-black lg:grid-cols-[1fr]">
-                <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
-                    <h2 class="text-md text-center">Contact for Help at: sargentl@stu.otc.school.nz</h2>
-                </div>
             </div>
         </div>
     </div>
