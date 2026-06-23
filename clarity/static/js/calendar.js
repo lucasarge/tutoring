@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     
     var calendarEl = document.getElementById('calendar');
-    var calendarMinEl = document.getElementById('calendar-min');
     
     if (calendarEl) {
         var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -26,16 +25,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         });
         calendar.render();
-    }
-    
-    if (calendarMinEl) {
-        var calendarMin = new FullCalendar.Calendar(calendarMinEl, {
-        initialView: 'listMonth',
-        events: '/services/sessions/',
-        allDaySlot: false,
-        headerToolbar: false
-        });
-        calendarMin.render();
     }
 
     flatpickr('.flatpickr-datetime', {

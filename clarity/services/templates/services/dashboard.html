@@ -5,7 +5,7 @@
 {% block script %}
 {% load static %}
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.20/index.global.min.js'></script>
-    <script src="{% static 'js/calendar.js' %}"></script>
+    <script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock %}
 
 {% block content %}
@@ -20,18 +20,20 @@
 
             <div class="grid gap-8 text-black lg:grid-cols-[2fr_6fr_7fr] mb-8">
 
-                <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
-                    <h2 class="text-2xl">Student: {{ service.student.email }}</h2>
-                </div>
-                <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
-                    <h2 class="text-2xl">Caregiver: {{ service.caregiver.email }}</h2>
+                <div class="bg-white col-span-2 rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
                 </div>
                 <div class="bg-white rounded-2xl px-8 py-6 row-span-2 drop-shadow-md drop-shadow-mauve-900">
                     <h2 class="text-2xl pb-4">Booked Tutoring Session:</h2>
                     <div id='calendar-min'></div>
                 </div>
-                <div class="col-span-2 bg-white text-black p-4 rounded-2xl drop-shadow-md drop-shadow-mauve-900">
-                    <h1 class="text-2xl pb-4">Next Meeting Information:</h1>
+                <div id="meeting-info" data-pk="{{ service.pk }}" class="col-span-2 bg-white text-black p-4 rounded-2xl drop-shadow-md drop-shadow-mauve-900">
+                    <div class="grid grid-cols-2 items-center">
+                        <h1 class="text-2xl pb-4">Next Meeting Information:</h1>
+                        <div class="grid text-right px-2">
+                            <h5>Last Refreshed:</h5>
+                            <h5 id="refreshed-time"></h5>
+                        </div>
+                    </div>
                     {% if session %}
                     <h3>Start Time: {{ session.start }}</h3>
                     <h3>Duration: {{ session.duration }}</h3>
@@ -46,8 +48,10 @@
                     <div class="pt-4">
                         {% if request.user.user_type == "tutor" %}
                         {% if session.link %}
-                        {% comment %} FINISH FORM LOGIC AND CSRF TOKEN {% endcomment %}
-                        <button class="bg-gray-300 px-8 py-1.5 rounded-2xl text-black cursor-pointer">Delete Link</button>  
+                        <form action="" name="delete-link" method="post">
+                            {% csrf_token %}
+                            <button class="bg-gray-300 px-8 py-1.5 rounded-2xl text-black cursor-pointer">Delete Link</button>
+                        </form>
                         {% else %}
                         <form action="/services/{{ service.pk }}/dashboard/" method="post">
                             {% csrf_token %}
@@ -73,4 +77,12 @@
             </div>
         </div>
     </div>
+
+    <script>
+        window.onload = function() {
+            const now = new Date(); 
+            const time = now.toLocaleTimeString();
+            document.getElementById('refreshed-time').textContent = time;
+        };
+    </script>
 {% endblock %}

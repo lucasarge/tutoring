@@ -108,8 +108,7 @@ def service(request, pk, page):
     if page == "dashboard":
 
         if request.method == "POST":
-
-            if "delete_link" in request.POST and next_session:
+            if "delete-link" in request.POST and next_session:
                 next_session.link = ""
                 next_session.save()
                 return redirect(f"/services/{pk}/dashboard/")
