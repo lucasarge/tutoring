@@ -1,7 +1,38 @@
 {% extends "layout.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}About{% endblock %}
 
 {% block content %}
-    <h1>Hello World!</h1>
+    <div class="flex items-center justify-center min-h-[calc(100vh-140px)]">
+        <div class="grid grid-cols-[1fr_auto] gap-8">
+            <div class="w-2xl mx-auto bg-white text-black p-4 rounded-3xl">
+                <h1 class="text-2xl pb-4">About Me:</h1>
+                <div class="grid grid-cols-[5fr_3fr] gap-8">
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum </p>
+                    <div class="h-64 w-96 bg-third"></div>
+                </div>
+                <h2 class="text-xl py-4">Subjects:</h2>
+                <div class="flex gap-4 overflow-auto">
+                    <div class="shrink-0 h-44 w-64 bg-third"></div>
+                    <div class="shrink-0 h-44 w-64 bg-third"></div>
+                    <div class="shrink-0 h-44 w-64 bg-third"></div>
+                    <div class="shrink-0 h-44 w-64 bg-third"></div>
+                </div>
+            </div>
+            <div class="w-sm mx-auto bg-white text-black p-4 rounded-3xl">
+                <h1 class="text-2xl pb-4">Reviews:</h1>
+                <p class="pb-4">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum Lorem Ipsum is simply dummy text of the printing and</p>
+                <div class="flex gap-4 overflow-auto">
+                    <div class="shrink-0 h-48 w-40 bg-third"></div>
+                    <div class="shrink-0 h-48 w-40 bg-third"></div>
+                    <div class="shrink-0 h-48 w-40 bg-third"></div>
+                    <div class="shrink-0 h-48 w-40 bg-third"></div>
+                </div>
+                <h2 class="text-xl py-4">Create Review:</h2>
+                <input type="text" placeholder="O   O   O   O   O">
+                <h3>Comment:</h3>
+                <textarea class="w-xs" type="text"></textarea>
+            </div>
+        </div>
+    </div>
 {% endblock %}
