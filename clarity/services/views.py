@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import login_required
-from .models import Service, Invite, generate_code, Session, SubjectService
+from .models import Service, Invite, generate_code, Session, SubjectService, ServiceDocument
 from .forms import InviteForm, SessionForm, CaregiverForm, StudentForm, LinkForm
 from django.utils import timezone
 from datetime import timedelta
@@ -138,6 +138,11 @@ def service(request, pk, page):
         else:
             form = SessionForm()
     
+    documents = None
+
+    if page == "resources":
+        documents = ServiceDocument.objects.filter(service=service)
+
     if page == "survey":
         if request.method == "POST":
             if request.user.user_type == "caregiver":
@@ -162,7 +167,7 @@ def service(request, pk, page):
             elif request.user.user_type == "student":
                 form = StudentForm(instance=service)
 
-    return render(request, f"services/{page}.html", {"service":service, "form":form, "session":next_session})
+    return render(request, f"services/{page}.html", {"service":service, "form":form, "session":next_session, "documents":documents})
 
 @login_required
 def all_services(request):

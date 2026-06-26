@@ -76,3 +76,18 @@ class Session(models.Model):
 
     def __str__(self):
         return f"{self.service.student.first_name}'s Tutoring Session"
+    
+class Document(models.Model):
+    title = models.CharField()
+    file = models.FileField(upload_to='documents')
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+    
+class ServiceDocument(models.Model):
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    document = models.ForeignKey(Document, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.document.title} for {self.service.student.first_name}"
