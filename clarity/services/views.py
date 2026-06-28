@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import login_required
-from .models import Service, Invite, generate_code, Session, SubjectService, ServiceDocument
+from .models import Service, Invite, generate_code, Session, SubjectService, ServiceDocument, Document
 from .forms import InviteForm, SessionForm, CaregiverForm, StudentForm, LinkForm
 from django.utils import timezone
 from datetime import timedelta
-from django.http import HttpResponseForbidden, JsonResponse
+from django.http import HttpResponseForbidden, JsonResponse, FileResponse, Http404
 from .decorators import survey_required
 from django.db.models import Q
 
@@ -206,3 +206,14 @@ def all_sessions(request):
         })
 
     return JsonResponse(session_list, safe=False)
+
+def view_pdf(request, document_id):
+    document = get_object_or_404(Document, id=document_id)
+
+    try:
+        pdf_file = open(document.file.path, 'rb')
+        response = FileResponse(pdf_file, content_type='application/pdf')
+        response['Content-Disposition'] = f'inline; filename="{document.title}.pdf"'
+        return response
+    except FileNotFoundError:
+        raise Http404("PDF File not found.")

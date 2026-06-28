@@ -4,10 +4,13 @@
 
 {% block content %}
     <div class="flex items-center min-h-[calc(100vh-140px)] drop-shadow-md drop-shadow-mauve-900">
-        <div class="w-lg mx-auto bg-white text-black p-4 rounded-3xl">
-            <h1 class="text-4xl">Resources:</h1>
+        <div class="w-xl mx-auto bg-white text-black p-4 rounded-3xl">
+            <h1 class="text-4xl pb-4">Resources:</h1>
             {% for service_document in request.user.service_student.first.servicedocument_set.all %}
-                <a href="{{ document.document.url }}" target="_blank">{{ service_document.document.title }}</a>
+                <div class="grid grid-cols-2 odd:bg-gray-200 p-2 border [&~&]:border-t-0">
+                    <a href="/services/pdf/{{ service_document.document.id }}/" class="underline" target="_blank">{{ service_document.document.title }}</a>
+                    <p class="text-right">{{ service_document.document.created }}</p>
+                </div>
             {% empty %}
                 <p>No resources uploaded yet.</p>
             {% endfor %}
