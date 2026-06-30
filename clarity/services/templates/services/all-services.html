@@ -3,27 +3,51 @@
 {% block title %}Services{% endblock %}
 
 {% block content %}
-    <div class="grid gap-8 lg:grid-cols-4">
-        {% for service in services %}
-        <a href="{{ service.pk }}/dashboard/" class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900 text-black">
-            <div class="grid gap-2">
-                <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
-                    <img src="{{ service.student.profile.profile_image.url }}" alt="" class="h-10 aspect-square rounded-full object-cover mx-auto border-black border">
-                    <h3>{{ service.student.first_name }}</h3>
-                </div>
-                <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
-                    <img src="{{ service.caregiver.profile.profile_image.url }}" alt="" class="h-10 aspect-square rounded-full object-cover mx-auto border-black border">
-                    <h3 class="">{{ service.caregiver.first_name }}</h3>
-                </div>
-                <h4>Survey: 
-                    {% if service.year %}
-                    ✓
-                    {% else%}
-                    ✗
-                    {% endif %}
-                </h4>
+    <div class="flex items-center justify-center min-h-[calc(100vh-140px)]">
+        <div class="bg-white text-black rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+            <h1 class="pb-4 text-2xl">Services: </h1>
+            <div class="grid gap-8 lg:grid-cols-4">
+                {% for service in services %}
+                <a href="{{ service.pk }}/dashboard/" class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900 text-black">
+                    <div class="grid gap-2">
+                        <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
+                            <img src="{{ service.student.profile.profile_image.url }}" alt="" class="h-10 aspect-square rounded-full object-cover mx-auto border-black border">
+                            <h3>{{ service.student.first_name }}</h3>
+                        </div>
+                        <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
+                            <img src="{{ service.caregiver.profile.profile_image.url }}" alt="" class="h-10 aspect-square rounded-full object-cover mx-auto border-black border">
+                            <h3 class="">{{ service.caregiver.first_name }}</h3>
+                        </div>
+                        <h4>Survey: 
+                            {% if service.year %}
+                            ✓
+                            {% else%}
+                            ✗
+                            {% endif %}
+                        </h4>
+                    </div>
+                </a>
+                {% endfor %}
             </div>
-        </a>
-        {% endfor %}
+            <h1 class="py-4 text-2xl">Resources:</h1>
+            <div class="grid lg:grid-cols-4 gap-8">
+                {% for resource in resources %}
+                <a href="/services/pdf/{{ resource.id }}" target="_blank" class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900 text-black">
+                    <h3>{{ resource.title }}</h3>
+                </a>
+                {% endfor %}
+            </div>
+            <h1 class="py-4 text-2xl">Upload Resources:</h1>
+            <form action="/services/" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="grid gap-2 grid-cols-[auto_1fr]">
+                    {% for field in form %}
+                    <h3>{{ field.label }}:</h3>
+                    <h3>{{ field }}</h3>
+                    {% endfor %}
+                </div>
+                <button class="bg-third mt-4 px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer" type="submit">Upload</button>
+            </form>
+        </div>
     </div>
 {% endblock %}

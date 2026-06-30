@@ -30,10 +30,6 @@
         all: revert;
     }
 
-    .fc-day-view-active {
-        /* max-width: 600px !important; fix later? */
-    }
-
     #id_subject {
         display: grid;
         grid-template-columns: repeat(3, 1fr);

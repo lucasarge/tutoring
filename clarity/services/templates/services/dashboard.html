@@ -65,7 +65,7 @@
                     </div>
                     <div id='calendar-min'></div>
                 </div>
-                <div id="meeting-info" data-pk="{{ service.pk }}" class="col-span-2 bg-white text-black p-4 rounded-2xl drop-shadow-md drop-shadow-mauve-900">
+                <div id="meeting-info" data-pk="{{ service.pk }}" class="col-span-2 bg-white text-black px-8 py-6 rounded-2xl drop-shadow-md drop-shadow-mauve-900">
                     <div class="grid grid-cols-[auto_1fr]">
                         <h1 class="text-2xl pb-4">Next Meeting Information:</h1>
                         <div class="text-right px-2 text-sm">
@@ -106,7 +106,28 @@
                     <h3>No sessions booked. Click <a class="underline" href="/services/{{ service.pk }}/calendar/">here</a> to book.</h3>
                     {% endif %}
                 </div>
-                
+                {% if request.user.user_type == "tutor" %}
+                <div class="bg-white rounded-2xl col-span-2 px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                    <div class="grid grid-cols-[auto_1fr] pb-4">
+                        <h2 class="text-2xl pb-4">Resources:</h2>
+                        <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/resources/">→</a>
+                        <h3>Upload the Resources here:</h3>
+                    </div>
+                </div>
+                {% elif request.user.user_type == "student" %}
+                <div class="bg-white rounded-2xl col-span-2 px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                    <div class="grid grid-cols-[auto_1fr] pb-4">
+                        <h2 class="text-2xl">Resources:</h2>
+                        <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/resources/">→</a>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                    <div class="grid grid-cols-[auto_1fr] pb-4">
+                        <h2 class="text-2xl">Help:</h2>
+                        <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/settings/">→</a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

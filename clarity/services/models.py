@@ -17,6 +17,15 @@ class Invite(models.Model):
 
     def __str__(self):
         return f"{self.caregiver.first_name}"
+    
+    
+class Document(models.Model):
+    title = models.CharField()
+    file = models.FileField(upload_to='documents')
+    created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
 
 class Service(models.Model):
 
@@ -36,7 +45,9 @@ class Service(models.Model):
     student_note = models.TextField(blank=True)
 
     year = models.IntegerField(choices=YEAR_CHOICES)
-    subject = models.ManyToManyField('Subject', through='SubjectService')
+    subjects = models.ManyToManyField('Subject', through='SubjectService')
+    
+    documents = models.ManyToManyField(Document, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     
@@ -76,14 +87,6 @@ class Session(models.Model):
 
     def __str__(self):
         return f"{self.service.student.first_name}'s Tutoring Session"
-    
-class Document(models.Model):
-    title = models.CharField()
-    file = models.FileField(upload_to='documents')
-    created = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.title
     
 class ServiceDocument(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)

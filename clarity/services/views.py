@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import login_required
 from .models import Service, Invite, generate_code, Session, SubjectService, ServiceDocument, Document
-from .forms import InviteForm, SessionForm, CaregiverForm, StudentForm, LinkForm
+from .forms import InviteForm, SessionForm, CaregiverForm, StudentForm, LinkForm, ResourceForm
 from django.utils import timezone
 from datetime import timedelta
 from django.http import HttpResponseForbidden, JsonResponse, FileResponse, Http404
@@ -120,6 +120,7 @@ def service(request, pk, page):
                 return redirect(f"/services/{pk}/dashboard")
             else:
                 print(form.errors)
+            
         else:
             form = LinkForm()
 
@@ -173,8 +174,16 @@ def service(request, pk, page):
 def all_services(request):
     if request.user.user_type != "tutor":
         raise HttpResponseForbidden()
+    resources = Document.objects.all()
     services = Service.objects.all()
-    return render(request, "services/all-services.html", {"services": services})
+    if request.method == "POST":
+        form = ResourceForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("/services/")
+    else:
+        form = ResourceForm()
+    return render(request, "services/all-services.html", {"services": services,"resources": resources, "form": form})
 
 def all_sessions(request):
     sessions = Session.objects.filter(

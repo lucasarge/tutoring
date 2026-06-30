@@ -45,3 +45,16 @@ class LinkForm(forms.ModelForm):
     class Meta:
         model = models.Session
         fields = ['link']
+
+class ResourceForm(forms.ModelForm):
+    class Meta:
+        model = models.Document
+        fields = ['title','file']
+
+class AssignResourceForm(forms.ModelForm):
+    class Meta:
+        model = models.Service
+        fields = ['documents']
+        widget = {
+            'documents': forms.CheckboxSelectMultiple(),
+        }
