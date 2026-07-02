@@ -52,9 +52,17 @@ class ResourceForm(forms.ModelForm):
         fields = ['title','file']
 
 class AssignResourceForm(forms.ModelForm):
+    documents = forms.ModelMultipleChoiceField(
+        queryset=models.Document.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False
+    )
+    
     class Meta:
         model = models.Service
         fields = ['documents']
-        widget = {
-            'documents': forms.CheckboxSelectMultiple(),
-        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance and self.instance.pk:
+            self.initial['documents'] = self.instance.documents.all()

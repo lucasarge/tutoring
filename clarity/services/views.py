@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import login_required
 from .models import Service, Invite, generate_code, Session, SubjectService, ServiceDocument, Document
-from .forms import InviteForm, SessionForm, CaregiverForm, StudentForm, LinkForm, ResourceForm
+from .forms import InviteForm, SessionForm, CaregiverForm, StudentForm, LinkForm, ResourceForm, AssignResourceForm
 from django.utils import timezone
 from datetime import timedelta
 from django.http import HttpResponseForbidden, JsonResponse, FileResponse, Http404
@@ -106,6 +106,10 @@ def service(request, pk, page):
         start__gt=timezone.now()
     ).order_by('start').first()
 
+
+    link_form = None
+    assign_form = None
+
     if page == "dashboard":
 
         if request.method == "POST":
@@ -114,15 +118,21 @@ def service(request, pk, page):
                 next_session.save()
                 return redirect(f"/services/{pk}/dashboard/")
 
-            form = LinkForm(request.POST, instance=next_session)
-            if form.is_valid():
-                form.save()
-                return redirect(f"/services/{pk}/dashboard")
-            else:
-                print(form.errors)
+            if "assign_resources" in request.POST:
+                assign_form = AssignResourceForm(request.POST, instance=service)
+                if assign_form.is_valid():
+                    assign_form.save()
+                    return redirect(f"/services/{pk}/dashboard/")
             
+            else:
+                link_form = LinkForm(request.POST, instance=next_session)
+                if link_form.is_valid():
+                    link_form.save()
+                    return redirect(f"/services/{pk}/dashboard/")
+
         else:
-            form = LinkForm()
+            link_form = LinkForm()
+            assign_form = AssignResourceForm(instance=service)
 
     if page == "calendar":
         
@@ -168,7 +178,16 @@ def service(request, pk, page):
             elif request.user.user_type == "student":
                 form = StudentForm(instance=service)
 
-    return render(request, f"services/{page}.html", {"service":service, "form":form, "session":next_session, "documents":documents})
+    context = {
+        "service":service, 
+        "form":form, 
+        "session":next_session, 
+        "documents":documents,
+        "link_form":link_form,
+        "assign_form":assign_form
+    }
+
+    return render(request, f"services/{page}.html", context)
 
 @login_required
 def all_services(request):

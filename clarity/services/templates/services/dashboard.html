@@ -111,8 +111,13 @@
                     <div class="grid grid-cols-[auto_1fr] pb-4">
                         <h2 class="text-2xl pb-4">Resources:</h2>
                         <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/resources/">→</a>
-                        <h3>Upload the Resources here:</h3>
                     </div>
+                    <h3>Upload the Resources here:</h3>
+                    <form action="/services/{{ service.pk }}/dashboard/" method="post">
+                        {% csrf_token %}
+                        {{ assign_form.documents }}
+                        <button name="assign_resources" class="bg-third px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer" type="submit">Assign</button>
+                    </form>
                 </div>
                 {% elif request.user.user_type == "student" %}
                 <div class="bg-white rounded-2xl col-span-2 px-8 py-6 drop-shadow-md drop-shadow-mauve-900">

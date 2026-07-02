@@ -47,12 +47,19 @@ class Service(models.Model):
     year = models.IntegerField(choices=YEAR_CHOICES)
     subjects = models.ManyToManyField('Subject', through='SubjectService')
     
-    documents = models.ManyToManyField(Document, blank=True)
+    documents = models.ManyToManyField(Document, through='ServiceDocument', blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return self.student.first_name
+
+class ServiceDocument(models.Model):
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    document = models.ForeignKey(Document, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.document.title} for {self.service.student.first_name}"
 
 class Subject(models.Model):
     name = models.CharField()
@@ -88,9 +95,3 @@ class Session(models.Model):
     def __str__(self):
         return f"{self.service.student.first_name}'s Tutoring Session"
     
-class ServiceDocument(models.Model):
-    service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    document = models.ForeignKey(Document, on_delete=models.CASCADE)
-
-    def __str__(self):
-        return f"{self.document.title} for {self.service.student.first_name}"
