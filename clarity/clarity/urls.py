@@ -26,7 +26,8 @@ urlpatterns = [
     path('', views.index, name='home'),
     path('help/', views.help, name="help"),
     path('users/', include('users.urls')),
-    path('services/', include('services.urls'))
+    path('services/', include('services.urls')),
+    path('reviews/', include('reviews.urls'))
 ]
 
 if settings.DEBUG:

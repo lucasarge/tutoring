@@ -1,0 +1,87 @@
+{% extends "layout.html" %}
+
+{% block title %}Reviews{% endblock %}
+
+{% block script %}
+{% load static %}
+<script src="{% static 'js/reviews.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="flex items-center min-h-[calc(100vh-140px)] drop-shadow-md drop-shadow-mauve-900">
+        <div class="w-7xl mx-auto">
+            <div class="bg-white text-black gap-8 p-4 rounded-3xl mb-4 grid grid-cols-[1fr_5fr_2fr]">
+                <img class="h-max border-2 aspect-square rounded-full object-cover" src="{% static 'images/icon.png' %}" alt="">
+                <div>
+                    <h1 class="text-3xl">Clarity Tutoring</h1>
+                    <hr>
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets.</p>
+                </div>
+                <div>
+                    <h2 class="text-xl text-center py-4">Average Rating:</h2>
+                    <h1 class="text-4xl text-center">{{ avg_rating|floatformat:2 }}/5</h1>
+                </div>
+            </div>
+            <div class="bg-white text-black p-4 rounded-3xl">
+                <div class="grid grid-cols-[1fr_auto]">
+                    <h1 class="text-2xl">Reviews:</h1>
+                    <button id="createBtn" class="bg-third px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer">Create Review</button>
+                </div>
+                <hr class="my-2 py-1">
+                <div class="grid grid-cols-3 gap-6">
+                {% for review in reviews %}
+                    <div class="bg-white drop-shadow-md drop-shadow-mauve-900 p-4 rounded-2xl">
+                        <div class="grid gap-2 grid-cols-[auto_3fr_2fr] pb-2">
+                            <img id="profileBtn" src="{{ request.user.profile.profile_image.url }}" alt="" class="border h-10 aspect-square rounded-full object-cover mx-auto">
+                            <div>
+                                <h4>{{ review.user.first_name }} {{ review.user.last_name }}</h4>
+                                <h4 class="text-xs">{{ review.created }}</h4>
+                            </div>
+                            <div>
+                                <h4 class="text-right">
+                                    <div class="star-rating flex gap-x-1 text-right">
+                                        {% for _ in "12345"|make_list %}
+                                            <span class="{% if forloop.counter > review.stars %}text-gray-300{% else %}text-yellow-400{% endif %}">★</span>
+                                        {% endfor %}
+                                    </div>
+                                </h4>
+                                <h4 class="text-xs text-right">
+                                    {% if review.used %}
+                                        Verified: ✔️
+                                    {% else %}
+                                        Verified: ❌
+                                    {% endif %}
+                                </h4>
+                            </div>
+                        </div>
+                        <hr>
+                        <p>{{ review.message }}</p>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div id="createMenu" class="hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2xl max-w-lg bg-white drop-shadow-md drop-shadow-mauve-900 p-4 rounded-2xl shadow-2xl z-50">
+            <div class="grid-cols-[1fr_auto] grid">
+                <h1 class="text-2xl text-black">Create Review</h1>
+                <button id="closeBtn" class="text-black cursor-pointer">X</button>
+            </div>
+            {% if request.user.is_authenticated %}
+            <form action="/reviews/" method="post" class="text-black">
+                {% csrf_token %}
+                <div class="star-rating flex gap-2 text-lg">
+                    <button type="button" class="star text-gray-300 hover:text-yellow-400 transition" data-value="1">★</button>
+                    <button type="button" class="star text-gray-300 hover:text-yellow-400 transition" data-value="2">★</button>
+                    <button type="button" class="star text-gray-300 hover:text-yellow-400 transition" data-value="3">★</button>
+                    <button type="button" class="star text-gray-300 hover:text-yellow-400 transition" data-value="4">★</button>
+                    <button type="button" class="star text-gray-300 hover:text-yellow-400 transition" data-value="5">★</button>
+                </div>
+                {{ form }}
+                <button class="bg-third px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer" type="submit">Continue</button>
+            </form>
+            {% else %}
+            <p>Log in to create a review.</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
