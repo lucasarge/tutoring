@@ -44,7 +44,7 @@ class Service(models.Model):
     caregiver_note = models.TextField(blank=True)
     student_note = models.TextField(blank=True)
 
-    year = models.IntegerField(choices=YEAR_CHOICES)
+    year = models.IntegerField(choices=YEAR_CHOICES, blank=True, null=True)
     subjects = models.ManyToManyField('Subject', through='SubjectService')
     
     documents = models.ManyToManyField(Document, through='ServiceDocument', blank=True)

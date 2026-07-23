@@ -25,7 +25,7 @@ class CaregiverForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         if self.instance and self.instance.pk:
-            self.initial['subject'] = self.instance.subject.all()
+            self.initial['subject'] = self.instance.subjects.all()
 
 class SessionForm(forms.ModelForm):
     class Meta:

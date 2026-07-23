@@ -12,7 +12,7 @@
     <title>{% block title %}{% endblock %} - Clarity Tutoring</title>
 </head>
 <body class="bg-secondary text-white">
-    <nav class="sticky top-0 z-30 bg-primary drop-shadow-md drop-shadow-mauve-750">
+    <nav class="sticky top-0 z-50 bg-primary drop-shadow-md drop-shadow-mauve-750">
         <div class="flex justify-between items-center max-w-6xl mx-auto px-6 py-4">
             <div class="flex gap-6 items-center">
                 <a href="/">
@@ -72,16 +72,14 @@
     </nav>
     
     {% if "/services/" in request.path and "/services/join" not in request.path and "/services/invites" not in request.path and request.user.user_type != "tutor"%}
-    <div class="flex items-center justify-center bg-fourth drop-shadow-md drop-shadow-mauve-750">
-        {% if request.user.user_type == 'student' %}
+    <div class="pb-1 sticky top-18 z-40 flex items-center justify-center bg-fourth shadow-md shadow-black/30">
         <div class="grid grid-cols-4 gap-18 text-sm w-max text-center py-2">
-        {% else %}
-        <div class="grid grid-cols-3 gap-24 text-sm w-max text-center py-2">
-        {% endif %}
             <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/dashboard/">Dashboard</a>
             <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/calendar/">Calendar</a>
             {% if request.user.user_type == "student" %}
             <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/resources/">Resources</a>
+            {% elif request.user.user_type == "caregiver" %}
+            <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/payment/">Payment</a>
             {% endif %}            
             <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/settings/">Settings</a>
         </div>

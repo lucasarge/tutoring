@@ -58,14 +58,14 @@
                     </div>
                 </div>
 
-                <div class="bg-white rounded-2xl px-8 py-6 row-span-2 drop-shadow-md drop-shadow-mauve-900">
+                <div class="bg-white rounded-2xl row-span-2 px-8 py-6 row-span drop-shadow-md drop-shadow-mauve-900">
                     <div class="grid grid-cols-[auto_1fr] pb-4">
                         <h2 class="text-2xl">Booked Tutoring Session:</h2>
                         <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/calendar/">→</a>
                     </div>
                     <div id='calendar-min'></div>
                 </div>
-                <div id="meeting-info" data-pk="{{ service.pk }}" class="col-span-2 bg-white text-black px-8 py-6 rounded-2xl drop-shadow-md drop-shadow-mauve-900">
+                <div id="meeting-info" data-pk="{{ service.pk }}" class="row-span-2 col-span-2 bg-white text-black px-8 py-6 rounded-2xl drop-shadow-md drop-shadow-mauve-900">
                     <div class="grid grid-cols-[auto_1fr]">
                         <h1 class="text-2xl pb-4">Next Meeting Information:</h1>
                         <div class="text-right px-2 text-sm">
@@ -106,34 +106,60 @@
                     <h3>No sessions booked. Click <a class="underline" href="/services/{{ service.pk }}/calendar/">here</a> to book.</h3>
                     {% endif %}
                 </div>
+
                 {% if request.user.user_type == "tutor" %}
-                <div class="bg-white rounded-2xl col-span-2 px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                <div class="bg-white rounded-2xl row-span-2 px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
                     <div class="grid grid-cols-[auto_1fr] pb-4">
-                        <h2 class="text-2xl pb-4">Resources:</h2>
-                        <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/resources/">→</a>
+                        <h2 class="text-2xl">Resources:</h2>
+                        <a class="text-right text-xl place-items-center" href="/services/">→</a>
                     </div>
                     <h3>Upload the Resources here:</h3>
                     <form action="/services/{{ service.pk }}/dashboard/" method="post">
                         {% csrf_token %}
-                        {{ assign_form.documents }}
+                        <div class="flex flex-wrap gap-x-1">
+                            {% for assign_form in assign_form.documents %}
+                            <div class="py-1.5">{{ assign_form }}</div>
+                            {% endfor %}
+                        </div>
                         <button name="assign_resources" class="bg-third px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer" type="submit">Assign</button>
                     </form>
                 </div>
                 {% elif request.user.user_type == "student" %}
-                <div class="bg-white rounded-2xl col-span-2 px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                <div class="bg-white rounded-2xl row-span-2 px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
                     <div class="grid grid-cols-[auto_1fr] pb-4">
                         <h2 class="text-2xl">Resources:</h2>
                         <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/resources/">→</a>
                     </div>
-                </div>
-                {% endif %}
-                <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
-                    <div class="grid grid-cols-[auto_1fr] pb-4">
-                        <h2 class="text-2xl">Help:</h2>
-                        <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/settings/">→</a>
+                    <div class="grid-cols-2 grid gap-4">
+                        {% for document in service.documents.all %}
+                        <a href="/services/pdf/{{ document.id }}" target="_blank" class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900 text-black">
+                            <h3>{{ document.title }}</h3>
+                        </a>
+                        {% endfor %}
                     </div>
                 </div>
+                {% elif request.user.user_type == "caregiver" %}
+                <div class="bg-white rounded-2xl row-span-2 px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                    <div class="grid grid-cols-[auto_1fr] pb-4">
+                        <h2 class="text-2xl">Pricing:</h2>
+                        <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/payment/">→</a>
+                    </div>
+                    <div class="grid-cols-2 grid gap-4">
+                        <h1>Pricing informationa gagahsighiag.</h1>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="bg-white col-span-2 rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                    <div class="grid grid-cols-[auto_1fr] pb-4">
+                        <h2 class="text-2xl">Help:</h2>
+                        <a class="text-right text-xl place-items-center" href="/help/">→</a>
+                    </div>
+                    <h1>If you need help with anything feel free to scan the help page.</h1>
+                    <h1>If your problem isn't answered there contact me at: sargentl@stu.otc.school.nz</h1>
+                </div>
             </div>
+            
         </div>
     </div>
 

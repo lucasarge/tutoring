@@ -14,9 +14,9 @@ Next install the following frameworks & libraries:
 > [!TIP]
 > The "--upgrade pip" may not be necessary if already to date.
 ```
+py -m pip install --upgrade pip
 py -m pip install django
 py -m pip install Pillow
-py -m pip install --upgrade pip
 ```
 Once those are installed use the connected command to run:
 > [!Note]
