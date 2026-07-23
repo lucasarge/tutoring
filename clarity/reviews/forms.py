@@ -7,4 +7,4 @@ class ReviewForm(forms.ModelForm):
     )
     class Meta:
         model = models.Review
-        fields = ['stars','message','category','tutor']
+        fields = ['stars','message']

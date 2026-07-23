@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title %}Help{% endblock %}
+
+{% block content %}
+    <div class="flex items-center justify-center min-h-[calc(100vh-140px)]">
+        <div class="w-2xl mx-auto bg-white text-black p-4 rounded-3xl">
+            <h1 class="text-2xl pb-4">Frequently Asked Questions:</h1>
+            <hr class="pb-4">
+            <div>
+                {% for obj in faq %}
+                <details>
+                    <summary class="border border-white bg-mist-100 px-2 py-1">{{ obj.question }}</summary>
+                    <p class="border border-white bg-mist-200 px-2 py-1">{{ obj.answer }}</p>
+                </details>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
