@@ -5,15 +5,33 @@
 {% block content %}
     <div class="flex items-center min-h-[calc(100vh-140px)] drop-shadow-md drop-shadow-mauve-900">
         <div class="w-xl mx-auto bg-white text-black p-4 rounded-3xl">
-            <h1 class="text-4xl pb-4">Resources:</h1>
-            {% for service_document in request.user.service_student.first.servicedocument_set.all %}
-                <div class="grid grid-cols-2 odd:bg-gray-200 p-2 border [&~&]:border-t-0">
-                    <a href="/services/pdf/{{ service_document.document.id }}/" class="underline" target="_blank">{{ service_document.document.title }}</a>
-                    <p class="text-right">{{ service_document.document.created }}</p>
+            <h1 class="text-4xl">Resources:</h1>
+            {% for resource in resources %}
+                <div class="
+                bg-white mt-4 drop-shadow-md drop-shadow-mauve-900 p-4 rounded-2xl 
+                {% if not resource.opened %} 
+                border-2 border-third 
+                {% endif %}">
+                    <div class="grid gap-4 grid-cols-[auto_1fr] pb-4">
+                        <img id="profileBtn" src="{{ resource.tutor.profile.profile_image.url }}" alt="" class="border h-10 aspect-square rounded-full object-cover mx-auto">
+                        <div class="grid grid-cols-2 text-lg">
+                            <h4>{{ resource.tutor.first_name }} {{ resource.tutor.last_name }}</h4>
+                            <h4 class="text-right">{{ resource.created }}</h4>
+                        </div>
+                    </div>
+                    <h6 class="text-md">{{ resource.message }} Click <a href="/services/pdf/{{ resource.id }}/" onclick="refreshPage()" class="underline" target="_blank">here</a> to access the work.</h6>
+                    <h6 class="text-xs text-right">Opened: {% if not resources.0.opened %}❌{% else %}✔️{% endif %}</h6>
                 </div>
             {% empty %}
-                <p>No resources uploaded yet.</p>
+                <p class="mt-4">No resources uploaded yet.</p>
             {% endfor %}
         </div>
     </div>
+    <script>
+    function refreshPage() {
+        setTimeout(() => {
+            window.location.reload();
+        }, 500);
+    }
+    </script>
 {% endblock %}

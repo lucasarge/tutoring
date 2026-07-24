@@ -66,3 +66,8 @@ class DocumentForm(forms.ModelForm):
 #         super().__init__(*args, **kwargs)
 #         if self.instance and self.instance.pk:
 #             self.initial['documents'] = self.instance.documents.all()
+
+class ShareResourceForm(forms.ModelForm):
+    class Meta:
+        model = models.Resource
+        fields = ['document', 'message']

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import login_required
 from .models import Service, Invite, generate_code, Session, SubjectService, Resource, Document
-from .forms import InviteForm, SessionForm, CaregiverForm, StudentForm, LinkForm, DocumentForm
+from .forms import InviteForm, SessionForm, CaregiverForm, StudentForm, LinkForm, DocumentForm, ShareResourceForm
 from django.utils import timezone
 from datetime import timedelta
 from django.http import HttpResponseForbidden, JsonResponse, FileResponse, Http404
@@ -108,7 +108,7 @@ def service(request, pk, page):
 
 
     link_form = None
-    assign_form = None
+    resource_form = None
 
     if page == "dashboard":
 
@@ -118,10 +118,13 @@ def service(request, pk, page):
                 next_session.save()
                 return redirect(f"/services/{pk}/dashboard/")
 
-            if "assign_resources" in request.POST:
-                # assign_form = AssignDocumentForm(request.POST, instance=service)
-                # if assign_form.is_valid():
-                #     assign_form.save()
+            if "share_resources" in request.POST:
+                share_resource_form = ShareResourceForm(request.POST)
+                if share_resource_form.is_valid():
+                    resource_form = share_resource_form.save(commit=False)
+                    resource_form.tutor = request.user
+                    resource_form.service = service
+                    resource_form.save()
                     return redirect(f"/services/{pk}/dashboard/")
             
             else:
@@ -132,7 +135,7 @@ def service(request, pk, page):
 
         else:
             link_form = LinkForm()
-            assign_form = None
+            resource_form = ShareResourceForm()
 
     if page == "calendar":
         
@@ -149,10 +152,7 @@ def service(request, pk, page):
         else:
             form = SessionForm()
     
-    documents = None
-
-    if page == "resources":
-        documents = Resource.objects.filter(service=service)
+    resources = Resource.objects.filter(service=service).order_by("-created")
 
     if page == "survey":
         if request.method == "POST":
@@ -182,18 +182,18 @@ def service(request, pk, page):
         "service":service, 
         "form":form, 
         "session":next_session, 
-        "documents":documents,
+        "resources":resources,
         "link_form":link_form,
-        "assign_form":assign_form
+        "resource_form":resource_form
     }
-
+    
     return render(request, f"services/{page}.html", context)
 
 @login_required
 def all_services(request):
     if request.user.user_type != "tutor":
         raise HttpResponseForbidden()
-    resources = Document.objects.all()
+    documents = Document.objects.all()
     services = Service.objects.all()
     if request.method == "POST":
         form = DocumentForm(request.POST, request.FILES)
@@ -202,7 +202,7 @@ def all_services(request):
             return redirect("/services/")
     else:
         form = DocumentForm()
-    return render(request, "services/all-services.html", {"services": services,"resources": resources, "form": form})
+    return render(request, "services/all-services.html", {"services": services,"documents": documents, "form": form})
 
 def all_sessions(request):
     sessions = Session.objects.filter(
@@ -235,8 +235,12 @@ def all_sessions(request):
 
     return JsonResponse(session_list, safe=False)
 
-def view_pdf(request, document_id):
-    document = get_object_or_404(Document, id=document_id)
+def view_pdf(request, resource_id):
+    resource = get_object_or_404(Resource, id=resource_id)
+    resource.opened = True
+    resource.save()
+    resource.refresh_from_db()
+    document = resource.document
 
     try:
         pdf_file = open(document.file.path, 'rb')

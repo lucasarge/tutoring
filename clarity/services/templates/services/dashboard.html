@@ -18,145 +18,169 @@
                 </div>
             </div>
 
-            <div class="grid gap-4 text-black lg:grid-cols-[2fr_6fr_7fr] mb-4">
-
-                <div class="bg-white col-span-2 rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
-                    <div class="grid grid-cols-[auto_1fr] pb-4">
-                        <h2 class="text-2xl">Tutoring Information:</h2>
-                        <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/settings/">→</a>
-                    </div>
-                    <div class="grid grid-cols-[auto_1fr] gap-8">
-                        <div>
-                            <h3 class="pb-2 text-lg underline underline-offset-3">Users in Service:</h3>
-                            <div class="grid grid-rows-3 gap-2">
-                                <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
-                                    <img src="{{ service.student.profile.profile_image.url }}" alt="" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
-                                    <h3>{{ service.student.first_name|capfirst }}</h3>
-                                </div>
-                                <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
-                                    <img src="{{ service.caregiver.profile.profile_image.url }}" alt="" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
-                                    <h3 class="">{{ service.caregiver.first_name|capfirst }}</h3>
-                                </div>
-                                <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
-                                    <img src="{{ service.tutor.profile.profile_image.url }}" alt="" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
-                                    <h3 class="">{{ service.tutor.first_name|capfirst }}</h3>
+            <div class="grid gap-4 text-black lg:grid-cols-[8fr_7fr] mb-4">
+            {% comment %} GRID {% endcomment %}
+                <div class="grid gap-4">
+                    <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                        <div class="grid grid-cols-[auto_1fr] pb-4">
+                            <h2 class="text-2xl">Tutoring Information:</h2>
+                            <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/settings/">→</a>
+                        </div>
+                        <div class="grid grid-cols-[auto_1fr] gap-8">
+                            <div>
+                                <h3 class="pb-2 text-lg underline underline-offset-3">Users in Service:</h3>
+                                <div class="grid grid-rows-3 gap-2">
+                                    <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
+                                        <img src="{{ service.student.profile.profile_image.url }}" alt="" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
+                                        <h3>{{ service.student.first_name|capfirst }}</h3>
+                                    </div>
+                                    <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
+                                        <img src="{{ service.caregiver.profile.profile_image.url }}" alt="" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
+                                        <h3 class="">{{ service.caregiver.first_name|capfirst }}</h3>
+                                    </div>
+                                    <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
+                                        <img src="{{ service.tutor.profile.profile_image.url }}" alt="" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
+                                        <h3 class="">{{ service.tutor.first_name|capfirst }}</h3>
+                                    </div>
                                 </div>
                             </div>
+                            {% if request.user.user_type == "tutor" %}
+                            <div>
+                                <h3 class="pb-2 text-lg underline underline-offset-3">Private Notes:</h3>
+                                <p>Caregiver: {{ service.caregiver_note }}</p>
+                                <p>Student: {{ service.student_note }}</p>
+                            </div>
+                            {% else %}
+                            <div>
+                                <h3 class="pb-2 text-lg underline underline-offset-3">Service Information:</h3>
+                                <p>This was blah bal as ighaisodhgi aihdg a sidgh ahig hahdg i ghsdai ahgdsioa hgoh agdh gasudh gah sdhgi hsai ghidahg iahsidg haigh iadhi ghaid hgai hdi hgaihs dgihai gdh i hi ghaisd hida hgi hasi ihga.</p>
+                            </div>
+                            {% endif %}
                         </div>
-                        {% if request.user.user_type == "tutor" %}
-                        <div>
-                            <h3 class="pb-2 text-lg underline underline-offset-3">Private Notes:</h3>
-                            <p>Caregiver: {{ service.caregiver_note }}</p>
-                            <p>Student: {{ service.student_note }}</p>
+                    </div>
+                    <div id="meeting-info" data-pk="{{ service.pk }}" class="row-span-2 bg-white text-black px-8 py-6 rounded-2xl drop-shadow-md drop-shadow-mauve-900">
+                        <div class="grid grid-cols-[auto_1fr]">
+                            <h1 class="text-2xl pb-4">Next Meeting Information:</h1>
+                            <div class="text-right px-2 text-sm">
+                                <h5>Last Refreshed:</h5>
+                                <h5 id="refreshed-time"></h5>
+                            </div>
+                        </div>
+                        {% if session %}
+                        <h3>Start Time: {{ session.start }}</h3>
+                        <h3>Duration: {{ session.duration }}</h3>
+                        <h3>Tutor: {{ session.service.tutor.first_name }}</h3>
+                        <h3>Link: 
+                            {% if not session.link %}
+                            Will be uploaded 5 minutes prior start.
+                            {% else %}
+                            <a class="underline" href="{{ session.link }}">{{ session.link }}</a>
+                            {% endif %}
+                        </h3>
+                        <div class="pt-4">
+                            {% if request.user.user_type == "tutor" %}
+                            {% if session.link %}
+                            <form action="" name="delete-link" method="post">
+                                {% csrf_token %}
+                                <button class="bg-gray-300 px-8 py-1.5 rounded-2xl text-black cursor-pointer">Delete Link</button>
+                            </form>
+                            {% else %}
+                            <form action="/services/{{ service.pk }}/dashboard/" method="post">
+                                {% csrf_token %}
+                                <input type="text" name="link" placeholder="{{ session.link }}">
+                                <button class="bg-third px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer" type="submit">Submit</button>
+                            </form>
+                            {% endif %}
+                            {% else %}
+                            <button class="bg-gray-300 px-8 py-1.5 rounded-2xl text-black cursor-pointer">Cancel Session</button>    
+                            {% endif %}
                         </div>
                         {% else %}
-                        <div>
-                            <h3 class="pb-2 text-lg underline underline-offset-3">Service Information:</h3>
-                            <p>This was blah bal as ighaisodhgi aihdg a sidgh ahig hahdg i ghsdai ahgdsioa hgoh agdh gasudh gah sdhgi hsai ghidahg iahsidg haigh iadhi ghaid hgai hdi hgaihs dgihai gdh i hi ghaisd hida hgi hasi ihga.</p>
-                        </div>
+                        <h3>No sessions booked. Click <a class="underline" href="/services/{{ service.pk }}/calendar/">here</a> to book.</h3>
                         {% endif %}
                     </div>
+                                    
+                    <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                        <div class="grid grid-cols-[auto_1fr] pb-4">
+                            <h2 class="text-2xl">Help:</h2>
+                            <a class="text-right text-xl place-items-center" href="/help/">→</a>
+                        </div>
+                        <h1>If you need help with anything feel free to scan the help page.</h1>
+                        <h1>If your problem isn't answered there contact me at: sargentl@stu.otc.school.nz</h1>
+                    </div>
                 </div>
+                <div class="grid gap-4">
+                {% comment %} END HERE {% endcomment %}
+                    <div class="bg-white rounded-2xl row-span-2 px-8 py-6 row-span drop-shadow-md drop-shadow-mauve-900">
+                        <div class="grid grid-cols-[auto_1fr] pb-4">
+                            <h2 class="text-2xl">Booked Tutoring Session:</h2>
+                            <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/calendar/">→</a>
+                        </div>
+                        <div id='calendar-min'></div>
+                    </div>
+                    
 
-                <div class="bg-white rounded-2xl row-span-2 px-8 py-6 row-span drop-shadow-md drop-shadow-mauve-900">
-                    <div class="grid grid-cols-[auto_1fr] pb-4">
-                        <h2 class="text-2xl">Booked Tutoring Session:</h2>
-                        <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/calendar/">→</a>
-                    </div>
-                    <div id='calendar-min'></div>
-                </div>
-                <div id="meeting-info" data-pk="{{ service.pk }}" class="row-span-2 col-span-2 bg-white text-black px-8 py-6 rounded-2xl drop-shadow-md drop-shadow-mauve-900">
-                    <div class="grid grid-cols-[auto_1fr]">
-                        <h1 class="text-2xl pb-4">Next Meeting Information:</h1>
-                        <div class="text-right px-2 text-sm">
-                            <h5>Last Refreshed:</h5>
-                            <h5 id="refreshed-time"></h5>
+                    {% if request.user.user_type == "tutor" %}
+                    <div class="bg-white rounded-2xl row-span-2 px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                        <div class="grid grid-cols-[auto_1fr] pb-2">
+                            <h2 class="text-2xl">Resources:</h2>
+                            <a class="text-right text-xl place-items-center" href="/services/">→</a>
                         </div>
-                    </div>
-                    {% if session %}
-                    <h3>Start Time: {{ session.start }}</h3>
-                    <h3>Duration: {{ session.duration }}</h3>
-                    <h3>Tutor: {{ session.service.tutor.first_name }}</h3>
-                    <h3>Link: 
-                        {% if not session.link %}
-                        Will be uploaded 5 minutes prior start.
-                        {% else %}
-                        <a class="underline" href="{{ session.link }}">{{ session.link }}</a>
-                        {% endif %}
-                    </h3>
-                    <div class="pt-4">
-                        {% if request.user.user_type == "tutor" %}
-                        {% if session.link %}
-                        <form action="" name="delete-link" method="post">
-                            {% csrf_token %}
-                            <button class="bg-gray-300 px-8 py-1.5 rounded-2xl text-black cursor-pointer">Delete Link</button>
-                        </form>
-                        {% else %}
+                        <h3>Upload the Resources here:</h3>
                         <form action="/services/{{ service.pk }}/dashboard/" method="post">
                             {% csrf_token %}
-                            <input type="text" name="link" placeholder="{{ session.link }}">
-                            <button class="bg-third px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer" type="submit">Submit</button>
+                            <h5>Document:</h5>
+                            <div class="py-1">
+                                {{ resource_form.document }}
+                            </div>
+                            <h5>Message:</h5>
+                            <div class="py-1">
+                                {{ resource_form.message }}
+                            </div>
+                            <button name="share_resources" class="bg-third px-8 py-1.5 mt-2 border-2 rounded-2xl text-white cursor-pointer" type="submit">Assign</button>
                         </form>
-                        {% endif %}
-                        {% else %}
-                        <button class="bg-gray-300 px-8 py-1.5 rounded-2xl text-black cursor-pointer">Cancel Session</button>    
-                        {% endif %}
                     </div>
-                    {% else %}
-                    <h3>No sessions booked. Click <a class="underline" href="/services/{{ service.pk }}/calendar/">here</a> to book.</h3>
-                    {% endif %}
-                </div>
-
-                {% if request.user.user_type == "tutor" %}
-                <div class="bg-white rounded-2xl row-span-2 px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
-                    <div class="grid grid-cols-[auto_1fr] pb-4">
-                        <h2 class="text-2xl">Resources:</h2>
-                        <a class="text-right text-xl place-items-center" href="/services/">→</a>
-                    </div>
-                    <h3>Upload the Resources here:</h3>
-                    <form action="/services/{{ service.pk }}/dashboard/" method="post">
-                        {% csrf_token %}
-                        <div class="flex flex-wrap gap-x-1">
-                            {% for assign_form in assign_form.documents %}
-                            <div class="py-1.5">{{ assign_form }}</div>
-                            {% endfor %}
+                    {% elif request.user.user_type == "student" %}
+                    <div class="bg-white rounded-2xl row-span-2 px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                        <div class="grid grid-cols-[auto_1fr] pb-4">
+                            <h2 class="text-2xl">Resources:</h2>
+                            <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/resources/">→</a>
                         </div>
-                        <button name="assign_resources" class="bg-third px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer" type="submit">Assign</button>
-                    </form>
-                </div>
-                {% elif request.user.user_type == "student" %}
-                <div class="bg-white rounded-2xl row-span-2 px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
-                    <div class="grid grid-cols-[auto_1fr] pb-4">
-                        <h2 class="text-2xl">Resources:</h2>
-                        <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/resources/">→</a>
+                        <div>
+                            {% if resources %}
+                            <div class="
+                            bg-white drop-shadow-md drop-shadow-mauve-900 p-4 rounded-2xl 
+                            {% if not resources.0.opened %} 
+                            border-2 border-third 
+                            {% endif %}">
+                                <div class="grid gap-4 grid-cols-[auto_1fr] pb-4">
+                                    <img id="profileBtn" src="{{ resources.0.tutor.profile.profile_image.url }}" alt="" class="border h-10 aspect-square rounded-full object-cover mx-auto">
+                                    <div class="flex text-lg justify-between">
+                                        <h4>{{ resources.0.tutor.first_name }} {{ resources.0.tutor.last_name }}</h4>
+                                        <h4>{{ resources.0.created }}</h4>
+                                    </div>
+                                </div>
+                                <h6 class="text-md">{{ resources.0.message }} Click <a href="/services/pdf/{{ resources.0.id }}/" onclick="refreshPage()" class="underline" target="_blank">here</a> to access the work.</h6>
+                                <h6 class="text-xs text-right">Opened: {% if not resources.0.opened %}❌{% else %}✔️{% endif %}</h6>
+                            </div>
+                            {% else %}
+                            <h4>No resources uploaded yet.</h4>
+                            {% endif %}
+                        </div>
                     </div>
-                    <div class="grid-cols-2 grid gap-4">
-                        {% for document in service.documents.all %}
-                        <a href="/services/pdf/{{ document.id }}" target="_blank" class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900 text-black">
-                            <h3>{{ document.title }}</h3>
-                        </a>
-                        {% endfor %}
+                    {% elif request.user.user_type == "caregiver" %}
+                    <div class="bg-white rounded-2xl row-span-2 px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                        <div class="grid grid-cols-[auto_1fr] pb-4">
+                            <h2 class="text-2xl">Pricing:</h2>
+                            <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/payment/">→</a>
+                        </div>
+                        <div class="grid-cols-2 grid gap-4">
+                            <h1>Pricing informationa gagahsighiag.</h1>
+                            <h1>Pricing informationa gagahsighiag.</h1>
+                            <h1>Pricing informationa gagahsighiag.</h1>
+                        </div>
                     </div>
-                </div>
-                {% elif request.user.user_type == "caregiver" %}
-                <div class="bg-white rounded-2xl row-span-2 px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
-                    <div class="grid grid-cols-[auto_1fr] pb-4">
-                        <h2 class="text-2xl">Pricing:</h2>
-                        <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/payment/">→</a>
-                    </div>
-                    <div class="grid-cols-2 grid gap-4">
-                        <h1>Pricing informationa gagahsighiag.</h1>
-                    </div>
-                </div>
-                {% endif %}
-                
-                <div class="bg-white col-span-2 rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
-                    <div class="grid grid-cols-[auto_1fr] pb-4">
-                        <h2 class="text-2xl">Help:</h2>
-                        <a class="text-right text-xl place-items-center" href="/help/">→</a>
-                    </div>
-                    <h1>If you need help with anything feel free to scan the help page.</h1>
-                    <h1>If your problem isn't answered there contact me at: sargentl@stu.otc.school.nz</h1>
+                    {% endif %}
                 </div>
             </div>
             
@@ -169,5 +193,11 @@
             const time = now.toLocaleTimeString();
             document.getElementById('refreshed-time').textContent = time;
         };
+
+        function refreshPage() {
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
+        }
     </script>
 {% endblock %}

@@ -45,13 +45,7 @@
                                         {% endfor %}
                                     </div>
                                 </h4>
-                                <h4 class="text-xs text-right">
-                                    {% if review.used %}
-                                        Verified: ✔️
-                                    {% else %}
-                                        Verified: ❌
-                                    {% endif %}
-                                </h4>
+                                <h4 class="text-xs text-right">Verified: {% if review.used %}✔️{% else %}❌{% endif %}</h4>
                             </div>
                         </div>
                         <hr>
