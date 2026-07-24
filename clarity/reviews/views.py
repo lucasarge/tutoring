@@ -6,6 +6,8 @@ from django.db.models import Q, Avg
 
 # Create your views here.
 def reviews(request):
+    form = None
+
     if request.user.is_authenticated:
         if request.method == "POST":
             form = ReviewForm(request.POST)
@@ -22,7 +24,7 @@ def reviews(request):
         else:
             form = ReviewForm()
 
-    reviews = Review.objects.all()
+    reviews = Review.objects.all().order_by("-created")
     avg_rating = Review.objects.aggregate(Avg('stars'))['stars__avg']
 
     return render(request, "reviews.html", {"form": form, "reviews": reviews, "avg_rating":avg_rating})

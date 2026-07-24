@@ -62,22 +62,24 @@
             </div>
         </div>
         <div id="createMenu" class="hidden fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2xl max-w-lg bg-white drop-shadow-md drop-shadow-mauve-900 p-4 rounded-2xl shadow-2xl z-50">
-            <div class="grid-cols-[1fr_auto] grid">
-                <h1 class="text-2xl text-black">Create Review</h1>
-                <button id="closeBtn" class="text-black cursor-pointer">X</button>
+            <div class="grid-cols-[1fr_4fr_1fr] grid">
+                <div></div>
+                <h1 class="text-2xl text-black text-center">Create Review</h1>
+                <button id="closeBtn" class="text-black cursor-pointer text-right">X</button>
             </div>
             {% if request.user.is_authenticated %}
-            <form action="/reviews/" method="post" class="text-black">
+            <form action="/reviews/" method="post" class="text-black text-center">
                 {% csrf_token %}
-                <div class="star-rating flex gap-2 text-lg">
-                    <button type="button" class="star text-gray-300 hover:text-yellow-400 transition" data-value="1">★</button>
-                    <button type="button" class="star text-gray-300 hover:text-yellow-400 transition" data-value="2">★</button>
-                    <button type="button" class="star text-gray-300 hover:text-yellow-400 transition" data-value="3">★</button>
-                    <button type="button" class="star text-gray-300 hover:text-yellow-400 transition" data-value="4">★</button>
-                    <button type="button" class="star text-gray-300 hover:text-yellow-400 transition" data-value="5">★</button>
+                {{ form.stars }}
+                <div class="star-rating gap-2 text-2xl text-center py-2">
+                    <button type="button" class="star cursor-pointer text-gray-300 hover:text-yellow-400 transition" data-value="1">★</button>
+                    <button type="button" class="star cursor-pointer text-gray-300 hover:text-yellow-400 transition" data-value="2">★</button>
+                    <button type="button" class="star cursor-pointer text-gray-300 hover:text-yellow-400 transition" data-value="3">★</button>
+                    <button type="button" class="star cursor-pointer text-gray-300 hover:text-yellow-400 transition" data-value="4">★</button>
+                    <button type="button" class="star cursor-pointer text-gray-300 hover:text-yellow-400 transition" data-value="5">★</button>
                 </div>
-                {{ form }}
-                <button class="bg-third px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer" type="submit">Continue</button>
+                {{ form.message }}
+                <button class="bg-third px-8 py-1.5 mt-2 border-2 rounded-2xl text-white cursor-pointer" type="submit">Submit</button>
             </form>
             {% else %}
             <p>Log in to create a review.</p>

@@ -18,6 +18,10 @@
         border-radius: 8px;
     }
 
+    textarea {
+        height: 6rem;
+    }
+
     ::placeholder {
         color: rgb(175, 175, 175);
     }

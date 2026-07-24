@@ -63,6 +63,7 @@ class ServiceDocument(models.Model):
 
 class Subject(models.Model):
     name = models.CharField()
+    description = models.TextField()
 
     def __str__(self):
         return self.name
