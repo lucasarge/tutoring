@@ -46,17 +46,18 @@ class Service(models.Model):
 
     year = models.IntegerField(choices=YEAR_CHOICES, blank=True, null=True)
     subjects = models.ManyToManyField('Subject', through='SubjectService')
-    
-    documents = models.ManyToManyField(Document, through='ServiceDocument', blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return self.student.first_name
 
-class ServiceDocument(models.Model):
+class Resource(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    tutor = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name="resource_tutor")
     document = models.ForeignKey(Document, on_delete=models.CASCADE)
+    message = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return f"{self.document.title} for {self.service.student.first_name}"

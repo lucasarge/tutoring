@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import login_required
-from .models import Service, Invite, generate_code, Session, SubjectService, ServiceDocument, Document
-from .forms import InviteForm, SessionForm, CaregiverForm, StudentForm, LinkForm, ResourceForm, AssignResourceForm
+from .models import Service, Invite, generate_code, Session, SubjectService, Resource, Document
+from .forms import InviteForm, SessionForm, CaregiverForm, StudentForm, LinkForm, DocumentForm
 from django.utils import timezone
 from datetime import timedelta
 from django.http import HttpResponseForbidden, JsonResponse, FileResponse, Http404
@@ -119,9 +119,9 @@ def service(request, pk, page):
                 return redirect(f"/services/{pk}/dashboard/")
 
             if "assign_resources" in request.POST:
-                assign_form = AssignResourceForm(request.POST, instance=service)
-                if assign_form.is_valid():
-                    assign_form.save()
+                # assign_form = AssignDocumentForm(request.POST, instance=service)
+                # if assign_form.is_valid():
+                #     assign_form.save()
                     return redirect(f"/services/{pk}/dashboard/")
             
             else:
@@ -132,7 +132,7 @@ def service(request, pk, page):
 
         else:
             link_form = LinkForm()
-            assign_form = AssignResourceForm(instance=service)
+            assign_form = None
 
     if page == "calendar":
         
@@ -152,7 +152,7 @@ def service(request, pk, page):
     documents = None
 
     if page == "resources":
-        documents = ServiceDocument.objects.filter(service=service)
+        documents = Resource.objects.filter(service=service)
 
     if page == "survey":
         if request.method == "POST":
@@ -196,12 +196,12 @@ def all_services(request):
     resources = Document.objects.all()
     services = Service.objects.all()
     if request.method == "POST":
-        form = ResourceForm(request.POST, request.FILES)
+        form = DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect("/services/")
     else:
-        form = ResourceForm()
+        form = DocumentForm()
     return render(request, "services/all-services.html", {"services": services,"resources": resources, "form": form})
 
 def all_sessions(request):
