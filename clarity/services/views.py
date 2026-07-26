@@ -205,35 +205,46 @@ def all_services(request):
     return render(request, "services/all-services.html", {"services": services,"documents": documents, "form": form})
 
 def all_sessions(request):
-    sessions = Session.objects.filter(
-        Q(service__student=request.user)| 
-        Q(service__caregiver=request.user)| 
-        Q(service__tutor=request.user)
-    ).distinct()
+    # sessions = Session.objects.filter(
+    #     ~Q(service__student=request.user)| 
+    #     ~Q(service__caregiver=request.user)| 
+    #     ~Q(service__tutor=request.user)
+    # ).distinct()
+    sessions = Session.objects.all()
+    events = []
 
-    session_list = []
+    # session_list = []
     for session in sessions:
-        session_list.append({
-            'title': session.service.student.first_name.title(),
+        is_user = (session.service.student == request.user 
+                   or session.service.caregiver == request.user 
+                   or session.service.tutor == request.user)
+        events.append({
+            'title': session.service.student.first_name.title() if is_user else 'Booked out.',
             'start': session.start.strftime("%Y-%m-%dT%H:%M:%S"),
             'end': session.end.strftime("%Y-%m-%dT%H:%M:%S") if session.end else None,
+            'display': 'auto' if is_user else 'background',
+            'backgroundColor': '#808080' if not is_user else '',
+            'extendedProps': {
+                'isUser': is_user,
+                'details': session.note if is_user else ''
+            }
         })
 
-    priv_sessions = Session.objects.filter(
-        ~Q(service__student=request.user)| 
-        ~Q(service__caregiver=request.user)| 
-        ~Q(service__tutor=request.user)
-    ).distinct()
+    # priv_sessions = Session.objects.filter(
+    #     Q(service__student=request.user)| 
+    #     Q(service__caregiver=request.user)| 
+    #     Q(service__tutor=request.user)
+    # ).distinct()
 
-    priv_session_list = []
-    for priv_session in priv_sessions:
-        priv_session_list.append({
-            'title': priv_session.service.student.first_name.title(),
-            'start': priv_session.start.strftime("%Y-%m-%dT%H:%M:%S"),
-            'end': priv_session.end.strftime("%Y-%m-%dT%H:%M:%S") if priv_session.end else None,
-        })
-
-    return JsonResponse(session_list, safe=False)
+    # priv_session_list = []
+    # for priv_session in priv_sessions:
+    #     priv_session_list.append({
+    #         'title': priv_session.service.student.first_name.title(),
+    #         'start': priv_session.start.strftime("%Y-%m-%dT%H:%M:%S"),
+    #         'end': priv_session.end.strftime("%Y-%m-%dT%H:%M:%S") if priv_session.end else None,
+    #     })
+    # print(priv_session_list)
+    return JsonResponse(events, safe=False)
 
 def view_pdf(request, resource_id):
     resource = get_object_or_404(Resource, id=resource_id)

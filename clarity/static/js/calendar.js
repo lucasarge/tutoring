@@ -22,6 +22,16 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 calendarEl.classList.remove('fc-day-view-active')
             }
+        },
+        eventClick: function(info) {
+            if (!info.event.extendedProps.isUser) {
+                info.jsEvent.preventDefault();
+                return;
+            }
+            alert('Booking details: ' + info.event.extendedProps.details);
+        },
+        selectOverlap: function(event) {
+            return event.display !== "background";
         }
         });
         calendar.render();
