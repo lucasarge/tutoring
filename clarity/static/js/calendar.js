@@ -40,7 +40,13 @@ document.addEventListener('DOMContentLoaded', function() {
     flatpickr('.flatpickr-datetime', {
         enableTime: true,
         dateFormat: "Y-m-d H:i",
-        time_24hr: true,
+        time_24hr: false,
+
+        altInput: true,
+        altFormat: "d/m h:i K",
+        
+        defaultHour:3,
+        defaultMinute:30,
         
         minuteIncrement: 15, 
 

@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from django import forms
 from . import models
 
@@ -28,18 +30,30 @@ class CaregiverForm(forms.ModelForm):
             self.initial['subject'] = self.instance.subjects.all()
 
 class SessionForm(forms.ModelForm):
+    start = forms.DateTimeField(
+        input_formats=['%Y-%m-%d %H:%M'],
+        widget=forms.DateTimeInput(attrs={
+            'class': 'flatpickr-datetime',
+            'step': '900',
+            'placeholder': 'Select time and date.',
+        })
+    )
+
     class Meta:
         model = models.Session
-        fields = ('note','start','duration')
-        type = 'datetime-local'
-        widgets = {
-            'start': forms.DateTimeInput(attrs={
-                'class': 'flatpickr-15min',
-                'step': '900',
-                'placeholder': 'Select time and date.',
-                'format': '%Y-%m-%dT%H:%M'
-            })
-        }
+        fields = ('start','duration','note')
+
+    def clean(self):
+        cleaned_data = super().clean()
+        start = cleaned_data.get('start')
+        duration = cleaned_data.get('duration')
+
+        if start and duration:
+            end = start + timedelta(minutes=duration)
+            if models.Session.objects.filter(start__lt=end, end__gt=start).exists():
+                self.add_error('start', 'This time overlaps an existing session.')
+
+        return cleaned_data
 
 class LinkForm(forms.ModelForm):
     class Meta:
@@ -50,22 +64,6 @@ class DocumentForm(forms.ModelForm):
     class Meta:
         model = models.Document
         fields = ['title','file']
-
-# class AssignResourceForm(forms.ModelForm):
-#     documents = forms.ModelMultipleChoiceField(
-#         queryset=models.Document.objects.all(),
-#         widget=forms.CheckboxSelectMultiple,
-#         required=False
-#     )
-    
-#     class Meta:
-#         model = models.Service
-#         fields = ['documents']
-    
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         if self.instance and self.instance.pk:
-#             self.initial['documents'] = self.instance.documents.all()
 
 class ShareResourceForm(forms.ModelForm):
     class Meta:
