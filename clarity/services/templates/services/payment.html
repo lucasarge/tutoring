@@ -5,10 +5,10 @@
 {% block content %}
     <div class="flex items-center min-h-[calc(100vh-140px)] drop-shadow-md drop-shadow-mauve-900">
         <div class="w-full max-w-7xl">
-            <div class="w-3xl mx-auto bg-white text-black p-4 rounded-3xl mb-4">
+            <div class="w-5xl mx-auto bg-white text-black p-4 rounded-3xl mb-4">
                 <h1 class="text-3xl text-center">Payment:</h1>
             </div>
-            <div class="w-3xl mx-auto bg-white text-black p-4 rounded-3xl mb-4">
+            <div class="w-5xl mx-auto bg-white text-black p-4 rounded-3xl mb-4">
                 <div class="">
                     <h2 class="text-2xl pb-4">Tutoring Information:</h2>
                     <div class="">
@@ -19,10 +19,30 @@
                     </div>
                 </div>
             </div>
-            <div class="grid w-3xl mx-auto grid-cols-[1fr_auto] gap-4">
+            <div class="grid w-5xl mx-auto grid-cols-[1fr_auto] gap-4">
                 <div class="bg-white text-black p-4 rounded-3xl">
-                    <h2 class="text-2xl pb-4">All Sessions:</h2>
-
+                    <div class="grid grid-cols-[1fr_auto]">
+                        <h2 class="text-2xl pb-4">All Sessions:</h2>
+                        <div class="flex items-center pb-4 gap-2">
+                            <a href="?completed=true" class="px-8 py-1.5 border-2 rounded-2xl {% if current_status == 'true' %}bg-primary text-white{% else %}bg-third text-white{% endif %}">
+                                Completed
+                            </a>
+                            <a href="?completed=false" class="px-8 py-1.5 border-2 rounded-2xl {% if current_status == 'false' %}bg-primary text-white{% else %}bg-third text-white{% endif %}">
+                                Not Completed
+                            </a>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        {% for session in sessions %}
+                        <div class="bg-white drop-shadow-md drop-shadow-mauve-900 p-4 rounded-2xl">
+                            <div class="grid gap-4 grid-cols-[auto_1fr] pb-4">
+                                <h1>{{ session.start }}</h1>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <p class="col-span-4">Book a session, click <a href="/services/{{ service.pk }}/calendar/" class="underline">here</a>!</p>
+                        {% endfor %}
+                    </div>
                 </div>
                 <div class="bg-white text-black p-4 rounded-3xl">
                     <h2 class="text-2xl pb-4">Amount Due:</h2>

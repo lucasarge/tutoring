@@ -155,6 +155,17 @@ def service(request, pk, page):
     
     resources = Resource.objects.filter(service=service).order_by("-created")
 
+    sessions = None
+    if page == "payment":
+        status = request.GET.get('completed')
+        if status == 'true':
+            sessions = Session.objects.filter(completed=True)
+        elif status == 'false':
+            sessions = Session.objects.filter(completed=False)
+        else:
+            sessions = Session.objects.all()
+
+
     if page == "survey":
         if request.method == "POST":
             if request.user.user_type == "caregiver":
@@ -182,7 +193,8 @@ def service(request, pk, page):
     context = {
         "service":service, 
         "form":form, 
-        "session":next_session, 
+        "next_session":next_session, 
+        "sessions":sessions,
         "resources":resources,
         "link_form":link_form,
         "resource_form":resource_form
