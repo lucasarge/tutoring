@@ -1,7 +1,34 @@
 {% extends "layout.html" %}
 
-{% block title %}Payment{% endblock %}
+{% block title %}Settings{% endblock %}
 
 {% block content %}
-    <h1>Payment</h1>
+    <div class="flex items-center min-h-[calc(100vh-140px)] drop-shadow-md drop-shadow-mauve-900">
+        <div class="w-full max-w-7xl">
+            <div class="w-3xl mx-auto bg-white text-black p-4 rounded-3xl mb-4">
+                <h1 class="text-3xl text-center">Payment:</h1>
+            </div>
+            <div class="w-3xl mx-auto bg-white text-black p-4 rounded-3xl mb-4">
+                <div class="">
+                    <h2 class="text-2xl pb-4">Tutoring Information:</h2>
+                    <div class="">
+                        <p>The pricing for this service is $35 per hour.</p>
+                        <p>In person sessions have an added fee of $5 and can only be done in a certain area specified <a class="underline">here</a>.</p>
+                        <p>There are also some conditions around late cancellations. If there is a cancellation made on the day then there is a $10 fee.</p>
+                        <p>However if a cancellation is made an hour before start, the session is to be payed in full.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="grid w-3xl mx-auto grid-cols-[1fr_auto] gap-4">
+                <div class="bg-white text-black p-4 rounded-3xl">
+                    <h2 class="text-2xl pb-4">All Sessions:</h2>
+
+                </div>
+                <div class="bg-white text-black p-4 rounded-3xl">
+                    <h2 class="text-2xl pb-4">Amount Due:</h2>
+ 
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

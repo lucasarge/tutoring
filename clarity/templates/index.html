@@ -29,9 +29,9 @@
                 <p class="pb-4">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's.</p>
                 <div class="flex gap-4 overflow-auto">
                     {% for tutor in tutors %}
-                    <div class="shrink-0 h-44 w-64 border-third border-4 p-4 rounded-2xl">
+                    <div class="shrink-0 h-50 w-64 border-third border-4 p-4 rounded-2xl">
                         <h4 class="text-lg pb-4">{{ tutor.first_name }} {{ tutor.last_name }}</h4>
-                        <p></p>
+                        <p>{{ tutor.profile.description }}</p>
                     </div>
                     {% endfor %}
                 </div>

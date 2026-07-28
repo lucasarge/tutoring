@@ -39,4 +39,9 @@
         grid-template-columns: repeat(3, 1fr);
     }
 
+    svg:hover, svg *:hover {
+        fill: #000000 !important;
+        stroke: #000000 !important;
+    }
+
 }

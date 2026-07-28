@@ -18,8 +18,8 @@
                 </div>
             </div>
 
-            <div class="grid gap-4 text-black lg:grid-cols-[8fr_7fr] mb-4">
-            {% comment %} GRID {% endcomment %}
+            <div class="grid gap-4 text-black lg:grid-cols-[8fr_7fr]">
+
                 <div class="grid gap-4">
                     <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
                         <div class="grid grid-cols-[auto_1fr] pb-4">
@@ -53,7 +53,7 @@
                             {% else %}
                             <div>
                                 <h3 class="pb-2 text-lg underline underline-offset-3">Service Information:</h3>
-                                <p>This was blah bal as ighaisodhgi aihdg a sidgh ahig hahdg i ghsdai ahgdsioa hgoh agdh gasudh gah sdhgi hsai ghidahg iahsidg haigh iadhi ghaid hgai hdi hgaihs dgihai gdh i hi ghaisd hida hgi hasi ihga.</p>
+                                <p>{{ service.tutor.profile.description }}</p>
                             </div>
                             {% endif %}
                         </div>
@@ -110,7 +110,7 @@
                     </div>
                 </div>
                 <div class="grid gap-4">
-                {% comment %} END HERE {% endcomment %}
+
                     <div class="bg-white rounded-2xl row-span-2 px-8 py-6 row-span drop-shadow-md drop-shadow-mauve-900">
                         <div class="grid grid-cols-[auto_1fr] pb-4">
                             <h2 class="text-2xl">Booked Tutoring Session:</h2>
@@ -174,10 +174,11 @@
                             <h2 class="text-2xl">Pricing:</h2>
                             <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/payment/">→</a>
                         </div>
-                        <div class="grid-cols-2 grid gap-4">
-                            <h1>Pricing informationa gagahsighiag.</h1>
-                            <h1>Pricing informationa gagahsighiag.</h1>
-                            <h1>Pricing informationa gagahsighiag.</h1>
+                        <div class="">
+                            <p>The pricing for this service is $35 per hour.</p>
+                            <p>In person sessions have an added fee of $5 and can only be done in a certain area specified <a class="underline">here</a>.</p>
+                            <p>There are also some conditions around late cancellations. If there is a cancellation made on the day then there is a $10 fee.</p>
+                            <p>However if a cancellation is made an hour before start, the session is to be payed in full.</p>
                         </div>
                     </div>
                     {% endif %}
