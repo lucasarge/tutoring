@@ -82,6 +82,7 @@ class Session(models.Model):
     note = models.CharField(null=True, blank=True)
     start = models.DateTimeField()
     link = models.CharField(null=True, blank=True)
+    cost = models.DecimalField(decimal_places=2, max_digits=5)
 
     DURATION_CHOICES = [
         (30, '30 Minutes'),
@@ -94,6 +95,7 @@ class Session(models.Model):
     duration = models.IntegerField(choices=DURATION_CHOICES)
     end = models.DateTimeField()
     completed = models.BooleanField(default=False)
+    paid = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.service.student.first_name}'s Tutoring Session"

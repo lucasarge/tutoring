@@ -74,13 +74,13 @@
                             {% if not next_session.link %}
                             Will be uploaded 5 minutes prior start.
                             {% else %}
-                            <a class="underline" href="{{ next_session.link }}">{{ next_session.link }}</a>
+                            <a class="underline" id="session-link" target="_blank" href="/services/session-link/{{ next_session.id }}/">Click Here</a>
                             {% endif %}
                         </h3>
                         <div class="pt-4">
                             {% if request.user.user_type == "tutor" %}
                             {% if next_session.link %}
-                            <form action="" name="delete-link" method="post">
+                            <form name="delete-link" method="post">
                                 {% csrf_token %}
                                 <button class="bg-gray-300 px-8 py-1.5 rounded-2xl text-black cursor-pointer">Delete Link</button>
                             </form>

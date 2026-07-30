@@ -6,8 +6,8 @@ from django.utils import timezone
 from datetime import timedelta
 from django.http import HttpResponseForbidden, JsonResponse, FileResponse, Http404
 from .decorators import survey_required
-from django.db.models import Q
-from django.core.exceptions import ValidationError
+from django.db.models import Q, Sum
+from django.core.exceptions import PermissionDenied
 
 # Create your views here.
 
@@ -156,16 +156,26 @@ def service(request, pk, page):
     resources = Resource.objects.filter(service=service).order_by("-created")
 
     sessions = None
+    total_cost = None
+
     if page == "payment":
-        status = request.GET.get('completed')
-        if status == 'true':
+        completed_status = request.GET.get('completed')
+        paid_status = request.GET.get('paid')
+        if completed_status == 'true':
             sessions = Session.objects.filter(completed=True)
-        elif status == 'false':
+        elif completed_status == 'false':
             sessions = Session.objects.filter(completed=False)
+        elif paid_status == 'true':
+            sessions = Session.objects.filter(paid=True)
+        elif paid_status == 'false':
+            sessions = Session.objects.filter(paid=False)
         else:
             sessions = Session.objects.all()
 
+        total_cost = Session.objects.filter(completed=True, paid=False).aggregate(total=Sum('cost'))['total']
 
+        total_cost = total_cost or 0
+        
     if page == "survey":
         if request.method == "POST":
             if request.user.user_type == "caregiver":
@@ -197,7 +207,8 @@ def service(request, pk, page):
         "sessions":sessions,
         "resources":resources,
         "link_form":link_form,
-        "resource_form":resource_form
+        "resource_form":resource_form,
+        "total_cost":total_cost
     }
     
     return render(request, f"services/{page}.html", context)
@@ -254,3 +265,23 @@ def view_pdf(request, resource_id):
         return response
     except FileNotFoundError:
         raise Http404("PDF File not found.")
+
+def view_session_link(request, session_id):
+    session = get_object_or_404(Session, id=session_id)
+    is_authorised = Session.objects.filter(
+        id=session_id
+    ).filter(
+        Q(service__caregiver=request.user) | 
+        Q(service__student=request.user) | 
+        Q(service__tutor=request.user)
+    ).exists()
+
+    if not is_authorised:
+        raise PermissionDenied("You do not have permission to join this meeting. Contact me at 02040563805")
+
+    session.completed = True
+    session.save()
+
+    return redirect(f"https://meet.google.com/{session.link}")
+
+

@@ -46,3 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 })
+
+document.getElementById('session-link').addEventListener('click', function(event) {
+    
+});

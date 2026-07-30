@@ -80,7 +80,7 @@
             {% if request.user.user_type == "student" %}
             <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/resources/">Resources</a>
             {% elif request.user.user_type == "caregiver" %}
-            <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/payment/">Payment</a>
+            <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/payment/?completed=false">Payment</a>
             {% endif %}            
             <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/settings/">Settings</a>
         </div>
