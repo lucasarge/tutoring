@@ -75,10 +75,11 @@ class SubjectService(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.service.student.first_name
+        return self.subject.name
 
 class Session(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    subject = models.ForeignKey('SubjectService', on_delete=models.CASCADE)
     note = models.CharField(null=True, blank=True)
     start = models.DateTimeField()
     link = models.CharField(null=True, blank=True)

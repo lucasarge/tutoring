@@ -41,7 +41,16 @@ class SessionForm(forms.ModelForm):
 
     class Meta:
         model = models.Session
-        fields = ('start','duration','note')
+        fields = ('start','duration','subject','note')
+
+    def __init__(self, *args, **kwargs):
+        service = kwargs.pop('service', None)
+        super().__init__(*args, **kwargs)
+
+        if service:
+            self.fields['subject'].queryset = models.SubjectService.objects.filter(service=service)
+        else:
+            self.fields['subject'].queryset = models.SubjectService.objects.none()            
 
     def clean(self):
         cleaned_data = super().clean()

@@ -31,7 +31,7 @@
                 </div>
                 <p class="pt-2 text-left text-gray-600 italic">Note: Greyed out area's are booked out already.</p>
             </div>
-            <div class="grid grid-rows-[2fr_2fr] gap-4">
+            <div class="grid grid-rows-[1fr_auto] gap-4">
                 <div class="bg-white text-black p-4 rounded-3xl">
                     <h1 class="text-4xl pb-4">Booking:</h1>
                     <form action="/services/{{ service.pk }}/calendar/" method="post">
@@ -61,10 +61,7 @@
                 </div>
                 <div class="bg-white text-black p-4 rounded-3xl">
                     <h1 class="text-4xl pb-4">Pricing:</h1>
-                    <p>The pricing for this service is $35 per hour.</p>
-                    <p>In person sessions have an added fee of $5 and can only be done in a certain area specified <a class="underline">here</a>.</p>
-                    <p>There are also some conditions around late cancellations. If there is a cancellation made on the day then there is a $10 fee.</p>
-                    <p>However if a cancellation is made an hour before start, the session is to be payed in full.</p>
+                    <p>The pricing for this service is ${{ settings.GLOBAL_COST }} per hour. You cannot cancel a session within an hour of the start. For cancellations that happen on the same day there is a $10 fee.</p>
                 </div>
             </div>
         </div>

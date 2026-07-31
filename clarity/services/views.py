@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import login_required
+from clarity import settings
 from .models import Service, Invite, generate_code, Session, SubjectService, Resource, Document
 from .forms import InviteForm, SessionForm, CaregiverForm, StudentForm, LinkForm, DocumentForm, ShareResourceForm
 from django.utils import timezone
@@ -141,22 +142,24 @@ def service(request, pk, page):
     if page == "calendar":
         
         if request.method == "POST":
-            form = SessionForm(request.POST)
+            form = SessionForm(request.POST, service=service)
             if form.is_valid():
                 session = form.save(commit=False)
                 session.service_id = pk
+                session.cost = (session.duration*settings.GLOBAL_COST/60)
                 session.end = session.start + timedelta(minutes=session.duration)
                 session.save()
                 return redirect(f"/services/{pk}/calendar/")
             else:
                 print(form.errors)
         else:
-            form = SessionForm()
+            form = SessionForm(service=service)
     
     resources = Resource.objects.filter(service=service).order_by("-created")
 
     sessions = None
-    total_cost = None
+    total_cost = Session.objects.filter(completed=True, paid=False).aggregate(total=Sum('cost'))['total']
+    unpaid = None
 
     if page == "payment":
         completed_status = request.GET.get('completed')
@@ -171,8 +174,7 @@ def service(request, pk, page):
             sessions = Session.objects.filter(paid=False)
         else:
             sessions = Session.objects.all()
-
-        total_cost = Session.objects.filter(completed=True, paid=False).aggregate(total=Sum('cost'))['total']
+        unpaid = Session.objects.filter(completed=True, paid=False)        
 
         total_cost = total_cost or 0
         
@@ -208,7 +210,8 @@ def service(request, pk, page):
         "resources":resources,
         "link_form":link_form,
         "resource_form":resource_form,
-        "total_cost":total_cost
+        "total_cost":total_cost,
+        "unpaid": unpaid
     }
     
     return render(request, f"services/{page}.html", context)
@@ -238,14 +241,14 @@ def all_sessions(request):
                    or session.service.caregiver == request.user 
                    or session.service.tutor == request.user)
         events.append({
-            'title': session.service.student.first_name.title() if is_user else '',
+            'title': f"{session.service.student.first_name.title()}: {session.subject}" if is_user else '',
             'start': timezone.localtime(session.start).strftime("%Y-%m-%dT%H:%M:%S"),
             'end': timezone.localtime(session.end).strftime("%Y-%m-%dT%H:%M:%S") if session.end else None,
             'display': 'auto' if is_user else 'background',
             'backgroundColor': '#808080' if not is_user else '',
             'extendedProps': {
                 'isUser': is_user,
-                'details': session.note if is_user else ''
+                'details': f"Tutor: {session.service.tutor.first_name}\nSubject: {session.subject}\nNote: {session.note}" if is_user else ''
             }
         })
 

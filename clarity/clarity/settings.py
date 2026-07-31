@@ -66,6 +66,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'clarity.context_processors.global_settings'
             ],
         },
     },
@@ -129,3 +130,6 @@ STATICFILES_DIRS = [ BASE_DIR / 'static']
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+
+GLOBAL_COST = 35
