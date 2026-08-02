@@ -1,3 +1,5 @@
+import zoneinfo
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import login_required
 from clarity import settings
@@ -162,6 +164,26 @@ def service(request, pk, page):
     unpaid = None
 
     if page == "payment":
+
+        if request.method == "POST":
+            if "cancel-session" in request.POST:
+                session_id = request.POST.get("cancel-session")
+                cancel_session = get_object_or_404(Session, id=session_id)
+
+                if cancel_session.service.caregiver != request.user:
+                    return redirect(f"/services/{pk}/{page}/")
+
+                local_tz = zoneinfo.ZoneInfo("Pacific/Auckland")
+                now = timezone.now().astimezone(local_tz)
+                if now >= (cancel_session.start - timedelta(hours=1)):
+                    return redirect(f"/services/{pk}/{page}/")
+
+                if now.date() == cancel_session.start.date():
+                    cancel_session.fees += 10
+                cancel_session.cancelled = True
+                cancel_session.save()
+                return redirect(f"/services/{pk}/{page}/")
+
         completed_status = request.GET.get('completed')
         paid_status = request.GET.get('paid')
         if completed_status == 'true':

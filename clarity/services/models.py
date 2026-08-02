@@ -97,6 +97,9 @@ class Session(models.Model):
     end = models.DateTimeField()
     completed = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
+    fees = models.DecimalField(decimal_places=2, max_digits=5, default=0)
+    cancelled = models.BooleanField(default=False)
+    
 
     def __str__(self):
         return f"{self.service.student.first_name}'s Tutoring Session"

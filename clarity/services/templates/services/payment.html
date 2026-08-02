@@ -64,6 +64,13 @@
                             <h3>Tutor: {{ session.service.tutor.first_name }} {{ session.service.tutor.last_name }}</h3>
                             <h3>Completed: {{ session.completed }}</h3>
                             <h3>Paid: {{ session.paid }}</h3>
+                            {% if not session.completed %}
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="cancel-session" value="{{ session.id }}">
+                                    <button class="bg-gray-300 px-8 py-1.5 w-full mt-4 rounded-2xl text-black cursor-pointer">Cancel Session</button> 
+                                </form>
+                            {% endif %}
                         </div>
                     </div>
                     {% empty %}
