@@ -5,10 +5,10 @@
 {% block content %}
     <div class="flex items-center min-h-[calc(100vh-140px)] drop-shadow-md drop-shadow-mauve-900">
         <div class="w-full max-w-7xl">
-            <div class="w-5xl mx-auto bg-white text-black p-4 rounded-3xl mb-4">
+            <div class="mx-auto bg-white text-black p-4 rounded-3xl mb-4">
                 <h1 class="text-3xl text-center">Payment:</h1>
             </div>
-            <div class="w-5xl mx-auto bg-white text-black p-4 rounded-3xl mb-4">
+            <div class="mx-auto bg-white text-black p-4 rounded-3xl mb-4">
                 <div class="">
                     <h2 class="text-2xl pb-4">Pricing Information:</h2>
                     <div class="">
@@ -16,8 +16,8 @@
                     </div>
                 </div>
             </div>
-            <div class="w-5xl mx-auto bg-white text-black p-4 rounded-3xl mb-4">
-                <h2 class="text-2xl pb-4">Amount Due: ${{ total_cost }}</h2>
+            <div class="mx-auto bg-white text-black p-4 rounded-3xl mb-4">
+                <h2 class="text-2xl pb-4">Amount Due: ${{ total_owed|floatformat:2 }}</h2>
                 <div class="grid grid-cols-4 gap-4">
                     {% for session in unpaid %}
                     <div class="bg-white drop-shadow-md drop-shadow-mauve-900 p-4 rounded-2xl border-third border-2">
@@ -27,13 +27,17 @@
                         <h3>Tutor: {{ session.service.tutor.first_name }} {{ session.service.tutor.last_name }}</h3>
                         <h3>Completed: {{ session.completed }}</h3>
                         <h3>Paid: {{ session.paid }}</h3>
+                        <h3>Cancelled: {{ session.cancelled }}</h3>
+                        <div class="bg-gray-300 px-8 py-1.5 w-full mt-4 rounded-2xl text-black text-center">
+                            Total Cost: ${% if session.cancelled %}{{session.fees}}{% else %}{{ session.fees|add:session.cost|floatformat:2 }}{% endif %}
+                        </div> 
                     </div>
                     {% empty %}
                     <p class="col-span-4">Book a session, click <a href="/services/{{ service.pk }}/calendar/" class="underline">here</a>!</p>
                     {% endfor %}
                 </div>
             </div>
-            <div class="w-5xl mx-auto bg-white text-black p-4 rounded-3xl">
+            <div class="mx-auto bg-white text-black p-4 rounded-3xl">
                 <div class="grid grid-cols-[1fr_auto]">
                     <h2 class="text-2xl pb-4">All Sessions:</h2>
                     <div class="flex items-center pb-4 gap-2">
@@ -64,7 +68,11 @@
                             <h3>Tutor: {{ session.service.tutor.first_name }} {{ session.service.tutor.last_name }}</h3>
                             <h3>Completed: {{ session.completed }}</h3>
                             <h3>Paid: {{ session.paid }}</h3>
-                            {% if not session.completed %}
+                            <h3>Cancelled: {{ session.cancelled }}</h3>
+                            <h3>
+                                Total Cost: ${% if session.cancelled %}{{session.fees}}{% else %}{{ session.fees|add:session.cost|floatformat:2 }}{% endif %}
+                            </h3>
+                            {% if not session.completed and not session.cancelled %}
                                 <form method="POST">
                                     {% csrf_token %}
                                     <input type="hidden" name="cancel-session" value="{{ session.id }}">

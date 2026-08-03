@@ -160,7 +160,9 @@ def service(request, pk, page):
     resources = Resource.objects.filter(service=service).order_by("-created")
 
     sessions = None
-    total_cost = Session.objects.filter(completed=True, paid=False).aggregate(total=Sum('cost'))['total']
+    total_cost = Session.objects.filter(completed=True, paid=False).aggregate(total=Sum('cost'))['total'] or 0
+    total_fees = Session.objects.filter(cancelled=True, paid=False).aggregate(total=Sum('fees'))['total'] or 0
+    total_owed = total_cost + total_fees
     unpaid = None
 
     if page == "payment":
@@ -180,6 +182,8 @@ def service(request, pk, page):
 
                 if now.date() == cancel_session.start.date():
                     cancel_session.fees += 10
+                else:
+                    cancel_session.paid = True
                 cancel_session.cancelled = True
                 cancel_session.save()
                 return redirect(f"/services/{pk}/{page}/")
@@ -195,10 +199,11 @@ def service(request, pk, page):
         elif paid_status == 'false':
             sessions = Session.objects.filter(paid=False)
         else:
-            sessions = Session.objects.all()
-        unpaid = Session.objects.filter(completed=True, paid=False)        
-
-        total_cost = total_cost or 0
+            current_time = timezone.now()
+            upcoming = Session.objects.filter(start__gte=current_time).order_by("start")
+            passed = Session.objects.filter(start__lt=current_time).order_by("-start")
+            sessions = list(upcoming) + list(passed)
+        unpaid = Session.objects.filter(Q(completed=True) | Q(cancelled=True), paid=False)        
         
     if page == "survey":
         if request.method == "POST":
@@ -232,7 +237,7 @@ def service(request, pk, page):
         "resources":resources,
         "link_form":link_form,
         "resource_form":resource_form,
-        "total_cost":total_cost,
+        "total_owed":total_owed,
         "unpaid": unpaid
     }
     
@@ -255,7 +260,8 @@ def all_services(request):
 
 def all_sessions(request):
 
-    sessions = Session.objects.filter(end__gt=timezone.now())
+    sessions = Session.objects.filter(end__gt=timezone.now(), cancelled=False)
+    print(sessions)
     events = []
 
     for session in sessions:
