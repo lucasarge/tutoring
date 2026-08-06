@@ -18,6 +18,10 @@
         border-radius: 8px;
     }
 
+    label {
+        margin: 10px;
+    }
+
     textarea {
         height: 6rem;
     }

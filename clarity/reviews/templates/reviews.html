@@ -15,7 +15,7 @@
                 <div>
                     <h1 class="text-3xl">Clarity Tutoring</h1>
                     <hr>
-                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets.</p>
+                    <p>Clarity Tutoring is a local learning service in Tauranga and online service for New Zealand that helps students build strong skills and boost their school confidence through clear, one-on-one lessons tailored to each child's unique needs.</p>
                 </div>
                 <div>
                     <h2 class="text-xl text-center py-4">Average Rating:</h2>
@@ -32,14 +32,14 @@
                 {% for review in reviews %}
                     <div class="bg-white drop-shadow-md drop-shadow-mauve-900 p-4 rounded-2xl">
                         <div class="grid gap-2 grid-cols-[auto_3fr_2fr] pb-2">
-                            <img id="profileBtn" src="{{ request.user.profile.profile_image.url }}" alt="" class="border h-10 aspect-square rounded-full object-cover mx-auto">
+                            <img id="profileBtn" src="{{ review.user.profile.profile_image.url }}" alt="" class="border h-10 aspect-square rounded-full object-cover mx-auto">
                             <div>
                                 <h4>{{ review.user.first_name }} {{ review.user.last_name }}</h4>
                                 <h4 class="text-xs">{{ review.created }}</h4>
                             </div>
                             <div>
                                 <h4 class="text-right">
-                                    <div class="star-rating flex gap-x-1 text-right">
+                                    <div class="star-rating gap-x-1 text-right">
                                         {% for _ in "12345"|make_list %}
                                             <span class="{% if forloop.counter > review.stars %}text-gray-300{% else %}text-yellow-400{% endif %}">★</span>
                                         {% endfor %}
@@ -76,7 +76,7 @@
                 <button class="bg-third px-8 py-1.5 mt-2 border-2 rounded-2xl text-white cursor-pointer" type="submit">Submit</button>
             </form>
             {% else %}
-            <p>Log in to create a review.</p>
+            <p class="pt-2 text-black text-center"><a class="underline" href="/users/login/">Login</a> to create a review.</p>
             {% endif %}
         </div>
     </div>
