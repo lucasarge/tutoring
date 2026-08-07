@@ -1,3 +1,5 @@
+"""This is a urls file that runs different views through a specified path."""
+
 """
 URL configuration for clarity project.
 
@@ -21,6 +23,7 @@ from django.urls import include
 from django.conf import settings
 from django.conf.urls.static import static
 
+# This is the root app of Clarity Tutoring therefore is the hub to connect all the other apps.
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='home'),
@@ -30,5 +33,6 @@ urlpatterns = [
     path('reviews/', include('reviews.urls'))
 ]
 
+# This defines where the static files are located.
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

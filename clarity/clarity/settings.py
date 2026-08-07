@@ -1,3 +1,5 @@
+"""This is a settings file generated and configured to the needs of Clarity Tutoring."""
+
 """
 Django settings for clarity project.
 
