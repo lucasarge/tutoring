@@ -18,8 +18,8 @@
         border-radius: 8px;
     }
 
-    label {
-        margin: 10px;
+    #id_subject {
+        gap: 1rem;
     }
 
     textarea {

@@ -1,11 +1,14 @@
 {% extends "layout.html" %}
 
+{# Title used for tab name. #}
 {% block title %}Join{% endblock %}
 
+{# Displays a form for students to input their caregiver code. #}
 {% block content %}
     <div class="flex items-center min-h-[calc(100vh-140px)] drop-shadow-md drop-shadow-mauve-900">
         <div class="w-lg mx-auto bg-white text-black p-4 rounded-3xl text-center">
             <h1 class="text-4xl">Join Code:</h1>
+            <p>Have your caregiver create an account.</p>
             <p class="py-4">Type in the join code from your caregiver.</p>
             <form action="/services/join/" method="post">
                 {% csrf_token %}

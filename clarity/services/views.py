@@ -156,6 +156,25 @@ def service(request, pk, page):
                 print(form.errors)
         else:
             form = SessionForm(service=service)
+
+    if page == "settings":
+        if request.method == "POST":
+            if request.user.user_type == "caregiver":
+                form = CaregiverForm(request.POST, instance=service)
+            elif request.user.user_type == "student":
+                form = StudentForm(request.POST, instance=service)
+            if form and form.is_valid():
+                saved_service = form.save()
+
+                if 'subject' in form.cleaned_data:
+                    selected_subjects = form.cleaned_data['subject']
+
+                    SubjectService.objects.filter(service=saved_service).exclude(subject__in=selected_subjects).delete()
+                    
+                    for subject in selected_subjects:
+                        SubjectService.objects.get_or_create(service=saved_service, subject=subject)
+                                
+                return redirect(f"/services/{pk}/dashboard/")
     
     resources = Resource.objects.filter(service=service).order_by("-created")
 
@@ -276,7 +295,7 @@ def all_sessions(request):
             'backgroundColor': '#808080' if not is_user else '',
             'extendedProps': {
                 'isUser': is_user,
-                'details': f"Tutor: {session.service.tutor.first_name}\nSubject: {session.subject}\nNote: {session.note}" if is_user else ''
+                'details': f"\nTutor: {session.service.tutor.first_name}\nSubject: {session.subject}\nNote: {session.note}" if is_user else ''
             }
         })
 
