@@ -165,16 +165,16 @@ def service(request, pk, page):
         completed_status = request.GET.get('completed')
         paid_status = request.GET.get('paid')
         if completed_status == 'true':
-            sessions = Session.objects.filter(completed=True)
+            sessions = Session.objects.filter(Q(service__caregiver=request.user) | Q(service__student=request.user) | Q(service__tutor=request.user), completed=True)
         elif completed_status == 'false':
-            sessions = Session.objects.filter(completed=False)
+            sessions = Session.objects.filter(Q(service__caregiver=request.user) | Q(service__student=request.user) | Q(service__tutor=request.user), completed=False)
         elif paid_status == 'true':
-            sessions = Session.objects.filter(paid=True)
+            sessions = Session.objects.filter(Q(service__caregiver=request.user) | Q(service__student=request.user) | Q(service__tutor=request.user), paid=True)
         elif paid_status == 'false':
-            sessions = Session.objects.filter(paid=False)
+            sessions = Session.objects.filter(Q(service__caregiver=request.user) | Q(service__student=request.user) | Q(service__tutor=request.user), paid=False)
         else:
-            sessions = Session.objects.all()
-        unpaid = Session.objects.filter(completed=True, paid=False)        
+            sessions = Session.objects.filter(Q(service__caregiver=request.user) | Q(service__student=request.user) | Q(service__tutor=request.user))
+        unpaid = Session.objects.filter(Q(service__caregiver=request.user) | Q(service__student=request.user) | Q(service__tutor=request.user), completed=True, paid=False)        
 
         total_cost = total_cost or 0
         
@@ -229,7 +229,7 @@ def all_services(request):
             return redirect("/services/")
     else:
         form = DocumentForm()
-    return render(request, "services/all-services.html", {"services": services,"documents": documents, "form": form})
+    return render(request, "services/all-services.html", {"services": services, "resources": documents, "form": form})
 
 def all_sessions(request):
 
@@ -286,5 +286,3 @@ def view_session_link(request, session_id):
     session.save()
 
     return redirect(f"https://meet.google.com/{session.link}")
-
-
