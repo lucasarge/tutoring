@@ -1,3 +1,5 @@
+"""This is a asgi file that is required in the Django project for configuration."""
+
 """
 WSGI config for clarity project.
 

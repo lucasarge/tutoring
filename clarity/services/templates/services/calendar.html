@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
 
+{# Title used for tab name. #}
 {% block title %}Calendar{% endblock %}
 
+{# Loads the calendar pages JavaScript file. #}
 {% block script %}
 {% load static %}
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.20/index.global.min.js'></script>
@@ -12,36 +14,39 @@
 {% block content %}
     <div class="flex items-center min-h-[calc(100vh-140px)] drop-shadow-md drop-shadow-mauve-900">
 
+        {# Checks if the user is a student and if so just displays the calendar. #}
         {% if request.user.user_type == "student" %}
-
         <div class="w-4xl mx-auto bg-white text-black p-4 rounded-3xl text-center">
             <div class="calendar-wrapper">
                 <div id='calendar'></div>
             </div>
         </div>
         
+        {# Checks if the user is a caregivers and if so displays calendar and booking information. #}
         {% elif request.user.user_type == "caregiver" %}
-
         <div class="grid grid-cols-[2fr_1fr] gap-4">
             <div class="w-3xl mx-auto bg-white text-black p-4 rounded-3xl text-center">
                 <div class="calendar-wrapper">
-                    <div>
-                        <div id='calendar'></div>
-                    </div>
+                    <div id='calendar'></div>
                 </div>
                 <p class="pt-2 text-left text-gray-600 italic">Note: Greyed out area's are booked out already.</p>
             </div>
+
+            {# Booking and Pricing section that will only display to caregivers. #}
             <div class="grid grid-rows-[1fr_auto] gap-4">
                 <div class="bg-white text-black p-4 rounded-3xl">
                     <h1 class="text-4xl pb-4">Booking:</h1>
                     <form action="/services/{{ service.pk }}/calendar/" method="post">
                         {% csrf_token %}
+                        
+                        {# For each field it will display the information below removing repetitive code. #}
                         {% for field in form %}
                         <div class='pb-2'>
                             <h3 class="flex gap-1">
                                 {{ field.label }}:
-                                {% if field.errors %}
 
+                                {# If there are errors display an error symbol with information on hover. #}
+                                {% if field.errors %}
                                 <div class="relative group flex">
                                     <span class="cursor-pointer text-white">&#9888;</span>
                                     <div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2">
@@ -53,27 +58,25 @@
                                 </div>
                                 {% endif%}
                             </h3>
+
+                            {# Displays the input for each field .#}
                             {{ field }}
                         </div>
                         {% endfor %}
                         <button class="bg-third px-8 py-2 mt-4 border-2 rounded-2xl text-white cursor-pointer" type="submit">Submit</button>
                     </form>
                 </div>
+
+                {# Shares information about pricing with the GLOBALC_COST variable allowing for easier changes. #}
                 <div class="bg-white text-black p-4 rounded-3xl">
                     <h1 class="text-4xl pb-4">Pricing:</h1>
                     <p>The pricing for this service is ${{ settings.GLOBAL_COST }} per hour. You cannot cancel a session within an hour of the start. For cancellations that happen on the same day there is a $10 fee.</p>
                 </div>
             </div>
         </div>
+
+        {# Loads script for FlatPickr used in the time selection input. #}
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-        <script>
-            flatpickr(".flatpickr-15min", {
-                enableTime: true,
-                dateFormat: "Y-m-d H:i",
-                time_24hr: true,    
-                minuteIncrement: 15
-            });
-        </script>
         {% endif %}
     </div>
 {% endblock %}

@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 
+{# Title used for tab name. #}
 {% block title %}Services{% endblock %}
 
 {% block script %}
@@ -12,7 +13,9 @@
 {% block content %}
     <div class="items-center justify-center min-h-[calc(100vh-140px)]">
         <div class="bg-white text-black rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
-            <h1 class="pb-4 text-2xl">Services: </h1>
+            
+            {# For loop that displays each service as a link to more information while displaying users and if they have completed the survey. #}
+            <h1 class="pb-4 text-2xl">Services:</h1>
             <div class="grid gap-8 lg:grid-cols-4">
                 {% for service in services %}
                 <a href="{{ service.pk }}/dashboard/" class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900 text-black">
@@ -25,17 +28,13 @@
                             <img src="{{ service.caregiver.profile.profile_image.url }}" alt="" class="h-10 aspect-square rounded-full object-cover mx-auto border-black border">
                             <h3 class="">{{ service.caregiver.first_name }}</h3>
                         </div>
-                        <h4>Survey: 
-                            {% if service.year %}
-                            ✓
-                            {% else%}
-                            ✗
-                            {% endif %}
-                        </h4>
+                        <h4>Survey: {% if service.year %}✓{% else %}✗{% endif %}</h4>
                     </div>
                 </a>
                 {% endfor %}
             </div>
+            
+            {# For loop that displays each Resource uploaded to the Resource library with a link to open the PDF. #}
             <h1 class="py-4 text-2xl">Resources:</h1>
             <div class="grid lg:grid-cols-4 gap-8">
                 {% for resource in resources %}
@@ -44,6 +43,8 @@
                 </a>
                 {% endfor %}
             </div>
+            
+            {# Upload Resources form to add PDFs to the library of resources. #}
             <h1 class="py-4 text-2xl">Upload Resources:</h1>
             <form action="/services/" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}

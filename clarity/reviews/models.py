@@ -1,8 +1,12 @@
+"""This file defines database models and their fields."""
+
 from django.db import models
 from users.models import CustomUser
 
-# Create your models here.
+# Review model with necessary fields displaying the reviews first name on the admin dashboard.
 class Review(models.Model):
+
+    # Constant that provides the different star rating options.
     STARS_CHOICES = [
         (1, "1"),
         (2, "2"),

@@ -1,3 +1,5 @@
+import zoneinfo
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.views import login_required
 from clarity import settings
@@ -154,14 +156,57 @@ def service(request, pk, page):
                 print(form.errors)
         else:
             form = SessionForm(service=service)
+
+    if page == "settings":
+        if request.method == "POST":
+            if request.user.user_type == "caregiver":
+                form = CaregiverForm(request.POST, instance=service)
+            elif request.user.user_type == "student":
+                form = StudentForm(request.POST, instance=service)
+            if form and form.is_valid():
+                saved_service = form.save()
+
+                if 'subject' in form.cleaned_data:
+                    selected_subjects = form.cleaned_data['subject']
+
+                    SubjectService.objects.filter(service=saved_service).exclude(subject__in=selected_subjects).delete()
+                    
+                    for subject in selected_subjects:
+                        SubjectService.objects.get_or_create(service=saved_service, subject=subject)
+                                
+                return redirect(f"/services/{pk}/dashboard/")
     
     resources = Resource.objects.filter(service=service).order_by("-created")
 
     sessions = None
-    total_cost = Session.objects.filter(completed=True, paid=False).aggregate(total=Sum('cost'))['total']
+    total_cost = Session.objects.filter(completed=True, paid=False).aggregate(total=Sum('cost'))['total'] or 0
+    total_fees = Session.objects.filter(cancelled=True, paid=False).aggregate(total=Sum('fees'))['total'] or 0
+    total_owed = total_cost + total_fees
     unpaid = None
 
     if page == "payment":
+
+        if request.method == "POST":
+            if "cancel-session" in request.POST:
+                session_id = request.POST.get("cancel-session")
+                cancel_session = get_object_or_404(Session, id=session_id)
+
+                if cancel_session.service.caregiver != request.user:
+                    return redirect(f"/services/{pk}/{page}/")
+
+                local_tz = zoneinfo.ZoneInfo("Pacific/Auckland")
+                now = timezone.now().astimezone(local_tz)
+                if now >= (cancel_session.start - timedelta(hours=1)):
+                    return redirect(f"/services/{pk}/{page}/")
+
+                if now.date() == cancel_session.start.date():
+                    cancel_session.fees += 10
+                else:
+                    cancel_session.paid = True
+                cancel_session.cancelled = True
+                cancel_session.save()
+                return redirect(f"/services/{pk}/{page}/")
+
         completed_status = request.GET.get('completed')
         paid_status = request.GET.get('paid')
         if completed_status == 'true':
@@ -173,8 +218,11 @@ def service(request, pk, page):
         elif paid_status == 'false':
             sessions = Session.objects.filter(Q(service__caregiver=request.user) | Q(service__student=request.user) | Q(service__tutor=request.user), paid=False)
         else:
-            sessions = Session.objects.filter(Q(service__caregiver=request.user) | Q(service__student=request.user) | Q(service__tutor=request.user))
-        unpaid = Session.objects.filter(Q(service__caregiver=request.user) | Q(service__student=request.user) | Q(service__tutor=request.user), completed=True, paid=False)        
+            current_time = timezone.now()
+            upcoming = Session.objects.filter(start__gte=current_time).order_by("start")
+            passed = Session.objects.filter(start__lt=current_time).order_by("-start")
+            sessions = list(upcoming) + list(passed)
+        unpaid = Session.objects.filter(Q(completed=True) | Q(cancelled=True), paid=False)     
 
         total_cost = total_cost or 0
         
@@ -210,7 +258,7 @@ def service(request, pk, page):
         "resources":resources,
         "link_form":link_form,
         "resource_form":resource_form,
-        "total_cost":total_cost,
+        "total_owed":total_owed,
         "unpaid": unpaid
     }
     
@@ -233,7 +281,8 @@ def all_services(request):
 
 def all_sessions(request):
 
-    sessions = Session.objects.filter(end__gt=timezone.now())
+    sessions = Session.objects.filter(end__gt=timezone.now(), cancelled=False)
+    print(sessions)
     events = []
 
     for session in sessions:
@@ -248,7 +297,7 @@ def all_sessions(request):
             'backgroundColor': '#808080' if not is_user else '',
             'extendedProps': {
                 'isUser': is_user,
-                'details': f"Tutor: {session.service.tutor.first_name}\nSubject: {session.subject}\nNote: {session.note}" if is_user else ''
+                'details': f"\nTutor: {session.service.tutor.first_name}\nSubject: {session.subject}\nNote: {session.note}" if is_user else ''
             }
         })
 

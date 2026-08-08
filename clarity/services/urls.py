@@ -13,7 +13,7 @@ urlpatterns = [
     path("sessions/", views.all_sessions, name="all_sessions"),
     path("", views.all_services, name="all_services"),
     path("pdf/<int:resource_id>/", views.view_pdf, name="view_pdf"),
-    path("session-link/<int:session_id>/", views.view_session_link, name="session_link")
+    path("session-link/<int:session_id>/", views.view_session_link, name="session_link"),
 ]
 
 if settings.DEBUG:

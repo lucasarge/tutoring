@@ -92,7 +92,7 @@
                             </form>
                             {% endif %}
                             {% else %}
-                            <button class="bg-gray-300 px-8 py-1.5 rounded-2xl text-black cursor-pointer">Cancel Session</button>    
+                            <a href="/services/{{ service.pk }}/payment/" class="bg-gray-300 px-8 py-1.5 rounded-2xl text-black cursor-pointer">Cancel Session</a>    
                             {% endif %}
                         </div>
                         {% else %}

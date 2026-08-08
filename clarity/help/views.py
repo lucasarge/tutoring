@@ -1,8 +1,14 @@
+"""This is a views file that holds functions or renders activated via url."""
+
 from django.shortcuts import render
 from .models import FAQ
 
-# Create your views here.
-
+# This is the help page view.
 def help(request):
+
+    # Collecting variables to display on the page.
     faq = FAQ.objects.all()
-    return render(request, 'help.html', {"faq":faq})
+    context = {"faq":faq}
+
+    # Rendering 'index.html' and parsing in context defined above.
+    return render(request, 'help.html', context)

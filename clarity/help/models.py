@@ -1,6 +1,8 @@
+"""This file defines database models and their fields."""
+
 from django.db import models
 
-# Create your models here.
+# Model with question and answer field displaying the question on the admin dashboard.
 class FAQ(models.Model):
     question = models.CharField()
     answer = models.TextField()

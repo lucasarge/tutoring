@@ -18,6 +18,10 @@
         border-radius: 8px;
     }
 
+    #id_subject {
+        gap: 1rem;
+    }
+
     textarea {
         height: 6rem;
     }
