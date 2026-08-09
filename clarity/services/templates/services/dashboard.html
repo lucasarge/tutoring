@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
 
+{# Title used for tab name. #}
 {% block title %}Dashboard{% endblock %}
 
+{# Loads the calendar JavaScript file. #}
 {% block script %}
 {% load static %}
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.20/index.global.min.js'></script>
@@ -12,6 +14,7 @@
     <div class="flex items-center justify-center min-h-[calc(100vh-140px)]">
         <div class="w-full max-w-7xl">
 
+            {# Title block for dashboard page. #}
             <div class="grid gap-8 text-black lg:grid-cols-[1fr] mb-4">
                 <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
                     <h2 class="text-3xl text-center">Welcome to {{ service.student.first_name|capfirst }}'s Tutoring</h2>
@@ -19,9 +22,10 @@
             </div>
 
             <div class="grid gap-4 text-black lg:grid-cols-[8fr_7fr]">
-
                 <div class="grid gap-4">
                     <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+
+                        {# Tutoring information block that shares information about the users with access and notes for them. #}
                         <div class="grid grid-cols-[auto_1fr] pb-4">
                             <h2 class="text-2xl">Tutoring Information:</h2>
                             <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/settings/">→</a>
@@ -44,12 +48,16 @@
                                     </div>
                                 </div>
                             </div>
+
+                            {# Displays the caregivers and students to tutor. #}
                             {% if request.user.user_type == "tutor" %}
                             <div>
                                 <h3 class="pb-2 text-lg underline underline-offset-3">Private Notes:</h3>
                                 <p>Caregiver: {{ service.caregiver_note }}</p>
                                 <p>Student: {{ service.student_note }}</p>
                             </div>
+                            
+                            {# Displays the tutors note to caregiver and student. #}
                             {% else %}
                             <div>
                                 <h3 class="pb-2 text-lg underline underline-offset-3">Service Information:</h3>
@@ -58,14 +66,20 @@
                             {% endif %}
                         </div>
                     </div>
+
+                    {# Block that shares information about the next tutoring session. #}
                     <div id="meeting-info" data-pk="{{ service.pk }}" class="row-span-2 bg-white text-black px-8 py-6 rounded-2xl drop-shadow-md drop-shadow-mauve-900">
                         <div class="grid grid-cols-[auto_1fr]">
                             <h1 class="text-2xl pb-4">Next Meeting Information:</h1>
+
+                            {# Last refreshed displayed to prevent spam refresh. #}
                             <div class="text-right px-2 text-sm">
                                 <h5>Last Refreshed:</h5>
                                 <h5 id="refreshed-time"></h5>
                             </div>
                         </div>
+
+                        {# Checking that there is a session to display. #}
                         {% if next_session %}
                         <h3>Start Time: {{ next_session.start }}</h3>
                         <h3>Duration: {{ next_session.duration }}</h3>
@@ -74,10 +88,14 @@
                             {% if not next_session.link %}
                             Will be uploaded 5 minutes prior start.
                             {% else %}
+
+                            {# Redirects user to session-link which will update the session to completed and then take them to Google Meets. #}
                             <a class="underline" id="session-link" target="_blank" href="/services/session-link/{{ next_session.id }}/">Click Here</a>
                             {% endif %}
                         </h3>
                         <div class="pt-4">
+
+                            {# If user is tutor provide input for session code from Google Meets or if already inputted delete button. #}
                             {% if request.user.user_type == "tutor" %}
                             {% if next_session.link %}
                             <form name="delete-link" method="post">
@@ -91,15 +109,20 @@
                                 <button class="bg-third px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer" type="submit">Submit</button>
                             </form>
                             {% endif %}
+
+                            {# If user is not a tutor then display cancel session button. #}
                             {% else %}
                             <a href="/services/{{ service.pk }}/payment/" class="bg-gray-300 px-8 py-1.5 rounded-2xl text-black cursor-pointer">Cancel Session</a>    
                             {% endif %}
                         </div>
+
+                        {# If there is no session prompt user to book. #}
                         {% else %}
                         <h3>No sessions booked. Click <a class="underline" href="/services/{{ service.pk }}/calendar/">here</a> to book.</h3>
                         {% endif %}
                     </div>
-                                    
+                    
+                    {# Help block with contact information and link to help page. #}
                     <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
                         <div class="grid grid-cols-[auto_1fr] pb-4">
                             <h2 class="text-2xl">Help:</h2>
@@ -111,6 +134,7 @@
                 </div>
                 <div class="grid gap-4">
 
+                    {# Using FullCalendarJS display all sessions in order. #}
                     <div class="bg-white rounded-2xl row-span-2 px-8 py-6 row-span drop-shadow-md drop-shadow-mauve-900">
                         <div class="grid grid-cols-[auto_1fr] pb-4">
                             <h2 class="text-2xl">Booked Tutoring Session:</h2>
@@ -119,7 +143,7 @@
                         <div id='calendar-min'></div>
                     </div>
                     
-
+                    {# Resources block that displays for tutor allowing them to assign resources to student. #}
                     {% if request.user.user_type == "tutor" %}
                     <div class="bg-white rounded-2xl row-span-2 px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
                         <div class="grid grid-cols-[auto_1fr] pb-2">
@@ -140,6 +164,8 @@
                             <button name="share_resources" class="bg-third px-8 py-1.5 mt-2 border-2 rounded-2xl text-white cursor-pointer" type="submit">Assign</button>
                         </form>
                     </div>
+
+                    {# Resources block that displays for student showing the most recent resource sent. #}
                     {% elif request.user.user_type == "student" %}
                     <div class="bg-white rounded-2xl row-span-2 px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
                         <div class="grid grid-cols-[auto_1fr] pb-4">
@@ -168,14 +194,16 @@
                             {% endif %}
                         </div>
                     </div>
+
+                    {# Pricing information displayed as well as total amount owed for caregiver. #}
                     {% elif request.user.user_type == "caregiver" %}
                     <div class="bg-white rounded-2xl row-span-2 px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
                         <div class="grid grid-cols-[auto_1fr] pb-4">
                             <h2 class="text-2xl">Pricing:</h2>
                             <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/payment/">→</a>
                         </div>
-                        <div class="">
-                            Total owed: ${{ total_cost }}
+                        <div>
+                            <p>Total owed: ${{ total_cost }}</p>
                             <p>The pricing for this service is ${{ settings.GLOBAL_COST }} per hour. You cannot cancel a session within an hour of the start. For cancellations that happen on the same day there is a $10 fee.</p>
                         </div>
                     </div>
@@ -187,12 +215,15 @@
     </div>
 
     <script>
+
+        {# Collecting current time to display on last refreshed. #}
         window.onload = function() {
             const now = new Date(); 
             const time = now.toLocaleTimeString();
             document.getElementById('refreshed-time').textContent = time;
         };
 
+        {# Page refresh called for when student opens a resource to update that it has been opened. #}
         function refreshPage() {
             setTimeout(() => {
                 window.location.reload();

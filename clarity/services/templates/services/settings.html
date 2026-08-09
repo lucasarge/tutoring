@@ -1,17 +1,17 @@
 {% extends "layout.html" %}
 
+{# Title used for tab name. #}
 {% block title %}Settings{% endblock %}
 
 {% block content %}
     <div class="flex items-center min-h-[calc(100vh-140px)] drop-shadow-md drop-shadow-mauve-900">
-        <div class="w-full max-w-7xl">
-            <div class="w-xl mx-auto bg-white text-black p-4 rounded-3xl mb-4">
-                <h1 class="text-3xl text-center">Settings:</h1>
-            </div>
-            <div class="w-xl mx-auto bg-white text-black p-4 rounded-3xl mb-4">
+        <div class="mx-auto max-w-4xl grid grid-cols-[3fr_1fr] gap-4">
+            <div class="mx-auto bg-white text-black p-4 rounded-3xl">
                 <div class="grid pb-4">
                     <h2 class="text-2xl">Tutoring Information:</h2>
                 </div>
+
+                {# Information displayed about the tutoring service. #}
                 <div class="grid grid-cols-[auto_1fr] gap-8">
                     <div>
                         <h3 class="pb-2 text-lg underline underline-offset-3">Users in Service:</h3>
@@ -22,20 +22,24 @@
                             </div>
                             <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
                                 <img src="{{ service.caregiver.profile.profile_image.url }}" alt="" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
-                                <h3 class="">{{ service.caregiver.first_name|capfirst }}</h3>
+                                <h3>{{ service.caregiver.first_name|capfirst }}</h3>
                             </div>
                             <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
                                 <img src="{{ service.tutor.profile.profile_image.url }}" alt="" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
-                                <h3 class="">{{ service.tutor.first_name|capfirst }}</h3>
+                                <h3>{{ service.tutor.first_name|capfirst }}</h3>
                             </div>
                         </div>
                     </div>
+
+                    {# If user is tutor display the private notes for tutor. #}
                     {% if request.user.user_type == "tutor" %}
                     <div>
                         <h3 class="pb-2 text-lg underline underline-offset-3">Private Notes:</h3>
                         <p>Caregiver: {{ service.caregiver_note }}</p>
                         <p>Student: {{ service.student_note }}</p>
                     </div>
+
+                    {# If user is caregiver or student display note from tutor. #}
                     {% else %}
                     <div>
                         <h3 class="pb-2 text-lg underline underline-offset-3">Service Information:</h3>
@@ -43,53 +47,49 @@
                     </div>
                     {% endif %}
                 </div>
+
+                {# Two seperate forms for both student and caregiver to update their survey information. #}
                 <form action="/services/{{ service.pk }}/survey/" method="post">
                     {% csrf_token %}
                     {% if request.user.user_type == "student" %}
-
                     <h4>Private Note to Tutor:</h4>
-                        <div>
-                            {{ form.student_note }}
-                        </div>
+                    <div>{{ form.student_note }}</div>
                         
                     {% elif request.user.user_type == "caregiver" %}
-
                     <div class="grid py-2 gap-4">
                         <h4>Year:</h4>
-                        <div>
-                            {{ form.year }}
-                        </div>
+                        <div>{{ form.year }}</div>
                         <h4>Subjects:</h4>
-                        {{ form.subject }}
+                        <div class="flex gap-4">{{ form.subject }}</div>
                         <h4>Private Note to Tutor:</h4>
-                        <div>
-                            {{ form.caregiver_note }}
-                        </div>
+                        <div>{{ form.caregiver_note }}</div>
                     </div>
-
                     {% endif %}
-
                     <button class="bg-third px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer" type="submit">Save</button>
                 </form>
             </div>
+
+            {# If user is caregiver provide a button for them to delete service or export finances. Not functional yet. #}
             {% if request.user.user_type == "caregiver" %}
-            <div class="grid w-xl mx-auto grid-cols-2 gap-4">
+            <div class="grid gap-4">
                 <div class="bg-white text-black p-4 rounded-3xl">
                     <h2 class="text-2xl pb-4">Export:</h2>
-                    <p class="pb-2">Export a receipt of all payments made through Clarity Tutoring. Feature not implemented yet...</p>
-                    <button class="bg-gray-300 px-8 py-1.5 rounded-2xl text-black cursor-pointer">Export</button> 
+                    <p class="pb-6">Export a receipt of all payments made through Clarity Tutoring. Feature not implemented yet...</p>
+                    <button class="bg-gray-300 w-full px-8 py-1.5 rounded-2xl text-black cursor-pointer">Export</button> 
                 </div>
                 <div class="bg-white text-black p-4 rounded-3xl">
                     <h2 class="text-2xl pb-4">Delete:</h2>
-                    <p class="pb-2">Remove all personal information of this service. This can't be undone. Feature not implemented yet...</p>
-                    <button class="bg-gray-300 px-8 py-1.5 rounded-2xl text-black cursor-pointer">Delete</button> 
+                    <p class="pb-6">Remove all personal information of this service. This can't be undone. Feature not implemented yet...</p>
+                    <button class="w-full bg-gray-300 px-8 py-1.5 rounded-2xl text-black cursor-pointer">Delete</button> 
                 </div>
             </div>
+
+            {# If user is student provide a button for them to remove themselves from service. Not functional yet. #}
             {% else %}
-            <div class="w-xl mx-auto bg-white text-black p-4 rounded-3xl mb-4">
+            <div class="bg-white text-black p-4 rounded-3xl">
                 <h2 class="text-2xl pb-4">Remove:</h2>
-                <p class="pb-2">Remove your account from the service. This can't be undone.</p>
-                <button class="bg-gray-300 px-8 py-1.5 rounded-2xl text-black cursor-pointer">Remove</button> 
+                <p class="pb-6">Remove your account from the service. This can't be undone. Feature not implemented yet...</p>
+                <button class="bg-gray-300 w-full px-8 py-1.5 rounded-2xl text-black cursor-pointer">Remove</button> 
             </div>
             {% endif %}
         </div>

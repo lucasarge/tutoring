@@ -59,7 +59,7 @@
                                 {% endif%}
                             </h3>
 
-                            {# Displays the input for each field .#}
+                            {# Displays the input for each field. #}
                             {{ field }}
                         </div>
                         {% endfor %}
@@ -67,7 +67,7 @@
                     </form>
                 </div>
 
-                {# Shares information about pricing with the GLOBALC_COST variable allowing for easier changes. #}
+                {# Shares information about pricing with the GLOBAL_COST variable allowing for easier changes. #}
                 <div class="bg-white text-black p-4 rounded-3xl">
                     <h1 class="text-4xl pb-4">Pricing:</h1>
                     <p>The pricing for this service is ${{ settings.GLOBAL_COST }} per hour. You cannot cancel a session within an hour of the start. For cancellations that happen on the same day there is a $10 fee.</p>
@@ -77,6 +77,14 @@
 
         {# Loads script for FlatPickr used in the time selection input. #}
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script>
+            flatpickr(".flatpickr-15min", {
+                enableTime: true,
+                dateFormat: "Y-m-d H:i",
+                time_24hr: true,    
+                minuteIncrement: 15
+            });
+        </script>
         {% endif %}
     </div>
 {% endblock %}

@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+    /* Custom colours allowing for a consistent theme. */
     --color-primary: oklab(37.251% -0.02105 -0.04872);
     --color-secondary: oklab(35.392% -0.01987 -0.04534);
     --color-third: rgb(147, 206, 126);
@@ -9,6 +10,7 @@
 }
 
 @layer components {
+    /* The following three components CSS updated for consistency and no ability to use Tailwind due to forms. */
     input, select, label, textarea {
         background-color: oklab(79.161% -0.09231 0.0836 / 0.137);
         border-color: oklab(79.161% -0.09231 0.0836); 
@@ -18,34 +20,34 @@
         border-radius: 8px;
     }
 
-    #id_subject {
-        gap: 1rem;
-    }
-
     textarea {
         height: 6rem;
     }
+    
+    #id_subject {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+    }
 
+    /* Adjust placeholders CSS in input for better readability. */
     ::placeholder {
         color: rgb(175, 175, 175);
     }
     
+    /* Adjust the FullCalendar CSS to fit the theme further. */
     .fc .fc-daygrid-day.fc-day-today, .fc .fc-timegrid-col.fc-day-today {
         background-color: rgba(147, 206, 126, 0.3) !important;
     }
 
+    /* Used to fix the css of FullCalendar. */
     .calendar-wrapper {
         all: revert;
     }
 
-    #id_subject {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-    }
-
+    /* Used to try update the flatpickr CSS. */
     svg:hover, svg *:hover {
         fill: #000000 !important;
         stroke: #000000 !important;
     }
-
 }

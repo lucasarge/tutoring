@@ -1,14 +1,21 @@
 {% extends "layout.html" %}
 
+{# Title used for tab name. #}
 {% block title %}Resources{% endblock %}
 
 {% block content %}
+
+    {# Resources block centered on page with a title. #}
     <div class="flex items-center min-h-[calc(100vh-140px)] drop-shadow-md drop-shadow-mauve-900">
         <div class="w-xl mx-auto bg-white text-black p-4 rounded-3xl">
             <h1 class="text-4xl">Resources:</h1>
+
+            {# For each resources assigned to the student by teacher display it with relevant information. #}
             {% for resource in resources %}
                 <div class="
                 bg-white mt-4 drop-shadow-md drop-shadow-mauve-900 p-4 rounded-2xl 
+
+                {# If resource isn't opened give it a green border to display that. #}
                 {% if not resource.opened %} 
                 border-2 border-third 
                 {% endif %}">
@@ -19,14 +26,20 @@
                             <h4 class="text-right">{{ resource.created }}</h4>
                         </div>
                     </div>
+
+                    {# Link to open resource as well as refresh tab to update the visuals on if it has been opened. #}
                     <h6 class="text-md">{{ resource.message }} Click <a href="/services/pdf/{{ resource.id }}/" onclick="refreshPage()" class="underline" target="_blank">here</a> to access the work.</h6>
                     <h6 class="text-xs text-right">Opened: {% if not resources.0.opened %}❌{% else %}✔️{% endif %}</h6>
                 </div>
+            
+            {# If there are no resources let the user know that it is not a visual bug. #}
             {% empty %}
                 <p class="mt-4">No resources uploaded yet.</p>
             {% endfor %}
         </div>
     </div>
+
+    {# Script used to run the refresh page 5 seconds after called for from opening resource. #}
     <script>
     function refreshPage() {
         setTimeout(() => {

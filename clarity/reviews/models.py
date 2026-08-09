@@ -19,6 +19,5 @@ class Review(models.Model):
     message = models.TextField()
     used = models.BooleanField(default=False)
     created = models.DateField(auto_now_add=True)
-
     def __str__(self):
         return self.user.first_name
