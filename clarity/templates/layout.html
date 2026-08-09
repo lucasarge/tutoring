@@ -48,6 +48,22 @@
                 <h2><a href="/help/">Help</a></h2>
             </div>
             <div class="flex gap-6 items-center">
+                <a href="
+                {% if not request.user.is_authenticated %}
+                /users/register/
+                {% elif not service %}
+                    {% if request.user.user_type == 'student' %}
+                    /services/join/
+                    {% elif request.user.user_type == 'caregiver' %}
+                    /services/invite/
+                    {% endif %}
+                {% elif not service.year %}
+                /services/{{ service.pk }}/survey/
+                {% else %}
+                /services/{{ service.pk }}/dashboard/
+                {% endif %}
+                " class="bg-third px-4 py-1 rounded-2xl text-lg text-white cursor-pointer">Start Now</a>
+
                 {% if request.user.is_authenticated %}
 
                 <div class="relative z-50">

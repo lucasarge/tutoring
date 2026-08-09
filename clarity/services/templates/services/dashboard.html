@@ -112,7 +112,11 @@
 
                             {# If user is not a tutor then display cancel session button. #}
                             {% else %}
-                            <a href="/services/{{ service.pk }}/payment/" class="bg-gray-300 px-8 py-1.5 rounded-2xl text-black cursor-pointer">Cancel Session</a>    
+                            <form method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="cancel-session" value="{{ next_session.id }}">
+                                <button class="bg-gray-300 px-8 py-1.5 w-full rounded-2xl text-black cursor-pointer">Cancel Session - Fees may be included</button> 
+                            </form>
                             {% endif %}
                         </div>
 
@@ -203,7 +207,7 @@
                             <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/payment/">→</a>
                         </div>
                         <div>
-                            <p>Total owed: ${{ total_cost }}</p>
+                            <p>Amount Due: ${{ total_owed|floatformat:2 }}</p>
                             <p>The pricing for this service is ${{ settings.GLOBAL_COST }} per hour. You cannot cancel a session within an hour of the start. For cancellations that happen on the same day there is a $10 fee.</p>
                         </div>
                     </div>
@@ -216,14 +220,14 @@
 
     <script>
 
-        {# Collecting current time to display on last refreshed. #}
+        // Collecting current time to display on last refreshed.
         window.onload = function() {
             const now = new Date(); 
             const time = now.toLocaleTimeString();
             document.getElementById('refreshed-time').textContent = time;
         };
 
-        {# Page refresh called for when student opens a resource to update that it has been opened. #}
+        // Page refresh called for when student opens a resource to update that it has been opened. 
         function refreshPage() {
             setTimeout(() => {
                 window.location.reload();

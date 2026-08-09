@@ -127,7 +127,8 @@ def service(request, pk, page):
     # Sets next_session to the session that is soonest.
     next_session = Session.objects.filter(
         service_id=pk,
-        start__gt=timezone.now()
+        start__gt=timezone.now(),
+        cancelled=False
     ).order_by('start').first()
 
     # Filter all resources to the services and in the order of the most recent first.
@@ -170,6 +171,35 @@ def service(request, pk, page):
                     resource_form.save()
                     return redirect(f"/services/{pk}/dashboard/")
 
+            if "cancel-session" in request.POST:
+            
+                # Getting cancel_session and time variables.
+                session_id = request.POST.get("cancel-session")
+                cancel_session = get_object_or_404(Session, id=session_id)
+                local_tz = zoneinfo.ZoneInfo("Pacific/Auckland")
+                now = timezone.now().astimezone(local_tz)
+
+                # If user is not caregiver or student of service then prevent cancellation.
+                if cancel_session.service.caregiver != request.user and cancel_session.service.student != request.user:
+                    return redirect(f"/services/{pk}/{page}/")
+
+                # Prevent cancellation if it starts within the next hour as a policy.
+                if now >= (cancel_session.start - timedelta(hours=1)):
+                    return redirect(f"/services/{pk}/{page}/")
+
+                # Add $10 fee if the cancellation happens in the same day.
+                if now.date() == cancel_session.start.date():
+                    cancel_session.fees += 10
+
+                # If cancellation happens a day prior don't add fee and set the session to paid.
+                else:
+                    cancel_session.paid = True
+
+                # Set cancelled to true and save that then refresh.
+                cancel_session.cancelled = True
+                cancel_session.save()
+                return redirect(f"/services/{pk}/{page}/")
+            
             # Else the POST request must be for link_form and if form is valid save.
             else:
                 link_form = LinkForm(request.POST, instance=next_session)
@@ -238,6 +268,10 @@ def service(request, pk, page):
     # If page is payment load the relevant information saving resources.
     if page == "payment":
 
+        # Removing access for student to access page.
+        if request.user.user_type == "student":
+                raise HttpResponseForbidden()
+        
         # Checking if user is sending a response to the form.
         if request.method == "POST":
             if "cancel-session" in request.POST:

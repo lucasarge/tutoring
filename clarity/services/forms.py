@@ -66,7 +66,7 @@ class SessionForm(forms.ModelForm):
 
         if start and duration:
             end = start + timedelta(minutes=duration)
-            if models.Session.objects.filter(start__lt=end, end__gt=start).exists():
+            if models.Session.objects.filter(start__lt=end, end__gt=start, cancelled=False).exists():
                 self.add_error('start', 'This time overlaps an existing session.')
 
         return cleaned_data
