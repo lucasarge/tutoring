@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 {% load static %}
-
 <html lang="en">
+
+{# Basic information that needs to be at the head of all pages. #}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,43 +12,62 @@
     {% block script %}{% endblock %}
     <title>{% block title %}{% endblock %} - Clarity Tutoring</title>
 </head>
+
 <body class="bg-secondary text-white">
     <nav class="sticky top-0 z-50 bg-primary drop-shadow-md drop-shadow-mauve-750">
         <div class="flex justify-between items-center max-w-6xl mx-auto px-6 py-4">
             <div class="flex gap-6 items-center">
+
+                {# Dynamic logo that shrinks when relevant. #}
                 <a href="/">
                     <div>
                         <img class="h-10 hidden sm:block" src="{% static 'images/logo.png' %}" alt="">
                         <img class="h-10 block sm:hidden" src="{% static 'images/icon.png' %}" alt="">
                     </div>
                 </a>
-                {% if request.user.service_caregiver.count != 0 %}
                 
+                {# Displays the different services linked to user that allows for multiple services as a feature in the future. #}
+                {% if request.user.service_caregiver.count != 0 %}
                     {% if request.user.user_type == "caregiver" %}
                     <div>
-                    {% for service in request.user.service_caregiver.all %}
-                        <h4><a class="{% if request.path == '/services/{{ service.pk }}/dashboard/' %}bold{% endif %}" href="/services/{{ service.pk }}/dashboard/">{{ service.student.first_name|capfirst }}'s Tutoring</a></h4>
-                    {% endfor %}
+                        {% for service in request.user.service_caregiver.all %}
+                        <h4>
+                            <a class="{% if request.path == '/services/{{ service.pk }}/dashboard/' %}bold{% endif %}" 
+                            href="/services/{{ service.pk }}/dashboard/">
+                                {{ service.student.first_name|capfirst }}'s Tutoring
+                            </a>
+                        </h4>
+                        {% endfor %}
                     </div>
                     {% endif %}
-                {% elif request.user.service_student.count != 0 %}
                 
+                {# Displays the different services linked to user that allows for multiple services as a feature in the future. #}
+                {% elif request.user.service_student.count != 0 %}
                     {% if request.user.user_type == "student" %}
                     <div>
-                    {% for service in request.user.service_student.all %}
-                        <h4><a href="/services/{{ service.pk }}/dashboard/">{{ request.user.first_name|capfirst }}'s Tutoring</a></h4>
-                    {% endfor %}
+                        {% for service in request.user.service_student.all %}
+                        <h4>
+                            <a href="/services/{{ service.pk }}/dashboard/">{{ request.user.first_name|capfirst }}'s Tutoring</a>
+                        </h4>
+                        {% endfor %}
                     </div>
                     {% endif %}
                 
+                {# Displays link to all tutoring services for tutors. #}
                 {% elif request.user.user_type == "tutor" %}
-                    <h4><a href="/services/">Tutoring Services</a></h4>
+                    <h4>
+                        <a href="/services/">Tutoring Services</a>
+                    </h4>
                 {% endif%}
+                
+                {# Links to pages that are displayed for any user. #}
                 <h2><a href="/">About</a></h2>
                 <h2><a href="/reviews/">Reviews</a></h2>
                 <h2><a href="/help/">Help</a></h2>
             </div>
             <div class="flex gap-6 items-center">
+
+                {# Button that will update where it takes user relative to where they are upto in the setup process. #}
                 <a href="
                 {% if not request.user.is_authenticated %}
                 /users/register/
@@ -62,12 +82,14 @@
                 {% else %}
                 /services/{{ service.pk }}/dashboard/
                 {% endif %}
-                " class="bg-third px-4 py-1 rounded-2xl text-lg text-white cursor-pointer">Start Now</a>
+                " class="bg-third px-4 py-1 rounded-2xl text-white cursor-pointer
+                ">Start Now</a>
 
+                {# If user is logged in display profile picture icon with links to profile page and logout. #}
                 {% if request.user.is_authenticated %}
-
                 <div class="relative z-50">
-                    <img id="profileBtn" src="{{ request.user.profile.profile_image.url }}" alt="" class="cursor-pointer h-10 aspect-square rounded-full object-cover mx-auto">
+                    <img id="profileBtn" src="{{ request.user.profile.profile_image.url }}" alt="" 
+                    class="cursor-pointer h-10 aspect-square rounded-full object-cover mx-auto">
                     <div id="profileMenu" class="hidden absolute top-full mt-2 left-1/2 translate-x-[-90%] z-50">
                         <div class="bg-gray-200 text-black text-md rounded-lg px-3 py-2 shadow-lg w-fit whitespace-nowrap text-right">
                             <h4 class="text-l"><a href="/users/profile/">Profile</a></h4>
@@ -80,6 +102,7 @@
                     </div>
                 </div>
 
+                {# If user is not logged in provide links to register and login pages. #}
                 {% else %}
                 <h2><a href="/users/register/">Register</a></h2>
                 <h2><a href="/users/login/">Login</a></h2>
@@ -88,7 +111,8 @@
         </div>
     </nav>
     
-    {% if "/services/" in request.path and "/services/join" not in request.path and "/services/invites" not in request.path and request.user.user_type != "tutor"%}
+    {# Second navigation bar that only displays on service/pk url pages with seperate links for different user_types. #}
+    {% if "/services/" in request.path and "/services/join" not in request.path and "/services/invites" not in request.path %}
     <div class="pb-1 sticky top-18 z-40 flex items-center justify-center bg-fourth shadow-md shadow-black/30">
         <div class="grid grid-cols-4 gap-18 text-sm w-max text-center py-2">
             <a class="underline decoration-third underline-offset-4" href="/services/{{ service.pk }}/dashboard/">Dashboard</a>
@@ -103,6 +127,7 @@
     </div>
     {% endif %}
 
+    {# Where all the content of the other pages are displayed. #}
     <div class="max-w-6xl mx-auto px-6 py-4">{% block content %}{% endblock %}</div>
 </body>
 </html>

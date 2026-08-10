@@ -1,7 +1,7 @@
 # Clarity Tutoring
 Created by Luca Sargent
 ## What is Clarity Tutoring?
-It is a booking website for a tutoring business.
+Clarity Tutoring is a local learning service in Tauranga and online service for New Zealand that helps students build strong skills and boost their school confidence through clear, one-on-one lessons tailored to each child's unique needs.
 
 ## How to Run Clarity Tutoring?
 Insert these following commands at the **root** of the directory.

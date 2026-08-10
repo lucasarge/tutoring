@@ -1,7 +1,11 @@
+// JavaScript file used to display calendars.
+
 document.addEventListener('DOMContentLoaded', function() {
     
+    // Gets element from HTML via id.
     var calendarEl = document.getElementById('calendar');
     
+    // Initialising calendar through FullCalendar and customising it if element exists.
     if (calendarEl) {
         var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'timeGridWeek',
@@ -23,6 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 calendarEl.classList.remove('fc-day-view-active')
             }
         },
+
+        // On click of session present popup with session information.
         eventClick: function(info) {
             if (!info.event.extendedProps.isUser) {
                 info.jsEvent.preventDefault();
@@ -37,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
         calendar.render();
     }
 
+    // Configuration for flatpickr datetime input.
     flatpickr('.flatpickr-datetime', {
         enableTime: true,
         dateFormat: "Y-m-d H:i",
