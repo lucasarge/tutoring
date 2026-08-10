@@ -1,10 +1,12 @@
+"""This is an admin file that is used to register the database models on the admin dashboard."""
+
 from django.contrib import admin
 from .models import CustomUser, Profile
 from django.contrib.auth.admin import UserAdmin
-# Register your models here.
 
-admin.site.register(Profile)
 
+
+# Important to be able to browse users and distinguish easily between them. Fieldsets displayed and filtering options.
 class CustomUserAdmin(UserAdmin):
     model = CustomUser
     list_display = ("last_name", "first_name", "user_type", "email", "phone", "is_staff")
@@ -27,5 +29,7 @@ class CustomUserAdmin(UserAdmin):
     )
 
     search_fields = ("email", "first_name", "last_name")
-    
+
+# Registering database models for Service to the admin dashboard.
+admin.site.register(Profile)
 admin.site.register(CustomUser, CustomUserAdmin)

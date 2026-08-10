@@ -1,10 +1,14 @@
+"""This is a urls file that runs different views through a specified path."""
+
 from django.urls import path
 from .views import Login, Register
 from django.contrib.auth.views import LogoutView
 from . import views
 
+# Defining app name for users app.
 app_name = 'users'
 
+# Defining path to the users view.
 urlpatterns = [
     path("login/", Login.as_view(), name="login"),
     path("register/", Register.as_view(), name="register"),

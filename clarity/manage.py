@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+"""Auto generated used to runserver and other admin tasks."""
+
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
