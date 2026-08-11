@@ -382,6 +382,12 @@ def all_services(request):
     # Collect objects to display on the all_services page.
     documents = Document.objects.all()
     services = Service.objects.all()
+    total_cost = Session.objects.filter(paid=True).aggregate(total=Sum('cost'))['total'] or 0
+    total_fees = Session.objects.filter(paid=True).aggregate(total=Sum('fees'))['total'] or 0
+    owed_cost = Session.objects.filter(paid=False).aggregate(total=Sum('cost'))['total'] or 0
+    owed_fees = Session.objects.filter(paid=False).aggregate(total=Sum('fees'))['total'] or 0
+    profit = total_cost + total_fees
+    owed = owed_cost + owed_fees
 
     # Checking if user is sending a response to the form and if is valid save and redirect.
     if request.method == "POST":
@@ -395,7 +401,7 @@ def all_services(request):
         form = DocumentForm()
 
     # Rendering 'all-services.html' and parsing in context defined below.
-    context = {"services": services, "resources": documents, "form": form}
+    context = {"services": services, "resources": documents, "form": form, "profit":profit, "owed":owed}
     return render(request, "services/all-services.html", context)
 
 # View used for displaying all the sessions on FullCalendar.

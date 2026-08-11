@@ -22,12 +22,13 @@
 
     textarea {
         height: 4rem;
+        width: 16rem;
     }
     
     #id_subject {
-        display: flex;
+        display: inherit;
         gap: 1rem;
-        justify-content: center;
+        justify-content: inherit;
     }
 
     /* Adjust placeholders CSS in input for better readability. */
@@ -49,5 +50,14 @@
     svg:hover, svg *:hover {
         fill: #000000 !important;
         stroke: #000000 !important;
+    }
+
+    .fc-timegrid-body,
+    .fc-timegrid-body table,
+    .fc-col-header,
+    .fc-scrollgrid {
+        width: 100% !important;
+        max-width: 100% !important;
+        table-layout: fixed !important; /* Prevents text elements from stretching columns */
     }
 }

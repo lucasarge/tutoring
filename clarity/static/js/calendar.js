@@ -8,18 +8,44 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initialising calendar through FullCalendar and customising it if element exists.
     if (calendarEl) {
         var calendar = new FullCalendar.Calendar(calendarEl, {
-        initialView: 'timeGridWeek',
+        initialView: window.innerWidth < 768 ? 'timeGridDay' : 'timeGridWeek',
         events: '/services/sessions/',
         slotMinTime: '15:30:00',
         slotMaxTime: '20:30:00',
         allDaySlot: false,
         hiddenDays: '0.6',
         expandRows: true,
-        headerToolbar: {
+        headerToolbar: window.innerWidth < 768 ? {
+            left: 'prev,next',
+            center: 'title',
+            right: 'today'
+        } : {
             left: 'prev,next today',
             center: 'title',
             right: 'dayGridMonth,timeGridWeek,listWeek'
         },
+        windowResize: function(arg) {
+            if (window.innerWidth < 1000) {
+                calendar.changeView('timeGridDay');
+            } else {
+                calendar.changeView('timeGridWeek');
+            }
+
+            if (window.innerWidth < 768) {
+                calendar.setOption('headerToolbar', {
+                    left: 'prev,next',
+                    center: 'title',
+                    right: 'today'
+                });
+            } else {
+                calendar.setOption('headerToolbar', {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,listWeek'
+                });
+            }
+        },
+
         viewDidMount: function(info) {
             if (info.view.type == 'timeGridDay') {
                 calendarEl.classList.add('fc-day-view-active')

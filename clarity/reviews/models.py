@@ -16,7 +16,7 @@ class Review(models.Model):
     ]
     user = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True)
     stars = models.IntegerField(choices=STARS_CHOICES)
-    message = models.CharField()
+    message = models.TextField()
     used = models.BooleanField(default=False)
     created = models.DateField(auto_now_add=True)
     def __str__(self):

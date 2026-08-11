@@ -63,5 +63,9 @@
                 <div id='calendar'></div>
             </div>
         </div>
+        <div class="mx-auto bg-white text-black p-4 mt-4 rounded-3xl text-center">
+            <h1 class="text-2xl">Total Owed: ${{ owed|floatformat:2  }}</h1>
+            <h1 class="text-2xl">Total Profit: ${{ profit|floatformat:2  }}</h1>
+        </div>
     </div>
 {% endblock %}

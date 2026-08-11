@@ -15,15 +15,15 @@
         <div class="w-full max-w-7xl">
 
             {# Title block for dashboard page. #}
-            <div class="grid gap-8 text-black lg:grid-cols-[1fr] mb-4">
-                <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+            <div class="grid gap-8 text-black mb-4">
+                <div class="hidden md:block bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
                     <h2 class="text-3xl text-center">Welcome to {{ service.student.first_name|capfirst }}'s Tutoring</h2>
                 </div>
             </div>
 
             <div class="grid gap-4 text-black lg:grid-cols-[8fr_7fr]">
                 <div class="grid gap-4">
-                    <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                    <div class="hidden md:block bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
 
                         {# Tutoring information block that shares information about the users with access and notes for them. #}
                         <div class="grid grid-cols-[auto_1fr] pb-4">
@@ -69,12 +69,12 @@
 
                     {# Block that shares information about the next tutoring session. #}
                     <div id="meeting-info" data-pk="{{ service.pk }}" class="row-span-2 bg-white text-black px-8 py-6 rounded-2xl drop-shadow-md drop-shadow-mauve-900">
-                        <div class="grid grid-cols-[auto_1fr]">
-                            <h1 class="text-2xl pb-4">Next Meeting Information:</h1>
+                        <div class="grid sm:grid-cols-[auto_1fr] pb-4">
+                            <h1 class="text-2xl pb-2">Next Meeting Information:</h1>
 
                             {# Last refreshed displayed to prevent spam refresh. #}
-                            <div class="text-right px-2 text-sm">
-                                <h5>Last Refreshed:</h5>
+                            <div class="flex sm:block text-left sm:text-right sm:px-2 text-sm">
+                                <h5>Last Refreshed: </h5>
                                 <h5 id="refreshed-time"></h5>
                             </div>
                         </div>
@@ -127,7 +127,7 @@
                     </div>
                     
                     {# Help block with contact information and link to help page. #}
-                    <div class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
+                    <div class="hidden md:block bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
                         <div class="grid grid-cols-[auto_1fr] pb-4">
                             <h2 class="text-2xl">Help:</h2>
                             <a class="text-right text-xl place-items-center" href="/help/">→</a>
@@ -185,7 +185,7 @@
                             {% endif %}">
                                 <div class="grid gap-4 grid-cols-[auto_1fr] pb-4">
                                     <img id="profileBtn" src="{{ resources.0.tutor.profile.profile_image.url }}" alt="" class="border h-10 aspect-square rounded-full object-cover mx-auto">
-                                    <div class="flex text-lg justify-between">
+                                    <div class="sm:flex sm:text-lg justify-between">
                                         <h4>{{ resources.0.tutor.first_name }} {{ resources.0.tutor.last_name }}</h4>
                                         <h4>{{ resources.0.created }}</h4>
                                     </div>

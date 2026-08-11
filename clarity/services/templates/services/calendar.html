@@ -23,9 +23,9 @@
         </div>
         
         {# Checks if the user is a caregivers and if so displays calendar and booking information. #}
-        {% elif request.user.user_type == "caregiver" %}
-        <div class="grid grid-cols-[2fr_1fr] gap-4">
-            <div class="w-3xl mx-auto bg-white text-black p-4 rounded-3xl text-center">
+        {% elif request.user.user_type != "student" %}
+        <div class="grid lg:grid-cols-[2fr_1fr] gap-4">
+            <div class="w-full lg:w-3xl mx-auto bg-white text-black p-4 rounded-3xl text-center">
                 <div class="calendar-wrapper">
                     <div id='calendar'></div>
                 </div>
