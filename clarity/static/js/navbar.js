@@ -8,11 +8,12 @@ document.addEventListener("DOMContentLoaded", function() {
     const profileArrow = document.getElementById("profileArrow")
 
     // If open button is clicked display profileMenu and profileArrow and stopPropagation for error prevention.
-    profileBtn.addEventListener("click", function (e) {
-        e.stopPropagation();
-        profileMenu.classList.toggle("hidden");
-        profileArrow.classList.toggle("hidden");
-    });
+    if (profileBtn) { 
+        profileBtn.addEventListener("click", function (e) {
+            e.stopPropagation();
+            profileMenu.classList.toggle("hidden");
+            profileArrow.classList.toggle("hidden");
+    })};
 
     // If anywhere else on the page is clicked then hide profileMenu and profileArrow.
     document.addEventListener("click", function () {
