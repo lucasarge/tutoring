@@ -22,16 +22,18 @@
                 <a href="{{ service.pk }}/dashboard/" class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900 text-black">
                     <div class="grid gap-2">
                         <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
-                            <img src="{{ service.student.profile.profile_image.url }}" alt="" class="h-10 aspect-square rounded-full object-cover mx-auto border-black border">
+                            <img src="{{ service.student.profile.profile_image.url }}" alt="Student profile picture" class="h-10 aspect-square rounded-full object-cover mx-auto border-black border">
                             <h3>{{ service.student.first_name }}</h3>
                         </div>
                         <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
-                            <img src="{{ service.caregiver.profile.profile_image.url }}" alt="" class="h-10 aspect-square rounded-full object-cover mx-auto border-black border">
+                            <img src="{{ service.caregiver.profile.profile_image.url }}" alt="Caregiver profile picture" class="h-10 aspect-square rounded-full object-cover mx-auto border-black border">
                             <h3 class="">{{ service.caregiver.first_name }}</h3>
                         </div>
                         <h4>Survey: {% if service.year %}✓{% else %}✗{% endif %}</h4>
                     </div>
                 </a>
+                {% empty %}
+                <p class="col-span-4">Contact 0204053805 to have a tutoring service assigned to you.</p>
                 {% endfor %}
             </div>
             
@@ -42,6 +44,8 @@
                 <a href="/services/pdf/{{ resource.id }}" target="_blank" class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900 text-black">
                     <h3>{{ resource.title }}</h3>
                 </a>
+                {% empty %}
+                <p class="col-span-4">Upload resources to this library that you can then share the individual resources to students.</p>
                 {% endfor %}
             </div>
             

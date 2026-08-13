@@ -23,6 +23,7 @@ class Invite(models.Model):
 class Document(models.Model):
     title = models.CharField()
     file = models.FileField(upload_to='documents')
+    creator = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return self.title
@@ -86,6 +87,7 @@ class Session(models.Model):
         (90, '90 Minutes'),
     ]
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
+    tutor = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     subject = models.ForeignKey('SubjectService', on_delete=models.CASCADE)
     note = models.CharField(null=True, blank=True)
     start = models.DateTimeField()

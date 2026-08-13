@@ -20,20 +20,18 @@
 
                 {# Dynamic logo that shrinks when relevant. #}
                 <div class="sm:hidden" id="logoBtn">
-                    <img class="h-10 hidden sm:block" src="{% static 'images/logo.png' %}" alt="">
-                    <img class="h-10 block sm:hidden" src="{% static 'images/icon.png' %}" alt="">
+                    <img class="h-10 hidden sm:block" src="{% static 'images/logo.png' %}" alt="Clarity tutoring logo">
+                    <img class="h-10 block sm:hidden" src="{% static 'images/icon.png' %}" alt="Clarity tutoring icon">
                 </div>
                 <a class="hidden sm:block" href="/">
-                    <div id="logoBtn">
-                        <img class="h-10 hidden sm:block" src="{% static 'images/logo.png' %}" alt="">
-                        <img class="h-10 block sm:hidden" src="{% static 'images/icon.png' %}" alt="">
-                    </div>
+                    <img class="h-10 hidden sm:block" src="{% static 'images/logo.png' %}" alt="Clarity tutoring logo">
+                    <img class="h-10 block sm:hidden" src="{% static 'images/icon.png' %}" alt="Clarity tutoring icon"> 
                 </a>
                 <div id="logoMenu" class="hidden absolute top-[90%] translate-x-[10%] z-50">
                     <div class="bg-gray-200 text-black text-md rounded-lg px-3 py-2 shadow-lg w-fit whitespace-nowrap text-left">
-                        <h4 class="text-l"><a href="/">About</a></h4>
-                        <h4 class="text-l"><a href="/reviews/">Reviews</a></h4>
-                        <h4 class="text-l"><a href="/help/">Help</a></h4>
+                        <h4 class="text-l {% if request.path == '/' %}underline{% endif %}"><a href="/">About</a></h4>
+                        <h4 class="text-l {% if request.path == '/reviews/' %}underline{% endif %}"><a href="/reviews/">Reviews</a></h4>
+                        <h4 class="text-l {% if request.path == '/help/' %}underline{% endif %}"><a href="/help/">Help</a></h4>
                     </div>
                     <div id="logoArrow" class="hidden w-3 h-3 bg-gray-200 text-white rotate-45 absolute left-11/12 translate-x-[-560%] -top-1"></div>
                 </div>
@@ -44,8 +42,8 @@
                     <div>
                         {% for service in request.user.service_caregiver.all %}
                         <h4>
-                            <a class="hidden md:block" href="/services/{{ service.pk }}/dashboard/">{{ request.user.first_name|capfirst }}'s Tutoring</a>
-                            <a class="block md:hidden" href="/services/{{ service.pk }}/dashboard/">Tutoring</a>
+                            <a class="hidden md:block {% if '/services/' in request.path %}font-semibold{% endif %}" href="/services/{{ service.pk }}/dashboard/">{{ service.student.first_name|capfirst }}'s Tutoring</a>
+                            <a class="block md:hidden {% if '/services/' in request.path %}font-semibold{% endif %}" href="/services/{{ service.pk }}/dashboard/">Tutoring</a>
                         </h4>
                         {% endfor %}
                     </div>
@@ -57,8 +55,8 @@
                     <div>
                         {% for service in request.user.service_student.all %}
                         <h4>
-                            <a class="hidden md:block" href="/services/{{ service.pk }}/dashboard/">{{ request.user.first_name|capfirst }}'s Tutoring</a>
-                            <a class="block md:hidden" href="/services/{{ service.pk }}/dashboard/">Tutoring</a>
+                            <a class="hidden md:block {% if '/services/' in request.path %}font-semibold{% endif %}" href="/services/{{ service.pk }}/dashboard/">{{ service.student.first_name|capfirst }}'s Tutoring</a>
+                            <a class="block md:hidden {% if '/services/' in request.path %}font-semibold{% endif %}" href="/services/{{ service.pk }}/dashboard/">Tutoring</a>
                         </h4>
                         {% endfor %}
                     </div>
@@ -66,15 +64,15 @@
                 
                 {# Displays link to all tutoring services for tutors. #}
                 {% elif request.user.user_type == "tutor" %}
-                    <h4>
+                    <h4 class="{% if request.path == '/services/' %}font-semibold{% endif %}">
                         <a href="/services/">Services</a>
                     </h4>
                 {% endif%}
                 
                 {# Links to pages that are displayed for any user. #}
-                <h2 class="hidden sm:block" ><a href="/">About</a></h2>
-                <h2 class="hidden sm:block" ><a href="/reviews/">Reviews</a></h2>
-                <h2 class="hidden sm:block"><a href="/help/">Help</a></h2>
+                <h2 class="hidden sm:block {% if request.path == '/' %}font-semibold{% endif %}"><a href="/">About</a></h2>
+                <h2 class="hidden sm:block {% if request.path == '/reviews/' %}font-semibold{% endif %}"><a href="/reviews/">Reviews</a></h2>
+                <h2 class="hidden sm:block {% if request.path == '/help/' %}font-semibold{% endif %}"><a href="/help/">Help</a></h2>
             </div>
             <div class="flex gap-6 items-center">
 
@@ -99,11 +97,11 @@
                 {# If user is logged in display profile picture icon with links to profile page and logout. #}
                 {% if request.user.is_authenticated %}
                 <div class="relative z-50">
-                    <img id="profileBtn" src="{{ request.user.profile.profile_image.url }}" alt="" 
+                    <img id="profileBtn" src="{{ request.user.profile.profile_image.url }}" alt="Profile picture" 
                     class="cursor-pointer h-10 aspect-square rounded-full object-cover mx-auto">
                     <div id="profileMenu" class="hidden absolute top-full mt-2 left-1/2 translate-x-[-90%] z-50">
                         <div class="bg-gray-200 text-black text-md rounded-lg px-3 py-2 shadow-lg w-fit whitespace-nowrap text-right">
-                            <h4 class="text-l"><a href="/users/profile/">Profile</a></h4>
+                            <h4 class="text-l {% if request.path == '/users/profile/' %}underline{% endif %}"><a href="/users/profile/">Profile</a></h4>
                             <form action="{% url 'users:logout' %}" method="post">
                                 {% csrf_token %}
                                 <button class="text-l cursor-pointer" type="submit">Logout</button>

@@ -3,6 +3,7 @@
 from functools import wraps
 from django.shortcuts import redirect
 from .models import Service
+from django.core.exceptions import PermissionDenied
 
 # Placed before a view used to make sure that the user accessing the page has filled out the survey required.
 def survey_required(view):
@@ -30,4 +31,12 @@ def survey_required(view):
                         return redirect(f'/services/{service.pk}/survey/')
 
         return view(request, *args, **kwargs)
+    return wrapped_view
+
+def verified_tutor(view_func):
+    @wraps(view_func)
+    def wrapped_view(request, *args, **kwargs):
+        if request.user.user_type == "tutor" and request.user.profile.verified == False:
+            raise PermissionDenied("You are not yet a verified tutor. Contact me at 02040563805")
+        return view_func(request, *args, **kwargs)
     return wrapped_view

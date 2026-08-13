@@ -58,6 +58,6 @@
     .fc-scrollgrid {
         width: 100% !important;
         max-width: 100% !important;
-        table-layout: fixed !important; /* Prevents text elements from stretching columns */
+        table-layout: fixed !important;
     }
 }

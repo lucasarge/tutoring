@@ -30,7 +30,7 @@
             <form class="bg-white flex flex-col rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900" action="/users/profile/" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <h2 class="text-2xl pb-4">Profile Picture:</h2>
-                <img src="{{ request.user.profile.profile_image.url }}" alt="" class="h-48 aspect-square rounded-full object-cover border-black border-2 mx-auto">
+                <img src="{{ request.user.profile.profile_image.url }}" alt="profile picture" class="h-48 aspect-square rounded-full object-cover border-black border-2 mx-auto">
                 <div class="flex py-4 items-center">
                     <div class="py-4 mx-auto">
                         <label class="cursor-pointer inline-block">

@@ -15,7 +15,7 @@
 
             {# Description of Clarity Tutoring with an average rating based off reviews. #}
             <div class="grid bg-white text-black sm:gap-8 p-4 rounded-3xl mb-4 sm:grid-cols-[1fr_5fr_2fr]">
-                <img class="hidden sm:block h-max border-2 aspect-square rounded-full object-cover" src="{% static 'images/icon.png' %}" alt="">
+                <img class="hidden sm:block h-max border-2 aspect-square rounded-full object-cover" src="{% static 'images/icon.png' %}" alt="Clarity tutoring icon">
                 <div>
                     <h1 class="text-3xl">Clarity Tutoring</h1>
                     <hr>
@@ -40,7 +40,7 @@
                 {% for review in reviews %}
                     <div class="bg-white drop-shadow-md drop-shadow-mauve-900 p-4 rounded-2xl">
                         <div class="grid gap-2 grid-cols-[auto_3fr_2fr] pb-2">
-                            <img id="profileBtn" src="{{ review.user.profile.profile_image.url }}" alt="" class="border h-10 aspect-square rounded-full object-cover mx-auto">
+                            <img id="profileBtn" src="{{ review.user.profile.profile_image.url }}" alt="{{review.user.first_name}} profile picture" class="border h-10 aspect-square rounded-full object-cover mx-auto">
                             <div>
                                 <h4>{{ review.user.first_name }} {{ review.user.last_name }}</h4>
                                 <h4 class="text-xs">{{ review.created }}</h4>

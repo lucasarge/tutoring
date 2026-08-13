@@ -5,8 +5,8 @@
 
 {% block content %}
     <div class="flex items-center min-h-[calc(100vh-140px)] drop-shadow-md drop-shadow-mauve-900">
-        <div class="mx-auto max-w-4xl grid sm:grid-cols-[3fr_1fr] gap-4">
-            <div class="mx-auto bg-white text-black p-4 rounded-3xl">
+        <div class="mx-auto max-w-4xl grid md:grid-cols-[3fr_1fr] gap-4">
+            <div class="mx-auto bg-white text-black p-4 rounded-3xl w-full">
                 <div class="grid pb-4">
                     <h2 class="text-2xl">Tutoring Information:</h2>
                 </div>
@@ -15,40 +15,43 @@
                 <div class="grid sm:grid-cols-[auto_1fr] gap-2 sm:gap-8">
                     <div>
                         <h3 class="pb-2 text-lg underline underline-offset-3">Users in Service:</h3>
-                        <div class="grid grid-rows-3 gap-2">
+                        <div class="grid gap-2">
                             <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
-                                <img src="{{ service.student.profile.profile_image.url }}" alt="" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
+                                <img src="{{ service.student.profile.profile_image.url }}" alt="Student profile picture" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
                                 <h3>{{ service.student.first_name|capfirst }}</h3>
                             </div>
                             <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
-                                <img src="{{ service.caregiver.profile.profile_image.url }}" alt="" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
+                                <img src="{{ service.caregiver.profile.profile_image.url }}" alt="Caregiver profile picture" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
                                 <h3>{{ service.caregiver.first_name|capfirst }}</h3>
                             </div>
+                            {% if service.tutor %}
                             <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
-                                <img src="{{ service.tutor.profile.profile_image.url }}" alt="" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
+                                <img src="{{ service.tutor.profile.profile_image.url }}" alt="Tutor profile picture" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
                                 <h3>{{ service.tutor.first_name|capfirst }}</h3>
                             </div>
+                            {% endif %}
                         </div>
                     </div>
 
-                    {# If user is tutor display the private notes for tutor. #}
-                    {% if request.user.user_type == "tutor" %}
-                    <div>
-                        <h3 class="pb-2 text-lg underline underline-offset-3">Private Notes:</h3>
-                        <p>Caregiver: {{ service.caregiver_note }}</p>
-                        <p>Student: {{ service.student_note }}</p>
-                    </div>
-
-                    {# If user is caregiver or student display note from tutor. #}
-                    {% else %}
                     <div>
                         <h3 class="pb-2 text-lg underline underline-offset-3">Service Information:</h3>
+                        {# Displays the caregivers and students to tutor. #}
+                        {% if request.user.user_type == "tutor" %}
+                        <p>Caregiver: {{ service.caregiver_note }}</p>
+                        <p>Student: {{ service.student_note }}</p>
+                        
+                        {% elif not service.tutor %}
+                        <p>Contact 02040563805 to have a tutor assigned to you.</p>
+
+                        {# Displays the tutors note to caregiver and student. #}
+                        {% else %}
                         <p>{{ service.tutor.profile.description }}</p>
+                        {% endif %}
                     </div>
-                    {% endif %}
                 </div>
 
                 {# Two seperate forms for both student and caregiver to update their survey information. #}
+                {% if request.user.user_type != "tutor" %}
                 <form action="/services/{{ service.pk }}/survey/" method="post">
                     <div class="grid py-2 gap-4">
                         {% csrf_token %}
@@ -67,6 +70,7 @@
                     </div>
                     <button class="bg-third px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer" type="submit">Save</button>
                 </form>
+                {% endif %}
             </div>
 
             {# If user is caregiver provide a button for them to delete service or export finances. Not functional yet. #}

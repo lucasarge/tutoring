@@ -33,37 +33,38 @@
                         <div class="grid grid-cols-[auto_1fr] gap-8">
                             <div>
                                 <h3 class="pb-2 text-lg underline underline-offset-3">Users in Service:</h3>
-                                <div class="grid grid-rows-3 gap-2">
+                                <div class="grid gap-2">
                                     <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
-                                        <img src="{{ service.student.profile.profile_image.url }}" alt="" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
+                                        <img src="{{ service.student.profile.profile_image.url }}" alt="Student profile picture" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
                                         <h3>{{ service.student.first_name|capfirst }}</h3>
                                     </div>
                                     <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
-                                        <img src="{{ service.caregiver.profile.profile_image.url }}" alt="" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
+                                        <img src="{{ service.caregiver.profile.profile_image.url }}" alt="Caregiver profile picture" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
                                         <h3 class="">{{ service.caregiver.first_name|capfirst }}</h3>
                                     </div>
+                                    {% if service.tutor %}
                                     <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
-                                        <img src="{{ service.tutor.profile.profile_image.url }}" alt="" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
+                                        <img src="{{ service.tutor.profile.profile_image.url }}" alt="Tutor profile picture" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">
                                         <h3 class="">{{ service.tutor.first_name|capfirst }}</h3>
                                     </div>
+                                    {% endif %}
                                 </div>
                             </div>
-
-                            {# Displays the caregivers and students to tutor. #}
-                            {% if request.user.user_type == "tutor" %}
-                            <div>
-                                <h3 class="pb-2 text-lg underline underline-offset-3">Private Notes:</h3>
-                                <p>Caregiver: {{ service.caregiver_note }}</p>
-                                <p>Student: {{ service.student_note }}</p>
-                            </div>
-                            
-                            {# Displays the tutors note to caregiver and student. #}
-                            {% else %}
                             <div>
                                 <h3 class="pb-2 text-lg underline underline-offset-3">Service Information:</h3>
+                                {# Displays the caregivers and students to tutor. #}
+                                {% if request.user.user_type == "tutor" %}
+                                <p>Caregiver: {{ service.caregiver_note }}</p>
+                                <p>Student: {{ service.student_note }}</p>
+                                
+                                {% elif not service.tutor %}
+                                <p>Contact 02040563805 to have a tutor assigned to you.</p>
+
+                                {# Displays the tutors note to caregiver and student. #}
+                                {% else %}
                                 <p>{{ service.tutor.profile.description }}</p>
+                                {% endif %}
                             </div>
-                            {% endif %}
                         </div>
                     </div>
 
@@ -184,7 +185,7 @@
                             border-2 border-third 
                             {% endif %}">
                                 <div class="grid gap-4 grid-cols-[auto_1fr] pb-4">
-                                    <img id="profileBtn" src="{{ resources.0.tutor.profile.profile_image.url }}" alt="" class="border h-10 aspect-square rounded-full object-cover mx-auto">
+                                    <img id="profileBtn" src="{{ resources.0.tutor.profile.profile_image.url }}" alt="Tutor profile picture" class="border h-10 aspect-square rounded-full object-cover mx-auto">
                                     <div class="sm:flex sm:text-lg justify-between">
                                         <h4>{{ resources.0.tutor.first_name }} {{ resources.0.tutor.last_name }}</h4>
                                         <h4>{{ resources.0.created }}</h4>
@@ -204,7 +205,7 @@
                     <div class="bg-white rounded-2xl row-span-2 px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
                         <div class="grid grid-cols-[auto_1fr] pb-4">
                             <h2 class="text-2xl">Pricing:</h2>
-                            <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/payment/">→</a>
+                            <a class="text-right text-xl place-items-center" href="/services/{{ service.pk }}/payment/?paid=false">→</a>
                         </div>
                         <div>
                             <p>Amount Due: ${{ total_owed|floatformat:2 }}</p>

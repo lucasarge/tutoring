@@ -28,8 +28,10 @@ class Register(FormView):
         user = self.request.user
         if user.user_type == "caregiver":
             return "/services/invite/"
-        else:
+        elif user.user_type == "student":
             return "/services/join/"
+        else:
+            return "/"
 
 # User needs to be logged in to access profile update page.
 @login_required    

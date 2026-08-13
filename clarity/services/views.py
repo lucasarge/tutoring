@@ -9,7 +9,7 @@ from .forms import InviteForm, SessionForm, CaregiverForm, StudentForm, LinkForm
 from django.utils import timezone
 from datetime import timedelta
 from django.http import HttpResponseForbidden, JsonResponse, FileResponse, Http404
-from .decorators import survey_required
+from .decorators import survey_required, verified_tutor
 from django.db.models import Q, Sum
 from django.core.exceptions import PermissionDenied
 
@@ -112,6 +112,7 @@ def invite_status(request, pk):
 # Checks to see if user is authenticated and survey is completed.
 @login_required
 @survey_required
+@verified_tutor
 def service(request, pk, page):
 
     # Gets service through the primary key parsed in the url. 
@@ -135,8 +136,9 @@ def service(request, pk, page):
     resources = Resource.objects.filter(service=service).order_by("-created")
 
     # Calculate total_owed through all fees and costs.
-    total_cost = Session.objects.filter(completed=True, paid=False).aggregate(total=Sum('cost'))['total'] or 0
-    total_fees = Session.objects.filter(cancelled=True, paid=False).aggregate(total=Sum('fees'))['total'] or 0
+    sessions = Session.objects.filter(Q(service__caregiver=request.user) | Q(service__student=request.user) | Q(service__tutor=request.user))
+    total_cost = sessions.filter(completed=True, paid=False).aggregate(total=Sum('cost'))['total'] or 0
+    total_fees = sessions.filter(cancelled=True, paid=False).aggregate(total=Sum('fees'))['total'] or 0
     total_owed = total_cost + total_fees
 
     # If current user is not apart of service then return forbidden page.
@@ -223,6 +225,7 @@ def service(request, pk, page):
             if form.is_valid():
                 session = form.save(commit=False)
                 session.service_id = pk
+                session.tutor = service.tutor
                 session.cost = (session.duration*settings.GLOBAL_COST/60)
                 session.end = session.start + timedelta(minutes=session.duration)
                 session.save()
@@ -307,7 +310,8 @@ def service(request, pk, page):
         completed_status = request.GET.get('completed')
         paid_status = request.GET.get('paid')
         sessions = Session.objects.filter(Q(service__caregiver=request.user) | Q(service__student=request.user) | Q(service__tutor=request.user))
-
+        unpaid = sessions.filter(Q(completed=True) | Q(cancelled=True), paid=False)
+        
         # Filters sessions relative to boolean values requested.
         if completed_status == 'true':
             sessions = sessions.filter(completed=True)   
@@ -321,10 +325,9 @@ def service(request, pk, page):
         # Else order all sessions in the soonest first and then the completed ones.
         else:
             current_time = timezone.now()
-            upcoming = Session.objects.filter(start__gte=current_time).order_by("start")
-            passed = Session.objects.filter(start__lt=current_time).order_by("-start")
-            sessions = list(upcoming) + list(passed)
-        unpaid = Session.objects.filter(Q(completed=True) | Q(cancelled=True), paid=False)     
+            upcoming = sessions.filter(start__gte=current_time).order_by("start")
+            passed = sessions.filter(start__lt=current_time).order_by("-start")
+            sessions = list(upcoming) + list(passed)     
         
     # If page is survey load the relevant information saving resources.
     if page == "survey":
@@ -373,6 +376,7 @@ def service(request, pk, page):
 
 # Requires user to be logged in to access the all_services page for tutors.
 @login_required
+@verified_tutor
 def all_services(request):
 
     # Authenticates only tutors can access this page.
@@ -380,12 +384,12 @@ def all_services(request):
         raise HttpResponseForbidden()
 
     # Collect objects to display on the all_services page.
-    documents = Document.objects.all()
-    services = Service.objects.all()
-    total_cost = Session.objects.filter(paid=True).aggregate(total=Sum('cost'))['total'] or 0
-    total_fees = Session.objects.filter(paid=True).aggregate(total=Sum('fees'))['total'] or 0
-    owed_cost = Session.objects.filter(paid=False).aggregate(total=Sum('cost'))['total'] or 0
-    owed_fees = Session.objects.filter(paid=False).aggregate(total=Sum('fees'))['total'] or 0
+    documents = Document.objects.filter(creator=request.user)
+    services = Service.objects.filter(tutor=request.user)
+    total_cost = Session.objects.filter(paid=True, tutor=request.user).aggregate(total=Sum('cost'))['total'] or 0
+    total_fees = Session.objects.filter(paid=True, tutor=request.user).aggregate(total=Sum('fees'))['total'] or 0
+    owed_cost = Session.objects.filter(paid=False, tutor=request.user).aggregate(total=Sum('cost'))['total'] or 0
+    owed_fees = Session.objects.filter(paid=False, tutor=request.user).aggregate(total=Sum('fees'))['total'] or 0
     profit = total_cost + total_fees
     owed = owed_cost + owed_fees
 
