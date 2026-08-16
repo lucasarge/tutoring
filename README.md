@@ -47,15 +47,4 @@ cd clarity ;
 py manage.py runserver 6464
 ```
 Now everything should be complete and you can go to the following link: 
-[Local Host](https://localhost:6464)
-
-## How to Use Clarity Tutoring?
-
-Most of this is answered through the help page but there are some seperate things to know as an admin. You can access the admin dashboard by using the link below and using the admin credentials in the table below:
 [Local Host](https://localhost:6464/admin)
-| Name | Email | Password |
-|---------|---------|---------|
-| Admin | a@a.com | a |
-| Student | s@s.com | s |
-| Caregiver | c@c.com | c |
-| Tutor | t@t.com | t |
