@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="items-center justify-center min-h-[calc(100vh-140px)]">
+    <div class="items-center justify-center min-h-[calc(100vh-150px)]">
         <div class="bg-white text-black rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900">
             
             {# For loop that displays each service as a link to more information while displaying users and if they have completed the survey. #}
@@ -23,13 +23,13 @@
                     <div class="grid gap-2">
                         <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
                             <img src="{{ service.student.profile.profile_image.url }}" alt="Student profile picture" class="h-10 aspect-square rounded-full object-cover mx-auto border-black border">
-                            <h3>{{ service.student.first_name }}</h3>
+                            <h2>{{ service.student.first_name }}</h2>
                         </div>
                         <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
                             <img src="{{ service.caregiver.profile.profile_image.url }}" alt="Caregiver profile picture" class="h-10 aspect-square rounded-full object-cover mx-auto border-black border">
-                            <h3 class="">{{ service.caregiver.first_name }}</h3>
+                            <h2 class="">{{ service.caregiver.first_name }}</h2>
                         </div>
-                        <h4>Survey: {% if service.year %}✓{% else %}✗{% endif %}</h4>
+                        <h3>Survey: {% if service.year %}✓{% else %}✗{% endif %}</h3>
                     </div>
                 </a>
                 {% empty %}
@@ -42,7 +42,7 @@
             <div class="grid lg:grid-cols-4 gap-8">
                 {% for resource in resources %}
                 <a href="/services/pdf/{{ resource.id }}" target="_blank" class="bg-white rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900 text-black">
-                    <h3>{{ resource.title }}</h3>
+                    <h2>{{ resource.title }}</h2>
                 </a>
                 {% empty %}
                 <p class="col-span-4">Upload resources to this library that you can then share the individual resources to students.</p>
@@ -55,8 +55,8 @@
                 {% csrf_token %}
                 <div class="grid gap-2 grid-cols-[auto_1fr]">
                     {% for field in form %}
-                    <h3>{{ field.label }}:</h3>
-                    <h3>{{ field }}</h3>
+                    <h2>{{ field.label }}:</h2>
+                    <div>{{ field }}</div>
                     {% endfor %}
                 </div>
                 <button class="bg-third mt-4 px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer" type="submit">Upload</button>

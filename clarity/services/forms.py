@@ -40,7 +40,6 @@ class SessionForm(forms.ModelForm):
         input_formats=['%Y-%m-%d %H:%M'],
         widget=forms.DateTimeInput(attrs={
             'class': 'flatpickr-datetime',
-            'step': '900',
             'placeholder': 'Select time and date.',
         })
     )

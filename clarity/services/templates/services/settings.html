@@ -4,17 +4,17 @@
 {% block title %}Settings{% endblock %}
 
 {% block content %}
-    <div class="flex items-center min-h-[calc(100vh-140px)] drop-shadow-md drop-shadow-mauve-900">
+    <div class="flex items-center min-h-[calc(100vh-150px)] drop-shadow-md drop-shadow-mauve-900">
         <div class="mx-auto max-w-4xl grid md:grid-cols-[3fr_1fr] gap-4">
             <div class="mx-auto bg-white text-black p-4 rounded-3xl w-full">
                 <div class="grid pb-4">
-                    <h2 class="text-2xl">Tutoring Information:</h2>
+                    <h1 class="text-2xl">Tutoring Information:</h1>
                 </div>
 
                 {# Information displayed about the tutoring service. #}
                 <div class="grid sm:grid-cols-[auto_1fr] gap-2 sm:gap-8">
                     <div>
-                        <h3 class="pb-2 text-lg underline underline-offset-3">Users in Service:</h3>
+                        <h2 class="pb-2 text-lg underline underline-offset-3">Users in Service:</h2>
                         <div class="grid gap-2">
                             <div class="grid grid-cols-[auto_1fr] gap-2 items-center">
                                 <img src="{{ service.student.profile.profile_image.url }}" alt="Student profile picture" class="h-8 aspect-square rounded-full object-cover mx-auto border-black border">

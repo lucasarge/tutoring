@@ -10,12 +10,12 @@
             {# Form for updating users information. #}
             <form class="bg-white flex flex-col rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900" action="/users/profile/" method="post">
                 {% csrf_token %}
-                <h2 class="text-2xl pb-4">Personal Information:</h2>
+                <h1 class="text-2xl pb-4">Personal Information:</h1>
 
                 {# User_form fields displayed below with label. #}
                 {% for field in user_form %}
                 <div class="grid sm:grid-cols-2 py-2 sm:py-4 items-center">
-                    <h3>{{ field.label }}:</h3>
+                    <h2>{{ field.label }}:</h2>
                     {{ field }}
                 </div>
                 {% endfor %}
@@ -29,7 +29,7 @@
             {# Form to update profile picture with submit button below. #}
             <form class="bg-white flex flex-col rounded-2xl px-8 py-6 drop-shadow-md drop-shadow-mauve-900" action="/users/profile/" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
-                <h2 class="text-2xl pb-4">Profile Picture:</h2>
+                <h1 class="text-2xl pb-4">Profile Picture:</h1>
                 <img src="{{ request.user.profile.profile_image.url }}" alt="profile picture" class="h-48 aspect-square rounded-full object-cover border-black border-2 mx-auto">
                 <div class="flex py-4 items-center">
                     <div class="py-4 mx-auto">

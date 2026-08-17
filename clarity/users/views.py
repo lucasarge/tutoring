@@ -6,6 +6,8 @@ from django.contrib.auth.views import LoginView
 from django.views.generic.edit import FormView
 from .forms import RegisterForm, UpdateUserForm, ProfileImageForm
 from django.contrib.auth import login
+from services.models import Service
+from django.db.models import Q
 
 # This is the login page view which takes user to home if successful login with built in login form.
 class Login(LoginView):
@@ -65,5 +67,9 @@ def profile(request):
                 return redirect("/users/profile/")
 
     # Rendering 'profile.html' and parsing in context defined below.
-    context = {"user_form": user_form, "image_form": image_form}
+    if request.user.is_authenticated:
+        service = Service.objects.filter(Q(student=request.user) | Q(caregiver=request.user)).first()
+    else:
+        service = None
+    context = {"user_form": user_form, "image_form": image_form, "service":service}
     return render(request, "users/profile.html", context)

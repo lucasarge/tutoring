@@ -6,15 +6,15 @@
 {# Loads the invite pages JavaScript file. #}
 {% block script %}
 {% load static %}
-<div id="invite-data"
-     data-invite-id="{{ invite.id }}">
-</div>
 <script src="{% static 'js/invite-status.js' %}"></script>
 {% endblock %}
 
 {# Displays the generated invite code to share with the student. #}
 {% block content %}
-    <div class="flex items-center min-h-[calc(100vh-140px)] drop-shadow-md drop-shadow-mauve-900">
+    <div id="invite-data"
+        data-invite-id="{{ invite.id }}">
+    </div>
+    <div class="flex items-center min-h-[calc(100vh-150px)] drop-shadow-md drop-shadow-mauve-900">
         <div class="w-lg mx-auto bg-white text-black p-4 rounded-3xl text-center">
             <h1 class="text-4xl">Invitation Code:</h1>
             <p>Get the student to create their own account.</p>

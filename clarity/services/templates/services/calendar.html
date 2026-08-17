@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="flex items-center min-h-[calc(100vh-140px)] drop-shadow-md drop-shadow-mauve-900">
+    <div class="flex items-center min-h-[calc(100vh-150px)] drop-shadow-md drop-shadow-mauve-900">
 
         {# Checks if the user is a student and if so just displays the calendar. #}
         {% if request.user.user_type == "student" %}
@@ -42,7 +42,7 @@
                         {# For each field it will display the information below removing repetitive code. #}
                         {% for field in form %}
                         <div class='pb-2'>
-                            <h3 class="flex gap-1">
+                            <h2 class="flex gap-1">
                                 {{ field.label }}:
 
                                 {# If there are errors display an error symbol with information on hover. #}
@@ -57,7 +57,7 @@
                                     </div>
                                 </div>
                                 {% endif%}
-                            </h3>
+                            </h2>
 
                             {# Displays the input for each field. #}
                             {{ field }}
