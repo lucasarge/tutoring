@@ -49,7 +49,7 @@
             <div class="w-full sm:w-xl md:w-2xl lg:w-4xl mx-auto bg-white text-black p-4 rounded-3xl sm:drop-shadow-md sm:drop-shadow-mauve-900">
                 <h2 class="text-xl pb-4">Tutors:</h2>
                 <p class="pb-4">At the moment there is only one tutor that runs this Clarity Tutoring. If you want to become one contact <a class="underline" href="/help/">support</a>.</p>
-                <div class="flex gap-4 overflow-auto">
+                <div class="grid sm:flex gap-4 sm:overflow-auto">
                     {% for tutor in tutors %}
                     <div class="shrink-0 h-fit sm:h-50 w-full max-w-full sm:w-64 border-third border-4 p-4 rounded-2xl">
                         <h3 class="text-lg pb-4">{{ tutor.first_name }} {{ tutor.last_name }}</h3>

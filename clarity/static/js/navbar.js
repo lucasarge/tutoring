@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const logoArrow = document.getElementById("logoArrow");
 
     // If open button is clicked display profileMenu and profileArrow and stopPropagation for error prevention.
-    if (profileBtn) { 
+    if (profileBtn, profileMenu, profileArrow) { 
         profileBtn.addEventListener("click", function (e) {
             e.stopPropagation();
             profileMenu.classList.toggle("hidden");
@@ -19,13 +19,14 @@ document.addEventListener("DOMContentLoaded", function() {
     })};
 
     // If anywhere else on the page is clicked then hide profileMenu and profileArrow.
-    document.addEventListener("click", function () {
-        profileMenu.classList.add("hidden");
-        profileArrow.classList.add("hidden");
-    });
+    if (profileMenu, profileArrow) { 
+        document.addEventListener("click", function () {
+            profileMenu.classList.add("hidden");
+            profileArrow.classList.add("hidden");
+    })};
 
     // if logo button is clicked display logoMenu and logoArrow and stopPropogation for error prevention.
-    if (logoBtn) { 
+    if (logoBtn, logoMenu, logoArrow) { 
         logoBtn.addEventListener("click", function (e) {
             e.stopPropagation();
             logoMenu.classList.toggle("hidden");
@@ -33,8 +34,9 @@ document.addEventListener("DOMContentLoaded", function() {
     })};
 
     // If anywhere else on the page is clicked then hide logoMenu and logoArrow.
+    if (logoMenu, logoArrow) {
     document.addEventListener("click", function () {
         logoMenu.classList.add("hidden");
         logoArrow.classList.add("hidden");
-    });
+    })};
 });
