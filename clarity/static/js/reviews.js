@@ -12,11 +12,13 @@ document.addEventListener("DOMContentLoaded", function() {
     // When create review button clicked open the create review menu.
     createBtn.addEventListener("click", function (e) {
         e.stopPropagation();
-        createMenu.classList.toggle("hidden");
+        createMenu.classList.remove("hidden");
+        createMenu.classList.add("flex")
     });
 
     // When close button clicked close the create review menu.
     closeBtn.addEventListener("click", function() {
+        createMenu.classList.remove("flex");
         createMenu.classList.add("hidden");
     });
 

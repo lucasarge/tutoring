@@ -37,7 +37,7 @@
                 <div class=" grid sm:flex gap-4 sm:overflow-auto">
                     {% for subject in subjects %}
                     <div class="shrink-0 h-fit sm:h-50 w-full sm:w-64 border-third border-4 p-4 rounded-2xl">
-                        <h4 class="text-lg pb-4">{{ subject.name }}</h4>
+                        <h3 class="text-lg pb-4">{{ subject.name }}</h3>
                         <p>{{ subject.description }}</p>
                     </div>
                     {% endfor %}
@@ -51,7 +51,7 @@
                 <div class="flex gap-4 overflow-auto">
                     {% for tutor in tutors %}
                     <div class="shrink-0 h-fit sm:h-50 w-full sm:w-64 border-third border-4 p-4 rounded-2xl">
-                        <h4 class="text-lg pb-4">{{ tutor.first_name }} {{ tutor.last_name }}</h4>
+                        <h3 class="text-lg pb-4">{{ tutor.first_name }} {{ tutor.last_name }}</h3>
                         <p>{{ tutor.profile.description }}</p>
                     </div>
                     {% endfor %}

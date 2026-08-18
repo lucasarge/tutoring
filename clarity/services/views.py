@@ -215,7 +215,7 @@ def service(request, pk, page):
             resource_form = ShareResourceForm()
 
     # If page is calendar load the relevant information saving resources.
-    if page == "calendar":
+    if page == "calendar" and service.tutor:
 
         # Checking if user is sending a response to the form.        
         if request.method == "POST":

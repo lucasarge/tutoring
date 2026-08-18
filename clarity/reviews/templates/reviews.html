@@ -63,38 +63,38 @@
                 </div>
             </div>
         </div>
-
-        {# Displays a popup with a close button when user wants to create a review. #}
-        <div id="createMenu" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 items-center justify-center">
-            <div class="w-30rem sm:w-2xl bg-white p-4 rounded-2xl shadow-2xl">
-                <div class="grid-cols-[1fr_4fr_1fr] grid">
-                    <div></div>
-                    <h1 class="text-2xl text-black text-center">Create Review</h1>
-                    <button id="closeBtn" class="text-black text-2xl cursor-pointer text-right pr-3">&times;</button>
-                </div>
-
-                {# Check if user is logged in so they can create a review. #}
-                {% if request.user.is_authenticated %}
-                <form action="/reviews/" method="post" class="text-black text-center">
-                    {% csrf_token %}
-                    {{ form.stars }}
-                    <div class="star-rating gap-2 text-2xl text-center py-2">
-
-                        {# Displaying all 5 stars with a for loop #}
-                        {% for star in star_range %}
-                        <button type="button" class="star cursor-pointer text-gray-300 hover:text-yellow-300 transition" data-value="{{ star }}">★</button>
-                        {% endfor %}
-                    </div>
-                    <h4 class="pb-4">Comment:</h4>
-                    <div class="w-20rem">{{ form.message }}</div>
-                    <button class="bg-third px-8 py-1.5 mt-2 border-2 rounded-2xl text-white cursor-pointer" type="submit">Submit</button>
-                </form>
-
-                {# If user not logged in then prompt a login to create a review. #}
-                {% else %}
-                <p class="pt-2 text-black text-center"><a class="underline" href="/users/login/">Login</a> to create a review.</p>
-                {% endif %}
+    </div>
+    
+    {# Displays a popup with a close button when user wants to create a review. #}
+    <div id="createMenu" class="bg-black/50 hidden fixed inset-0 z-50 place-items-center justify-center">
+        <div class="w-30rem sm:w-2xl bg-white p-4 rounded-2xl shadow-2xl">
+            <div class="grid-cols-[1fr_4fr_1fr] grid">
+                <div></div>
+                <h1 class="text-2xl text-black text-center">Create Review</h1>
+                <button id="closeBtn" class="text-black text-2xl cursor-pointer text-right pr-3">&times;</button>
             </div>
+
+            {# Check if user is logged in so they can create a review. #}
+            {% if request.user.is_authenticated %}
+            <form action="/reviews/" method="post" class="text-black text-center">
+                {% csrf_token %}
+                {{ form.stars }}
+                <div class="star-rating gap-2 text-2xl text-center py-2">
+
+                    {# Displaying all 5 stars with a for loop #}
+                    {% for star in star_range %}
+                    <button type="button" class="star cursor-pointer text-gray-300 hover:text-yellow-300 transition" data-value="{{ star }}">★</button>
+                    {% endfor %}
+                </div>
+                <h4 class="pb-4">Comment:</h4>
+                <div class="w-20rem">{{ form.message }}</div>
+                <button class="bg-third px-8 py-1.5 mt-2 border-2 rounded-2xl text-white cursor-pointer" type="submit">Submit</button>
+            </form>
+
+            {# If user not logged in then prompt a login to create a review. #}
+            {% else %}
+            <p class="pt-2 text-black text-center"><a class="underline" href="/users/login/">Login</a> to create a review.</p>
+            {% endif %}
         </div>
     </div>
 {% endblock %}
