@@ -6,14 +6,12 @@
 {% block content %}
 
     {# Pricing information displayed with GLOBAL_COST. #}
-    <div class="flex items-center min-h-[calc(100vh-140px)] drop-shadow-md drop-shadow-mauve-900">
+    <div class="flex items-center min-h-[calc(100vh-150px)] drop-shadow-md drop-shadow-mauve-900">
         <div class="w-full max-w-7xl">
             <div class="mx-auto bg-white text-black p-4 rounded-3xl mb-4">
-                <div class="">
-                    <h2 class="text-2xl pb-4">Pricing Information:</h2>
-                    <div class="">
-                        <p>The pricing for this service is ${{ settings.GLOBAL_COST }} per hour. You cannot cancel a session within an hour of the start. For cancellations that happen on the same day there is a $10 fee.</p>
-                    </div>
+                <div>
+                    <h1 class="text-2xl pb-4">Pricing Information:</h1>
+                    <p>The pricing for this service is ${{ settings.GLOBAL_COST }} per hour. You cannot cancel a session within an hour of the start. For cancellations that happen on the same day there is a $10 fee.</p>
                 </div>
             </div>
             <div class="mx-auto bg-white text-black p-4 rounded-3xl mb-4">
@@ -32,7 +30,7 @@
                         <h3>Completed: {{ session.completed }}</h3>
                         <h3>Paid: {{ session.paid }}</h3>
                         <h3>Cancelled: {{ session.cancelled }}</h3>
-                        <div class="bg-gray-300 px-8 py-1.5 w-full mt-4 rounded-2xl text-black text-center">
+                        <div class="border-third border-4 px-8 py-1.5 w-full mt-4 rounded-2xl text-black text-center">
                             Total Cost: ${% if session.cancelled %}{{session.fees}}{% else %}{{ session.fees|add:session.cost|floatformat:2 }}{% endif %}
                         </div> 
                     </div>

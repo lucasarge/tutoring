@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="flex items-center justify-center min-h-[calc(100vh-140px)]">
+    <div class="flex items-center justify-center min-h-[calc(100vh-150px)]">
         <div class="w-full max-w-7xl">
 
             {# Title block for dashboard page. #}
@@ -75,8 +75,8 @@
 
                             {# Last refreshed displayed to prevent spam refresh. #}
                             <div class="flex sm:block text-left sm:text-right sm:px-2 text-sm">
-                                <h5>Last Refreshed: </h5>
-                                <h5 id="refreshed-time"></h5>
+                                <h2>Last Refreshed: </h2>
+                                <div id="refreshed-time"></div>
                             </div>
                         </div>
 
@@ -158,11 +158,11 @@
                         <h3>Upload the Resources here:</h3>
                         <form action="/services/{{ service.pk }}/dashboard/" method="post">
                             {% csrf_token %}
-                            <h5>Document:</h5>
+                            <h4>Document:</h4>
                             <div class="py-1">
                                 {{ resource_form.document }}
                             </div>
-                            <h5>Message:</h5>
+                            <h4>Message:</h4>
                             <div class="py-1">
                                 {{ resource_form.message }}
                             </div>

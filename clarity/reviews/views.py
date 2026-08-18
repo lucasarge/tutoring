@@ -36,7 +36,11 @@ def reviews(request):
     # Collecting variables to display on the page.
     reviews = Review.objects.all().order_by("-created")
     avg_rating = Review.objects.aggregate(Avg('stars'))['stars__avg']
-    context = {"form": form, "reviews": reviews, "avg_rating":avg_rating, 'star_range': range(1, 6),}
+    if request.user.is_authenticated:
+        service = Service.objects.filter(Q(student=request.user) | Q(caregiver=request.user)).first()
+    else:
+        service = None
+    context = {"form": form, "reviews": reviews, "avg_rating":avg_rating, 'star_range': range(1, 6), "service":service}
 
     # Rendering 'reviews.html' and parsing in context defined above.
     return render(request, "reviews.html", context)

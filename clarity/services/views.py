@@ -36,7 +36,11 @@ def invite(request):
         )
 
         # Rendering 'reviews.html' and parsing in invite defined above.
-        context = {"invite":invite}
+        if request.user.is_authenticated:
+            service = Service.objects.filter(Q(student=request.user) | Q(caregiver=request.user)).first()
+        else:
+            service = None
+        context = {"invite":invite, "service":service}
         return render(request, "services/invite.html", context)
 
 # Requires user to be logged in to access the join page.
@@ -90,7 +94,11 @@ def join(request):
         form = InviteForm()
         
     # Rendering 'join.html' and parsing in context defined above.
-    context = {"form":form}
+    if request.user.is_authenticated:
+        service = Service.objects.filter(Q(student=request.user) | Q(caregiver=request.user)).first()
+    else:
+        service = None
+    context = {"form":form, 'session':session}
     return render(request, "services/join.html", context)
 
 # Polling request for invite_status to provide information to caregiver without them refreshing.

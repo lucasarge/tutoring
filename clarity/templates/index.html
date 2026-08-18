@@ -4,8 +4,9 @@
 {% block title %}About{% endblock %}
 
 {% block content %}
-    <div class="flex items-center justify-center min-h-[calc(100vh-140px)]">
-        <div>
+    <div class="flex items-center justify-center min-h-[calc(100vh-150px)]">
+        <div class="w-full">
+
             {# Information about Clarity Tutoring. #}
             <div class="w-full sm:w-xl md:w-2xl lg:w-4xl mx-auto bg-white text-black p-4 rounded-3xl mb-4 text-left sm:text-center sm:drop-shadow-md sm:drop-shadow-mauve-900">
                 <h1 class="text-3xl pb-4">About Clarity Tutoring:</h1>
@@ -34,9 +35,9 @@
             <div class="w-full sm:w-xl md:w-2xl lg:w-4xl mx-auto bg-white text-black p-4 rounded-3xl mb-4 sm:drop-shadow-md sm:drop-shadow-mauve-900">
                 <h2 class="text-xl pb-4">Subjects:</h2>
                 <p class="pb-4">These are all the subjects that are taught if you are unsure if what you need is contact <a class="underline" href="/help/">support</a>.</p>
-                <div class=" grid sm:flex gap-4 sm:overflow-auto">
+                <div class="grid sm:flex gap-4 sm:overflow-auto">
                     {% for subject in subjects %}
-                    <div class="shrink-0 h-fit sm:h-50 w-full sm:w-64 border-third border-4 p-4 rounded-2xl">
+                    <div class="shrink-0 h-fit sm:h-50 w-full max-w-full sm:w-64 border-third border-4 p-4 rounded-2xl">
                         <h3 class="text-lg pb-4">{{ subject.name }}</h3>
                         <p>{{ subject.description }}</p>
                     </div>
@@ -50,7 +51,7 @@
                 <p class="pb-4">At the moment there is only one tutor that runs this Clarity Tutoring. If you want to become one contact <a class="underline" href="/help/">support</a>.</p>
                 <div class="flex gap-4 overflow-auto">
                     {% for tutor in tutors %}
-                    <div class="shrink-0 h-fit sm:h-50 w-full sm:w-64 border-third border-4 p-4 rounded-2xl">
+                    <div class="shrink-0 h-fit sm:h-50 w-full max-w-full sm:w-64 border-third border-4 p-4 rounded-2xl">
                         <h3 class="text-lg pb-4">{{ tutor.first_name }} {{ tutor.last_name }}</h3>
                         <p>{{ tutor.profile.description }}</p>
                     </div>

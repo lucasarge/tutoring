@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="flex items-center min-h-[calc(100vh-140px)] drop-shadow-md drop-shadow-mauve-900">
+    <div class="flex items-center min-h-[calc(100vh-150px)] drop-shadow-md drop-shadow-mauve-900">
         <div class="w-7xl mx-auto">
 
             {# Description of Clarity Tutoring with an average rating based off reviews. #}
@@ -40,20 +40,20 @@
                 {% for review in reviews %}
                     <div class="bg-white drop-shadow-md drop-shadow-mauve-900 p-4 rounded-2xl">
                         <div class="grid gap-2 grid-cols-[auto_3fr_2fr] pb-2">
-                            <img id="profileBtn" src="{{ review.user.profile.profile_image.url }}" alt="{{review.user.first_name}} profile picture" class="border h-10 aspect-square rounded-full object-cover mx-auto">
+                            <img src="{{ review.user.profile.profile_image.url }}" alt="{{review.user.first_name}} profile picture" class="border h-10 aspect-square rounded-full object-cover mx-auto">
                             <div>
-                                <h4>{{ review.user.first_name }} {{ review.user.last_name }}</h4>
-                                <h4 class="text-xs">{{ review.created }}</h4>
+                                <h2>{{ review.user.first_name }} {{ review.user.last_name }}</h2>
+                                <h2 class="text-xs">{{ review.created }}</h2>
                             </div>
                             <div>
-                                <h4 class="text-right">
+                                <div class="text-right">
                                     <div class="star-rating gap-x-1 text-right">
                                         {% for _ in "12345"|make_list %}
                                             <span class="{% if forloop.counter > review.stars %}text-gray-300{% else %}text-yellow-400{% endif %}">★</span>
                                         {% endfor %}
                                     </div>
-                                </h4>
-                                <h4 class="text-xs text-right">Verified: {% if review.used %}✔️{% else %}❌{% endif %}</h4>
+                                </div>
+                                <h2 class="text-xs text-right">Verified: {% if review.used %}✔️{% else %}❌{% endif %}</h2>
                             </div>
                         </div>
                         <hr>
@@ -81,15 +81,15 @@
                 {{ form.stars }}
                 <div class="star-rating gap-2 text-2xl text-center py-2">
 
-                    {# Displaying all 5 stars with a for loop #}
-                    {% for star in star_range %}
-                    <button type="button" class="star cursor-pointer text-gray-300 hover:text-yellow-300 transition" data-value="{{ star }}">★</button>
-                    {% endfor %}
-                </div>
-                <h4 class="pb-4">Comment:</h4>
-                <div class="w-20rem">{{ form.message }}</div>
-                <button class="bg-third px-8 py-1.5 mt-2 border-2 rounded-2xl text-white cursor-pointer" type="submit">Submit</button>
-            </form>
+                        {# Displaying all 5 stars with a for loop #}
+                        {% for star in star_range %}
+                        <button type="button" class="star cursor-pointer text-gray-300 hover:text-yellow-300 transition" data-value="{{ star }}">★</button>
+                        {% endfor %}
+                    </div>
+                    <h4 class="pb-4">Comment:</h4>
+                    <div class="w-20rem">{{ form.message }}</div>
+                    <button class="bg-third px-8 py-1.5 mt-2 border-2 rounded-2xl text-white cursor-pointer" type="submit">Submit</button>
+                </form>
 
             {# If user not logged in then prompt a login to create a review. #}
             {% else %}

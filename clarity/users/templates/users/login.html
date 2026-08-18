@@ -3,7 +3,7 @@
 {# Title used for tab name. #}
 {% block title %}Login{% endblock %}
 {% block content %}
-<div class="flex items-center min-h-[calc(100vh-140px)] drop-shadow-md drop-shadow-mauve-900">
+<div class="flex items-center min-h-[calc(100vh-150px)] drop-shadow-md drop-shadow-mauve-900">
     <div class="w-lg mx-auto bg-white text-black p-4 rounded-3xl">
         
         {# Title to Login page with form and required csrf_token. #}
@@ -56,7 +56,7 @@
         </form>
         
         {# Link to login page in case user already has an account. #}
-        <h6 class="text-xs text-center underline pt-2"><a href="/users/register/">I do not have an account.</a></h6>
+        <h2 class="text-xs text-center underline pt-2"><a href="/users/register/">I do not have an account.</a></h2>
     </div>
 </div>
 {% endblock %}
