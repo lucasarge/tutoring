@@ -31,7 +31,7 @@
             <div class="bg-white text-black p-4 rounded-3xl">
                 <div class="grid grid-cols-[1fr_auto]">
                     <h1 class="text-2xl">Reviews:</h1>
-                    <button id="createBtn" class="bg-third px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer">Create Review</button>
+                    <button id="createBtn" class="transition-all duration-150 active:scale-90 bg-third px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer">Create Review</button>
                 </div>
                 <hr class="my-2 py-1">
                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -71,7 +71,7 @@
             <div class="grid-cols-[1fr_4fr_1fr] grid">
                 <div></div>
                 <h1 class="text-2xl text-black text-center">Create Review</h1>
-                <button id="closeBtn" class="text-black text-2xl cursor-pointer text-right pr-3">&times;</button>
+                <button id="closeBtn" class="transition-all duration-150 active:scale-90 text-black text-2xl cursor-pointer text-right pr-3">&times;</button>
             </div>
 
             {# Check if user is logged in so they can create a review. #}
@@ -83,12 +83,12 @@
 
                         {# Displaying all 5 stars with a for loop #}
                         {% for star in star_range %}
-                        <button type="button" class="star cursor-pointer text-gray-300 hover:text-yellow-300 transition" data-value="{{ star }}">★</button>
+                        <button type="button" class="transition-all duration-150 active:scale-90 star cursor-pointer text-gray-300 hover:text-yellow-300 transition" data-value="{{ star }}">★</button>
                         {% endfor %}
                     </div>
                     <h4 class="pb-4">Comment:</h4>
                     <div class="w-20rem">{{ form.message }}</div>
-                    <button class="bg-third px-8 py-1.5 mt-2 border-2 rounded-2xl text-white cursor-pointer" type="submit">Submit</button>
+                    <button class="transition-all duration-150 active:scale-90 bg-third px-8 py-1.5 mt-2 border-2 rounded-2xl text-white cursor-pointer" type="submit">Submit</button>
                 </form>
 
             {# If user not logged in then prompt a login to create a review. #}

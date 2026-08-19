@@ -26,7 +26,7 @@
                         <h3>Start: {{ session.start }}</h3>
                         <h3>Duration: {{ session.duration }} Minutes</h3>
                         <h3>Cost: ${{ session.cost }}</h3>
-                        <h3>Tutor: {{ session.service.tutor.first_name }} {{ session.service.tutor.last_name }}</h3>
+                        <h3>Tutor: {{ session.tutor.first_name }} {{ session.tutor.last_name }}</h3>
                         <h3>Completed: {{ session.completed }}</h3>
                         <h3>Paid: {{ session.paid }}</h3>
                         <h3>Cancelled: {{ session.cancelled }}</h3>
@@ -74,7 +74,7 @@
                             <h3>Start: {{ session.start }}</h3>
                             <h3>Duration: {{ session.duration }} Minutes</h3>
                             <h3>Cost: ${{ session.cost }}</h3>
-                            <h3>Tutor: {{ session.service.tutor.first_name }} {{ session.service.tutor.last_name }}</h3>
+                            <h3>Tutor: {{ session.tutor.first_name }} {{ session.tutor.last_name }}</h3>
                             <h3>Completed: {{ session.completed }}</h3>
                             <h3>Paid: {{ session.paid }}</h3>
                             <h3>Cancelled: {{ session.cancelled }}</h3>

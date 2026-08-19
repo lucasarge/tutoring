@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
         initialView: window.innerWidth < 768 ? 'timeGridDay' : 'timeGridWeek',
         events: '/services/sessions/',
         slotMinTime: '15:30:00',
-        slotMaxTime: '20:30:00',
+        slotMaxTime: '21:00:00',
         allDaySlot: false,
         hiddenDays: '0.6',
         expandRows: true,
@@ -75,6 +75,8 @@ document.addEventListener('DOMContentLoaded', function() {
         dateFormat: "Y-m-d H:i",
         time_24hr: false,
 
+        
+
         altInput: true,
         altFormat: "d/m h:i K",
         
@@ -90,8 +92,27 @@ document.addEventListener('DOMContentLoaded', function() {
         ],
 
         minTime: '15:30',
-        maxTime: '20:30',
+        maxTime: '19:30',
 
         minDate: "today",
+
+        // Rounds the input time to a 15 minute interval.
+        onClose: function(selectedDates, dateStr, instance) {
+            if (selectedDates.length > 0) {
+                let date = selectedDates[0];
+                let minutes = date.getMinutes();
+
+                let roundedMinutes = Math.round(minutes / 15) * 15;
+                
+                if (roundedMinutes === 60) {
+                    date.setHours(date.getHours() + 1);
+                    date.setMinutes(0);
+                } else {
+                    date.setMinutes(roundedMinutes);
+                }
+
+                instance.setDate(date, true);
+            }
+        }
     })
 });

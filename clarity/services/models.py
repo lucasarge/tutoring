@@ -3,6 +3,7 @@
 from django.db import models
 from users.models import CustomUser
 from django.utils.crypto import get_random_string
+from clarity import settings
 
 # Generates a random string using Django with a length of used for the invite code.
 def generate_code():
@@ -80,11 +81,11 @@ class Session(models.Model):
 
     # Constant that provides the different duration options for tutoring session.
     DURATION_CHOICES = [
-        (30, '30 Minutes'),
-        (45, '45 Minutes'),
-        (60, '60 Minutes'),
-        (75, '75 Minutes'),
-        (90, '90 Minutes'),
+        (30, f'30 Minutes - ${ 30*settings.GLOBAL_COST/60:.2f}'),
+        (45, f'45 Minutes - ${ 45*settings.GLOBAL_COST/60:.2f}'),
+        (60, f'60 Minutes - ${ 60*settings.GLOBAL_COST/60:.2f}'),
+        (75, f'75 Minutes - ${ 75*settings.GLOBAL_COST/60:.2f}'),
+        (90, f'90 Minutes - ${ 90*settings.GLOBAL_COST/60:.2f}'),
     ]
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     tutor = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

@@ -84,7 +84,7 @@
                         {% if next_session %}
                         <h3>Start Time: {{ next_session.start }}</h3>
                         <h3>Duration: {{ next_session.duration }}</h3>
-                        <h3>Tutor: {{ next_session.service.tutor.first_name }}</h3>
+                        <h3>Tutor: {{ next_session.tutor.first_name }}</h3>
                         <h3>Link: 
                             {% if not next_session.link %}
                             Will be uploaded 5 minutes prior start.
@@ -101,13 +101,13 @@
                             {% if next_session.link %}
                             <form name="delete-link" method="post">
                                 {% csrf_token %}
-                                <button class="bg-gray-300 px-8 py-1.5 rounded-2xl text-black cursor-pointer">Delete Link</button>
+                                <button class="transition-all duration-150 active:scale-90 bg-gray-300 px-8 py-1.5 rounded-2xl text-black cursor-pointer">Delete Link</button>
                             </form>
                             {% else %}
                             <form action="/services/{{ service.pk }}/dashboard/" method="post">
                                 {% csrf_token %}
                                 <input type="text" name="link" placeholder="{{ next_session.link }}">
-                                <button class="bg-third px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer" type="submit">Submit</button>
+                                <button class="transition-all duration-150 active:scale-90 bg-third px-8 py-1.5 border-2 rounded-2xl text-white cursor-pointer" type="submit">Submit</button>
                             </form>
                             {% endif %}
 
@@ -116,7 +116,7 @@
                             <form method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="cancel-session" value="{{ next_session.id }}">
-                                <button class="bg-gray-300 px-8 py-1.5 w-full rounded-2xl text-black cursor-pointer">Cancel Session - Fees may be included</button> 
+                                <button class="transition-all duration-150 active:scale-90 bg-gray-300 px-8 py-1.5 w-full rounded-2xl text-black cursor-pointer">Cancel Session - Fees may be included</button> 
                             </form>
                             {% endif %}
                         </div>
@@ -166,7 +166,7 @@
                             <div class="py-1">
                                 {{ resource_form.message }}
                             </div>
-                            <button name="share_resources" class="bg-third px-8 py-1.5 mt-2 border-2 rounded-2xl text-white cursor-pointer" type="submit">Assign</button>
+                            <button name="share_resources" class="transition-all duration-150 active:scale-90 bg-third px-8 py-1.5 mt-2 border-2 rounded-2xl text-white cursor-pointer" type="submit">Assign</button>
                         </form>
                     </div>
 

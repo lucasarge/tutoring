@@ -22,7 +22,7 @@
                 
                 {# Button to update user through user_form. #}
                 <div class="grid items-center mt-auto">
-                    <button class="cursor-pointer bg-third px-8 py-2 border-2 rounded-2xl text-white" type="submit" name="info_submit">Save</button>
+                    <button class="transition-all duration-150 active:scale-90 cursor-pointer bg-third px-8 py-2 border-2 rounded-2xl text-white" type="submit" name="info_submit">Save</button>
                 </div>
             </form>
 
@@ -33,16 +33,28 @@
                 <img src="{{ request.user.profile.profile_image.url }}" alt="profile picture" class="h-48 aspect-square rounded-full object-cover border-black border-2 mx-auto">
                 <div class="flex py-4 items-center">
                     <div class="py-4 mx-auto">
-                        <label class="cursor-pointer inline-block">
+                        <label for="id_profile_image" id="profile-image-label" class="cursor-pointer inline-block">
                             Choose Image
-                            {{ image_form.profile_image }}
                         </label>
+                        {{ image_form.profile_image }}
                     </div>
                 </div>
                 <div class="grid items-center mt-auto">
-                    <button class="cursor-pointer bg-third px-8 py-2 border-2 rounded-2xl text-white" type="submit" name="image_submit">Save</button>
+                    <button class="transition-all duration-150 active:scale-90 cursor-pointer bg-third px-8 py-2 border-2 rounded-2xl text-white" type="submit" name="image_submit">Save</button>
                 </div>
             </form>
         </div>
     </div>
+
+    <script>
+        const profileImageInput = document.getElementById('id_profile_image');
+        const profileImageLabel = document.getElementById('profile-image-label');
+
+        if (profileImageInput && profileImageLabel) {
+            profileImageInput.addEventListener('change', function () {
+                const file = this.files && this.files[0];
+                profileImageLabel.textContent = file ? `Selected: ${file.name}` : 'Choose Image';
+            });
+        }
+    </script>
 {% endblock %}

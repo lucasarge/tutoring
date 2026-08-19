@@ -2,6 +2,7 @@
 
 from datetime import timedelta
 from django import forms
+from django.db.models import Q
 from . import models
 
 # Form for inviting student to service.
@@ -48,14 +49,14 @@ class SessionForm(forms.ModelForm):
         fields = ('start','duration','subject','note')
 
     def __init__(self, *args, **kwargs):
-        service = kwargs.pop('service', None)
+        self.service = kwargs.pop('service', None)
         super().__init__(*args, **kwargs)
 
         # When selecting subject to be tutored in it just filters the subjects selected in settings.
-        if service:
-            self.fields['subject'].queryset = models.SubjectService.objects.filter(service=service)
+        if self.service:
+            self.fields['subject'].queryset = models.SubjectService.objects.filter(service=self.service)
         else:
-            self.fields['subject'].queryset = models.SubjectService.objects.none()            
+            self.fields['subject'].queryset = models.SubjectService.objects.none()
 
     # Error prevention to prevent double booking
     def clean(self):
@@ -63,10 +64,25 @@ class SessionForm(forms.ModelForm):
         start = cleaned_data.get('start')
         duration = cleaned_data.get('duration')
 
-        if start and duration:
+        if start and duration and self.service:
             end = start + timedelta(minutes=duration)
-            if models.Session.objects.filter(start__lt=end, end__gt=start, cancelled=False).exists():
-                self.add_error('start', 'This time overlaps an existing session.')
+            tutor_id = self.service.tutor_id
+
+            if tutor_id is None:
+                return cleaned_data
+
+            overlapping_sessions = models.Session.objects.filter(
+                Q(tutor_id=tutor_id) | Q(service_id=self.service.pk),
+                start__lt=end,
+                end__gt=start,
+                cancelled=False,
+            )
+
+            if self.instance and self.instance.pk:
+                overlapping_sessions = overlapping_sessions.exclude(pk=self.instance.pk)
+
+            if overlapping_sessions.exists():
+                self.add_error('start', 'This time overlaps an existing session for this service or tutor.')
 
         return cleaned_data
 

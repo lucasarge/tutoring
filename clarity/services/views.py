@@ -419,8 +419,15 @@ def all_services(request):
 # View used for displaying all the sessions on FullCalendar.
 def all_sessions(request):
 
-    # Get all sessions that haven't finished yet
-    sessions = Session.objects.filter(end__gt=timezone.now(), cancelled=False)
+    # Get all sessions that haven't finished yet and that the current user is allowed to see.
+    sessions = Session.objects.filter(
+        end__gt=timezone.now(),
+        cancelled=False,
+    ).filter(
+        Q(service__student=request.user)
+        | Q(service__caregiver=request.user)
+        | Q(service__tutor=request.user)
+    )
     events = []
 
     # For each session note if user has access to session information and append relevant information to events for FullCalendar to handle.
@@ -438,7 +445,7 @@ def all_sessions(request):
             'backgroundColor': '#808080' if not is_user else '',
             'extendedProps': {
                 'isUser': is_user,
-                'details': f"\nTutor: {session.service.tutor.first_name}\nSubject: {session.subject}\nNote: {session.note}" if is_user else ''
+                'details': f"\nTutor: {session.tutor.first_name}\nSubject: {session.subject}\nNote: {session.note}" if is_user else ''
             }
         })
 
