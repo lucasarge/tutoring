@@ -8,10 +8,9 @@ from .models import Service, Invite, generate_code, Session, SubjectService, Res
 from .forms import InviteForm, SessionForm, CaregiverForm, StudentForm, LinkForm, DocumentForm, ShareResourceForm
 from django.utils import timezone
 from datetime import timedelta
-from django.http import HttpResponseForbidden, JsonResponse, FileResponse, Http404
+from django.http import HttpResponseForbidden, JsonResponse, FileResponse, Http404, HttpResponse
 from .decorators import survey_required, verified_tutor
 from django.db.models import Q, Sum
-from django.core.exceptions import PermissionDenied
 
 # Requires user to be logged in to access the invite page.
 @login_required
@@ -488,7 +487,11 @@ def view_session_link(request, session_id):
 
     # If not authorised provide error message with contact details.
     if not is_authorised:
-        raise PermissionDenied("You do not have permission to join this meeting. Contact me at 02040563805")
+        return HttpResponse(
+            "You do not have permission to join this meeting. Contact me at 02040563805", 
+            content_type="text/plain", 
+            status=403
+        )
 
     # If authorised set completed equal to True and save and redirect to link.
     session.completed = True
